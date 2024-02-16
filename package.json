@@ -1,0 +1,52 @@
+{
+  "name": "@palembang-digital/web",
+  "version": "0.1.0",
+  "private": false,
+  "author": "Sutan Gading Fadhillah Nasution <contact@gading.dev>",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/palembang-digital/web.git"
+  },
+  "bugs": {
+    "url": "https://github.com/palembang-digital/web/issues"
+  },
+  "packageManager": "npm@9.7.2",
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "prepare": "husky install",
+    "lint": "tsc --noEmit && eslint src --ignore-pattern 'src/public' --max-warnings 0",
+    "lint:fix": "tsc --noEmit && eslint src --ignore-pattern 'src/public' --fix"
+  },
+  "dependencies": {
+    "mongodb": "^6.3.0",
+    "next": "14.1.0",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "react-lazy-load-image-component": "^1.6.0"
+  },
+  "devDependencies": {
+    "@svgr/webpack": "^8.1.0",
+    "@types/node": "^20.11.19",
+    "@types/react": "^18.2.55",
+    "@types/react-dom": "^18.2.18",
+    "@types/react-lazy-load-image-component": "^1.5.3",
+    "@typescript-eslint/eslint-plugin": "^7.0.1",
+    "@typescript-eslint/parser": "^7.0.1",
+    "autoprefixer": "^10.4.16",
+    "clsx": "^2.0.0",
+    "eslint": "^8.56.0",
+    "eslint-config-next": "^14.1.0",
+    "husky": "^8.0.3",
+    "postcss": "^8.4.31",
+    "postcss-import": "^15.1.0",
+    "tailwind-merge": "^2.0.0",
+    "tailwindcss": "^3.3.5",
+    "typescript": "^5.3.3",
+    "typescript-plugin-css-modules": "^5.0.2"
+  }
+}
