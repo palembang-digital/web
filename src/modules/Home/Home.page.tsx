@@ -1,5 +1,6 @@
 import Footer from '@/modules/Home/components/Footer';
 import JokeList from '@/modules/Joke/components/JokeList';
+import TodoList from '@/modules/Todo/components/TodoList';
 import Image from '@/packages/components/base/Images/Image';
 import ButtonLink from '@/packages/components/base/Navigations/ButtonLink';
 import NextLink from '@/packages/components/base/Navigations/NextLink';
@@ -37,6 +38,7 @@ function HomePage() {
         <hr className="w-full max-w-lg my-8" />
 
         {/* Example calling Server Component inside Server Component */}
+        <TodoList />
         <JokeList />
 
         <div className={styles.grid}>
