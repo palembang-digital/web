@@ -1,5 +1,5 @@
 import Footer from '@/modules/Home/components/Footer';
-import JokeList from '@/modules/Joke/components/JokeList';
+import TodoList from '@/modules/Todo/components/TodoList';
 import Image from '@/packages/components/base/Images/Image';
 import ButtonLink from '@/packages/components/base/Navigations/ButtonLink';
 import NextLink from '@/packages/components/base/Navigations/NextLink';
@@ -25,8 +25,8 @@ function HomePage() {
 
         <p className={styles.description}>
           Visit the demo API{' '}
-          <NextLink href="/api/jokes">
-            <code className={styles.code}>/api/jokes</code>
+          <NextLink href="/api/todos">
+            <code className={styles.code}>/api/todos</code>
           </NextLink>
         </p>
 
@@ -37,7 +37,7 @@ function HomePage() {
         <hr className="w-full max-w-lg my-8" />
 
         {/* Example calling Server Component inside Server Component */}
-        <JokeList />
+        <TodoList />
 
         <div className={styles.grid}>
           <a href="https://nextjs.org/docs" className={styles.card}>

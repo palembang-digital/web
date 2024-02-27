@@ -1,7 +1,7 @@
-import JokeModel from '@/modules/Joke/services/Joke.model';
+import TodoModel from '@/modules/Todo/services/Todo.model';
 import Controller from '@/packages/server/base/Controller';
 
-class CJoke extends Controller {
+class CTodo extends Controller {
   /**
    * Use arrow function to create Controller method.
    * @see https://www.geeksforgeeks.org/arrow-functions-in-javascript/
@@ -9,7 +9,7 @@ class CJoke extends Controller {
    */
   public index = async() => {
     try {
-      const payload = await JokeModel.all();
+      const payload = await TodoModel.findAll();
       return this.sendJSON({
         code: 200,
         message: 'Success get all jokes.',
@@ -23,16 +23,18 @@ class CJoke extends Controller {
   public insert = async(req: Request) => {
     try {
       const body = await req.json();
-      const { setup, delivery } = body;
+      const { done = false, task } = body;
+
       const errors: string[] = [];
-      if (!setup) errors.push('field "setup" is required.');
-      if (!delivery) errors.push('field "delivery" is required.');
+      if (!task) errors.push('field "task" is required.');
       if (errors.length) return this.setError(400, errors, 'Validation error.');
-      const payload = await JokeModel.insert({ setup, delivery });
+
+      await TodoModel.create({ task, done });
+
       return this.sendJSON({
         code: 201,
-        message: 'Success add new Joke.',
-        payload
+        message: 'Success add new Todo.',
+        payload: { task, done }
       });
     } catch (err) {
       return this.handleError(err);
@@ -40,6 +42,6 @@ class CJoke extends Controller {
   };
 }
 
-const JokeController = new CJoke();
+const TodoController = new CTodo();
 
-export default JokeController;
+export default TodoController;
