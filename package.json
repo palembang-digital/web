@@ -20,7 +20,10 @@
     "start": "next start",
     "prepare": "husky install",
     "lint": "tsc --noEmit && eslint src --ignore-pattern 'src/public' --max-warnings 0",
-    "lint:fix": "tsc --noEmit && eslint src --ignore-pattern 'src/public' --fix"
+    "lint:fix": "tsc --noEmit && eslint src --ignore-pattern 'src/public' --fix",
+    "db:generate": "drizzle-kit generate:pg",
+    "db:push": "drizzle-kit push:pg",
+    "db:studio": "drizzle-kit studio"
   },
   "dependencies": {
     "@neondatabase/serverless": "^0.9.0",
