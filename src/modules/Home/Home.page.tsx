@@ -30,7 +30,7 @@ function HomePage() {
           </NextLink>
         </p>
 
-        <ButtonLink className="bg-fuchsia-400 text-center mt-5" href="/about?text=Hello%20World">
+        <ButtonLink className="mt-5" href="/about?text=Hello%20World">
           About Page
         </ButtonLink>
 

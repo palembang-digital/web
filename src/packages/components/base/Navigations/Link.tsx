@@ -6,7 +6,7 @@ function Link(props: Props) {
     <NextLink
       {...props}
       className={cn([
-        'text-blue-500 underline-offset-4 decoration-dashed no-underline hover:underline',
+        'link link-primary',
         props.className
       ])}
     />

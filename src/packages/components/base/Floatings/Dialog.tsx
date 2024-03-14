@@ -31,7 +31,7 @@ function Dialog(props: PropsWithChildren<Props>) {
   }, [closeOnBlur, onClose]);
 
   return (
-    <Overlay show={show} onClick={handleClose}>
+    <Overlay lockedBody show={show} onClick={handleClose}>
       <div
         {...otherProps}
         className={cn([
