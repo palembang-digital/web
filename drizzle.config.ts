@@ -22,5 +22,6 @@ export default {
   driver: 'pg',
   dbCredentials: {
     connectionString: NEON_DB_URL!
-  }
+  },
+  strict: false
 } satisfies Config;
