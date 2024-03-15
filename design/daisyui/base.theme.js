@@ -15,7 +15,11 @@ const baseTheme = {
   'warning-content': '#212121',
   'error': '#E62C46',
   'error-content': '#ffffff',
-  'neutral': '#212121'
+  'neutral': '#212121',
+  'base-100': '#ffffff',
+  'base-200': '#f7f9fC',
+  'base-300': '#e6e8ee',
+  'base-content': '#212121'
 };
 
 module.exports = baseTheme;

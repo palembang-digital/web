@@ -11,13 +11,7 @@ module.exports = {
   logs: false,
   themes: [
     {
-      light: {
-        ...baseTheme,
-        'base-100': '#ffffff',
-        'base-200': '#f7f9fC',
-        'base-300': '#e6e8ee',
-        'base-content': '#212121'
-      }
+      light: baseTheme
     }
   ]
 };
