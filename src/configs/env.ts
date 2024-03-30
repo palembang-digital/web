@@ -17,5 +17,5 @@ export const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET!;
 
 /** Custom ENV */
 export const IS_DEV = NODE_ENV !== 'production';
-export const SITE_NAME = 'Fullstack Next.js Template';
+export const SITE_NAME = 'Palembang Digital';
 export const NEON_DB_URL = `postgresql://${PG_USER}:${PG_PASSWORD}@${PG_HOST}/${PG_DATABASE}?sslmode=require`;
