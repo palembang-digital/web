@@ -36,7 +36,7 @@ export const Button = forwardRef<HTMLButtonElement, PropsWithChildren<Props>>((p
       disabled={disabled}
       onClick={handleClick}
       className={cn([
-        'bg-blue-500 text-white py-2 px-4 rounded-lg',
+        'btn btn-primary',
         'disabled:cursor-not-allowed disabled:opacity-60',
         'text-center relative',
         block && 'w-full',

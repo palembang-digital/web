@@ -40,7 +40,7 @@ export const ButtonLink: FunctionComponent<Props> = (props) => {
       target={target}
       disabled={disabled}
       className={cn([
-        'bg-blue-500 text-white py-2 px-4 rounded-lg',
+        'btn btn-primary py-2 px-4 rounded-lg',
         'text-center relative',
         'hover:underline underline-offset-4 decoration-dashed',
         block && 'w-full',

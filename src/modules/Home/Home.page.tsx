@@ -1,5 +1,6 @@
 import Footer from '@/modules/Home/components/Footer';
 import TodoList from '@/modules/Todo/components/TodoList';
+import AuthenticationButton from '@/packages/components/base/AuthenticationButton/AuthenticationButton';
 import Image from '@/packages/components/base/Images/Image';
 import ButtonLink from '@/packages/components/base/Navigations/ButtonLink';
 import NextLink from '@/packages/components/base/Navigations/NextLink';
@@ -13,6 +14,8 @@ function HomePage() {
         <h1 className={styles.title}>
           Welcome to <a href="https://nextjs.org">Next.js!</a>
         </h1>
+
+        <AuthenticationButton />
 
         <Image
           effect="blur"
@@ -30,13 +33,12 @@ function HomePage() {
           </NextLink>
         </p>
 
-        <ButtonLink className="bg-fuchsia-400 text-center mt-5" href="/about?text=Hello%20World">
+        <ButtonLink className="mt-5" href="/about?text=Hello%20World">
           About Page
         </ButtonLink>
 
         <hr className="w-full max-w-lg my-8" />
 
-        {/* Example calling Server Component inside Server Component */}
         <TodoList />
 
         <div className={styles.grid}>
