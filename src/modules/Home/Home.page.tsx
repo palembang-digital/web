@@ -33,13 +33,12 @@ function HomePage() {
           </NextLink>
         </p>
 
-        <ButtonLink className="bg-fuchsia-400 text-center mt-5" href="/about?text=Hello%20World">
+        <ButtonLink className="mt-5" href="/about?text=Hello%20World">
           About Page
         </ButtonLink>
 
         <hr className="w-full max-w-lg my-8" />
 
-        {/* Example calling Server Component inside Server Component */}
         <TodoList />
 
         <div className={styles.grid}>

@@ -13,7 +13,7 @@ module.exports = {
       'mono': ['var(--font-inter)', 'ui-monospace', 'SFMono-Regular']
     },
     extend: {
-      keyframes: require('./design/keyframes'),
+      keyframes: require('./design/tailwind/keyframes'),
       backgroundImage: {
         'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
         'gradient-conic':
@@ -21,5 +21,10 @@ module.exports = {
       }
     }
   },
-  plugins: []
+  plugins: [
+    require('@tailwindcss/typography'),
+    require('daisyui'),
+    require('./design/tailwind/custom.tailwind')
+  ],
+  daisyui: require('./design/daisyui/daisyui.config')
 };
