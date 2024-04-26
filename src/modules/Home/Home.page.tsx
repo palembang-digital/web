@@ -1,7 +1,7 @@
-import Footer from '@/modules/Home/components/Footer';
-import Header from '@/modules/Home/components/Header';
+import Footer from "@/modules/Home/components/Footer";
+import Header from "@/modules/Home/components/Header";
 
-import styles from './Home.page.module.css';
+import styles from "./Home.page.module.css";
 
 function HomePage() {
   return (

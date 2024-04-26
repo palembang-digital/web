@@ -1,16 +1,16 @@
-import '@/styles/bundle.css';
+import "@/styles/bundle.css";
 
-import { Inter } from 'next/font/google';
-import { FC, PropsWithChildren } from 'react';
+import { Inter } from "next/font/google";
+import { FC, PropsWithChildren } from "react";
 
-import { SITE_NAME } from '@/configs/env';
-import AuthProvider from '@/packages/components/base/AuthProvider/AuthProvider';
-import { withMetadata } from '@/packages/utils/metadata';
+import { SITE_NAME } from "@/configs/env";
+import AuthProvider from "@/packages/components/base/AuthProvider/AuthProvider";
+import { withMetadata } from "@/packages/utils/metadata";
 
 const inter = Inter({
-  subsets: ['latin'],
-  variable: '--font-inter',
-  adjustFontFallback: false
+  subsets: ["latin"],
+  variable: "--font-inter",
+  adjustFontFallback: false,
 });
 
 /**
@@ -20,8 +20,8 @@ const inter = Inter({
 export const metadata = withMetadata({
   title: {
     default: SITE_NAME,
-    template: `%s | ${SITE_NAME}`
-  }
+    template: `%s | ${SITE_NAME}`,
+  },
 });
 
 const RootLayout: FC<PropsWithChildren> = ({ children }) => {
