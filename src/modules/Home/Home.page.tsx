@@ -1,14 +1,13 @@
 import Footer from '@/modules/Home/components/Footer';
 import Header from '@/modules/Home/components/Header';
-
-import styles from './Home.page.module.css';
+import Hero from '@/modules/Home/components/Hero';
 
 function HomePage() {
   return (
     <div>
       <Header />
 
-      <main className={styles.main}>Coming soon</main>
+      <Hero />
 
       <Footer />
     </div>

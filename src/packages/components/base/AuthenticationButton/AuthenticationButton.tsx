@@ -1,30 +1,35 @@
 'use client';
-import Link from 'next/link';
-import { useSession, signIn, signOut } from 'next-auth/react';
-import React from 'react';
 
-import Button from '@/packages/components/base/Buttons/Button';
+import { LogOut } from 'lucide-react';
+import { signIn, signOut, useSession } from 'next-auth/react';
+
+import { Button } from '@/packages/components/ui/button';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger
+} from '@/packages/components/ui/dropdown-menu';
 
 const AuthenticationButton = () => {
   const { status, data } = useSession();
 
-  if (status === 'loading') return (<p>Loading...</p>);
+  if (status === 'loading') return <p>Loading...</p>;
 
   return status === 'authenticated' ? (
-    <div>
-      <p>{data.user.name}</p>
-      <p className="text-white/50">{data.user.email}</p>
-      <div className="flex gap-x-2 items-center mt-2">
-        <Link href="/profile">
-          <Button>Go to Profile</Button>
-        </Link>
-        <Button className="bg-red-400" onClick={() => signOut()}>Sign out</Button>
-      </div>
-    </div>
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button variant="ghost">{data.user.name}</Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent className="w-56">
+        <DropdownMenuItem className="cursor-pointer" onClick={() => signOut()}>
+          <LogOut className="mr-2 h-4 w-4" />
+          <span>Keluar</span>
+        </DropdownMenuItem>
+      </DropdownMenuContent>
+    </DropdownMenu>
   ) : (
-    <Button onClick={() => signIn('google')}>
-        Sign in with google
-    </Button>
+    <Button onClick={() => signIn('google')}>Masuk</Button>
   );
 };
 
