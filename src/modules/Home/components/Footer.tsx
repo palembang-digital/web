@@ -2,7 +2,7 @@ import Image from '@/packages/components/base/Images/Image';
 
 function Footer() {
   return (
-    <footer className="border-b bg-black w-full">
+    <footer className="bg-black w-full">
       <div className="grid grid-cols-2 px-20 py-4">
         <div className="flex">
           <Image

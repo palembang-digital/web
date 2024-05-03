@@ -1,8 +1,7 @@
-import { NeonQueryFunction, neon, neonConfig } from '@neondatabase/serverless';
+import { NeonQueryFunction, neon } from '@neondatabase/serverless';
 import { drizzle } from 'drizzle-orm/neon-http';
 
 import { NEON_DB_URL } from '@/configs/env';
-neonConfig.fetchConnectionCache = true;
 
 /** @source https://neon.tech/docs/serverless/serverless-driver#use-the-driver-over-http */
 const sql: NeonQueryFunction<boolean, boolean> = neon(NEON_DB_URL);
