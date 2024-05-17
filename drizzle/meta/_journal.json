@@ -1,0 +1,20 @@
+{
+  "version": "5",
+  "dialect": "pg",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "5",
+      "when": 1715347888185,
+      "tag": "0000_shiny_silver_centurion",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "5",
+      "when": 1715348280606,
+      "tag": "0001_open_betty_ross",
+      "breakpoints": true
+    }
+  ]
+}

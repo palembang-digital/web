@@ -21,8 +21,8 @@
     "prepare": "husky install",
     "lint": "tsc --noEmit && eslint src --ignore-pattern 'src/public' --max-warnings 0",
     "lint:fix": "tsc --noEmit && eslint src --ignore-pattern 'src/public' --fix",
-    "db:generate": "drizzle-kit generate:pg",
-    "db:push": "drizzle-kit push:pg",
+    "db:generate": "drizzle-kit generate",
+    "db:push": "drizzle-kit push",
     "db:studio": "drizzle-kit studio"
   },
   "dependencies": {
@@ -56,7 +56,7 @@
     "autoprefixer": "^10.4.16",
     "clsx": "^2.1.1",
     "daisyui": "^4.7.3",
-    "drizzle-kit": "^0.20.14",
+    "drizzle-kit": "^0.21.0",
     "eslint": "^8.57.0",
     "eslint-config-next": "^14.1.0",
     "husky": "^8.0.3",
