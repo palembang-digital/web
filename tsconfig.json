@@ -47,7 +47,8 @@
     "src/**/*.css",
     "src/**/*.ts",
     "src/**/*.tsx",
-    ".next/types/**/*.ts"
+    ".next/types/**/*.ts",
+    "src/**/*.jsx",
   ],
   "exclude": [
     "node_modules",
