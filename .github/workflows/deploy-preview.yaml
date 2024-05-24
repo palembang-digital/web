@@ -57,7 +57,7 @@ jobs:
         run: vercel pull --yes --environment=preview --token=${{ env.VERCEL_TOKEN }}
 
       - name: Build Project Artifacts
-        run: NODE_ENV=production vercel build --token=${{ env.VERCEL_TOKEN }}
+        run: vercel build --prod --token=${{ env.VERCEL_TOKEN }}
 
       - name: Deploy Preview to Vercel
         id: deploy
