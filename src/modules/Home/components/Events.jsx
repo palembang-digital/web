@@ -1,16 +1,17 @@
-"use client";
+'use client';
 
-import Image from "@/packages/components/base/Images/Image";
-import { SkeletonCard } from "@/packages/components/base/Skeleton/SkeletonCard";
-import { Card, CardContent, CardFooter } from "@/packages/components/ui/card";
-import { useEffect, useState } from "react";
+import { useEffect, useState } from 'react';
+
+import Image from '@/packages/components/base/Images/Image';
+import { SkeletonCard } from '@/packages/components/base/Skeleton/SkeletonCard';
+import { Card, CardContent, CardFooter } from '@/packages/components/ui/card';
 
 function Events() {
   const [data, setData] = useState(null);
   const [isLoading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch("/api/events")
+    fetch('/api/events')
       .then((res) => res.json())
       .then((data) => {
         setData(data);
