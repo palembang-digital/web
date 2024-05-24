@@ -6,7 +6,7 @@
 import * as dotenv from "dotenv";
 import type { Config } from "drizzle-kit";
 
-dotenv.config({ path: ".env.local" });
+dotenv.config({ path: ".env" });
 
 const { PG_USER, PG_HOST, PG_DATABASE, PG_PASSWORD } = process.env;
 
