@@ -43,7 +43,12 @@ function Events() {
         .map((event, idx) => (
           <Card key={idx}>
             <CardContent>
-              <Image className="object-cover" src={event.imageUrl} size={200} />
+              <Image
+                className="object-cover"
+                src={event.imageUrl}
+                size={200}
+                alt={event.name}
+              />
             </CardContent>
             <CardFooter>
               <p>{event.name}</p>
