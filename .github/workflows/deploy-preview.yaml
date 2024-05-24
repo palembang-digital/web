@@ -45,8 +45,10 @@ jobs:
         run: |
           touch .env
 
-          echo DATABASE_URL=${{ steps.create-branch.outputs.db_url_with_pooler }}?sslmode=require >> .env
-          echo DIRECT_URL=${{ steps.create-branch.outputs.db_url }}?sslmode=require >> .env
+          echo PG_HOST=${{ steps.create-branch.outputs.host }} >> .env
+          echo PG_DATABASE=${{ env.NEON_DATABASE_NAME }} >> .env
+          echo PG_USER=${{ env.NEON_DATABASE_USERNAME }} >> .env
+          echo PG_PASSWORD=${{ steps.create-branch.outputs.password }} >> .env
 
           npm run db:generate
           npm run db:push
