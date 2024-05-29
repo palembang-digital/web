@@ -2,12 +2,32 @@
 
 import Image from "@/packages/components/base/Images/Image";
 import { SkeletonCard } from "@/packages/components/base/Skeleton/SkeletonCard";
-import { Card, CardContent, CardFooter } from "@/packages/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+} from "@/packages/components/ui/card";
 import { useEffect, useState } from "react";
 
 function Events() {
   const [data, setData] = useState(null);
   const [isLoading, setLoading] = useState(true);
+
+  const monthNames = [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
+  ];
 
   useEffect(() => {
     fetch("/api/events")
@@ -17,6 +37,26 @@ function Events() {
         setLoading(false);
       });
   }, []);
+
+  const FormatDate = (date) => {
+    const year = date.getFullYear();
+    const month = date.getMonth();
+    const day = date.getDay();
+    let days = day;
+    if (day < 10) {
+      days = `0${days}`;
+    } else {
+      days = day;
+    }
+    const dateFormat = `${days} ${monthNames[month]} ${year}`;
+    return dateFormat;
+  };
+
+  const FormatDateEvent = (scheduledEnd) => {
+    const date = new Date(scheduledEnd);
+    const dateEvent = FormatDate(date);
+    return dateEvent;
+  };
 
   if (isLoading)
     return (
@@ -37,17 +77,21 @@ function Events() {
           (a, b) =>
             Date.now() -
             new Date(a.scheduledStart) -
-            (Date.now() - new Date(b.scheduledStart))
+            (Date.now() - new Date(b.scheduledStart)),
         )
         .slice(0, 5)
         .map((event, idx) => (
-          <Card key={idx}>
-            <CardContent>
-              <Image className="object-cover" src={event.imageUrl} size={200} />
+          <Card key={idx} className="w-[200px]">
+            <CardHeader>
+              <Image className="object-cover " src={event.imageUrl} />
+            </CardHeader>
+            <CardContent className="text-muted-foreground flex flex-col text-sm">
+              <p>{FormatDateEvent(event.scheduledEnd)}</p>
+              <p className="truncate text-lg font-bold text-black">
+                {event.name}
+              </p>
+              <p>tempat</p>
             </CardContent>
-            <CardFooter>
-              <p>{event.name}</p>
-            </CardFooter>
           </Card>
         ))}
     </div>
