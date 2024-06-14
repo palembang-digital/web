@@ -29,7 +29,10 @@ const AuthenticationButton = () => {
       </DropdownMenuContent>
     </DropdownMenu>
   ) : (
-    <Button onClick={() => signIn('google')}>Masuk</Button>
+    <>
+      <Button variant="outline" onClick={() => signIn('google')}>Masuk</Button>
+      <Button onClick={() => signIn('google')}>Daftar</Button>
+    </>
   );
 };
 

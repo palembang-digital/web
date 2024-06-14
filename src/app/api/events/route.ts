@@ -1,1 +1,1 @@
-export * from '@/modules/Event/services/Event.route';
+export * from '@/modules/Events/services/Events.route';

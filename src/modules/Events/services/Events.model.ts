@@ -1,12 +1,12 @@
 import Model from '@/packages/server/db/Model';
 import { events } from '@/packages/server/db/schema/events';
 
-class MEvent extends Model<typeof events> {
+class MEvents extends Model<typeof events> {
   constructor() {
     super(events);
   }
 }
 
-const EventModel = new MEvent();
+const EventsModel = new MEvents();
 
-export default EventModel;
+export default EventsModel;
