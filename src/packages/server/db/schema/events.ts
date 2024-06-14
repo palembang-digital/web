@@ -2,6 +2,8 @@
 
 import { integer, pgTable, serial, text, timestamp } from 'drizzle-orm/pg-core';
 
+import { users } from '@/packages/server/db/schema/users';
+
 export const events = pgTable('event', {
   id: serial('id').primaryKey(),
   name: text('name').notNull(),
@@ -14,4 +16,13 @@ export const events = pgTable('event', {
   youtubeId: text('youtube_id'),
   registrationFee: integer('registration_fee'),
   description: text('description')
+});
+
+export const eventsSpeakers = pgTable('events_speakers', {
+  eventId: integer('event_id')
+    .notNull()
+    .references(() => events.id, { onDelete: 'cascade' }),
+  userId: text('user_id')
+    .notNull()
+    .references(() => users.id, { onDelete: 'cascade' })
 });

@@ -1,16 +1,13 @@
 "use client";
 
-import Image from "@/packages/components/base/Images/Image";
-import { SkeletonCard } from "@/packages/components/base/Skeleton/SkeletonCard";
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-} from "@/packages/components/ui/card";
+import Link from "next/link";
 import { useEffect, useState } from "react";
 
-function Events() {
+import Image from "@/packages/components/base/Images/Image";
+import { SkeletonCard } from "@/packages/components/base/Skeleton/SkeletonCard";
+import { Card, CardContent, CardHeader } from "@/packages/components/ui/card";
+
+function Events({ limit = 5 }) {
   const [data, setData] = useState(null);
   const [isLoading, setLoading] = useState(true);
 
@@ -77,22 +74,24 @@ function Events() {
           (a, b) =>
             Date.now() -
             new Date(a.scheduledStart) -
-            (Date.now() - new Date(b.scheduledStart)),
+            (Date.now() - new Date(b.scheduledStart))
         )
-        .slice(0, 5)
+        .slice(0, limit)
         .map((event, idx) => (
-          <Card key={idx} className="w-[200px]">
-            <CardHeader>
-              <Image className="object-cover " src={event.imageUrl} />
-            </CardHeader>
-            <CardContent className="text-muted-foreground flex flex-col text-sm">
-              <p>{FormatDateEvent(event.scheduledEnd)}</p>
-              <p className="truncate text-lg font-bold text-black">
-                {event.name}
-              </p>
-              <p>tempat</p>
-            </CardContent>
-          </Card>
+          <Link key={idx} href={`/events/${event.id}`}>
+            <Card className="w-[200px]">
+              <CardHeader>
+                <Image className="object-cover " src={event.imageUrl} />
+              </CardHeader>
+              <CardContent className="text-muted-foreground flex flex-col text-sm">
+                <p>{FormatDateEvent(event.scheduledEnd)}</p>
+                <p className="truncate text-lg font-bold text-black">
+                  {event.name}
+                </p>
+                <p>tempat</p>
+              </CardContent>
+            </Card>
+          </Link>
         ))}
     </div>
   );
