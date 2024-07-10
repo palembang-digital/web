@@ -4,17 +4,5 @@ import AutoForm from "@/components/ui/auto-form";
 import { insertEventSchema } from "@/db/schema";
 
 export default function NewEventForm() {
-  return (
-    <AutoForm
-      formSchema={insertEventSchema}
-      fieldConfig={{
-        createdAt: {
-          inputProps: {
-            className: "hidden",
-            hidden: true,
-          },
-        },
-      }}
-    />
-  );
+  return <AutoForm formSchema={insertEventSchema} />;
 }
