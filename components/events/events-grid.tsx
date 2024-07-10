@@ -1,7 +1,4 @@
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import { events as eventsSchema } from "@/db/schema/events";
-import { InferSelectModel } from "drizzle-orm";
-import Image from "next/image";
+import EventCard from "@/components/events/event-card";
 import Link from "next/link";
 
 function EventsGrid({
@@ -9,12 +6,12 @@ function EventsGrid({
   start,
   end,
 }: {
-  events: InferSelectModel<typeof eventsSchema>[];
+  events: any[];
   start?: number;
   end?: number;
 }) {
   return (
-    <div className="flex gap-6">
+    <div className="grid grid-cols-5 gap-4">
       {events
         .sort(
           (a, b) =>
@@ -24,26 +21,11 @@ function EventsGrid({
         )
         .slice(start, end)
         .map((event, idx) => (
-          <Link key={idx} href={`/events/${event.id}`}>
-            <Card className="w-[200px]">
-              <CardHeader>
-                <Image
-                  className="object-cover "
-                  src={event.imageUrl || ""}
-                  width={200}
-                  height={200}
-                  alt={event.name}
-                />
-              </CardHeader>
-              <CardContent className="text-muted-foreground flex flex-col text-sm">
-                {/* <p>{FormatDateEvent(event.scheduledEnd)}</p> */}
-                <p className="truncate text-lg font-bold text-black">
-                  {event.name}
-                </p>
-                <p>tempat</p>
-              </CardContent>
-            </Card>
-          </Link>
+          <div key={idx} className="flex items-center justify-center">
+            <Link href={`/events/${event.id}`}>
+              <EventCard event={event} />
+            </Link>
+          </div>
         ))}
     </div>
   );

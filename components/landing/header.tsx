@@ -13,19 +13,19 @@ async function Header() {
   const navLinks = [
     {
       id: 1,
-      title: "Acara",
+      title: "Events",
       path: "/events",
     },
-    {
-      id: 2,
-      title: "Tentang",
-      path: "/tentang",
-    },
-    {
-      id: 3,
-      title: "Galeri",
-      path: "/galeri",
-    },
+    // {
+    //   id: 2,
+    //   title: "Tentang",
+    //   path: "/tentang",
+    // },
+    // {
+    //   id: 3,
+    //   title: "Galeri",
+    //   path: "/galeri",
+    // },
   ];
 
   return (
