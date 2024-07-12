@@ -1,8 +1,6 @@
 import { auth } from "@/auth";
 import { Sidebar } from "@/components/dashboard/sidebar";
 import EventsGrid from "@/components/events/events-grid";
-import Footer from "@/components/landing/footer";
-import Header from "@/components/landing/header";
 import Hero from "@/components/landing/hero";
 import { db } from "@/db";
 
@@ -27,14 +25,14 @@ async function DashboardPage() {
 }
 
 async function LandingPage() {
-  const events = await db.query.events.findMany();
+  const events = await db.query.events.findMany({
+    orderBy: (events, { desc }) => [desc(events.scheduledStart)],
+  });
 
   return (
     <>
-      <Header />
       <Hero />
       <EventsGrid events={events} end={5} />
-      <Footer />
     </>
   );
 }

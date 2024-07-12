@@ -2,7 +2,6 @@ import { auth } from "@/auth";
 import { SignIn } from "@/components/sign-in";
 import { SignOut } from "@/components/sign-out";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { Heart } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -12,15 +11,13 @@ async function Header() {
 
   const navLinks = [
     {
-      id: 1,
       title: "Events",
       path: "/events",
     },
-    // {
-    //   id: 2,
-    //   title: "Tentang",
-    //   path: "/tentang",
-    // },
+    {
+      title: "Videos",
+      path: "/videos",
+    },
     // {
     //   id: 3,
     //   title: "Galeri",
@@ -56,7 +53,7 @@ async function Header() {
           {/* TODO: Update so that we can use shortcut
               Try to use this component: https://ui.shadcn.com/docs/components/command
            */}
-          <Input type="text" placeholder="Pencarian..." />
+          {/* <Input type="text" placeholder="Pencarian..." /> */}
 
           <Button className="bg-pink-500 text-white hover:bg-pink-400">
             <Heart className="mr-2 h-4 w-4" /> Dukung kami
