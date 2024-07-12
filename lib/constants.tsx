@@ -1,8 +1,9 @@
 import {
-  CalendarIcon,
+  HeartHandshakeIcon,
   HouseIcon,
   InstagramIcon,
-  YoutubeIcon,
+  TicketIcon,
+  VideoIcon,
 } from "lucide-react";
 
 interface MenuLink {
@@ -20,12 +21,17 @@ export const MENU_LINKS: MenuLink[] = [
   {
     href: "/events",
     label: "Kegiatan",
-    icon: <CalendarIcon size={16} />,
+    icon: <TicketIcon size={16} />,
   },
   {
     href: "/videos",
     label: "Video",
-    icon: <YoutubeIcon size={16} />,
+    icon: <VideoIcon size={16} />,
+  },
+  {
+    href: "/ecosystem",
+    label: "Ecosystem",
+    icon: <HeartHandshakeIcon size={16} />,
   },
 ];
 
@@ -36,3 +42,6 @@ export const SOCIAL_LINKS = {
     icon: <InstagramIcon size={16} />,
   },
 };
+
+export const SCROLL_AREA_ID = "scroll-area";
+export const MOBILE_SCROLL_THRESHOLD = 20;

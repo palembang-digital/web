@@ -1,28 +1,8 @@
-import { auth } from "@/auth";
-import { Sidebar } from "@/components/dashboard/sidebar";
 import EventsGrid from "@/components/events/events-grid";
+import { FloatingHeader } from "@/components/floating-header";
 import Hero from "@/components/landing/hero";
+import { ScrollArea } from "@/components/scroll-area";
 import { db } from "@/db";
-
-// TODO
-async function DashboardPage() {
-  const session = await auth();
-
-  if (!session) {
-    return <p>Not authenticated</p>;
-  }
-
-  return (
-    <div className="grid lg:grid-cols-5">
-      {/* <p>Hi, {session.user?.name}</p>
-      <SignOut /> */}
-      <Sidebar />
-      <div className="col-span-3 lg:col-span-4 lg:border-l">
-        <div className="h-full px-4 py-6 lg:px-8"></div>
-      </div>
-    </div>
-  );
-}
 
 async function LandingPage() {
   const events = await db.query.events.findMany({
@@ -38,9 +18,14 @@ async function LandingPage() {
 }
 
 export default async function Page() {
-  // TODO
-  // const session = await auth();
-  // return session ? <DashboardPage /> : <LandingPage />;
-
-  return <LandingPage />;
+  return (
+    <ScrollArea useScrollAreaId>
+      <FloatingHeader scrollTitle="Palembang Digital" />
+      <div className="content-wrapper">
+        <div className="content">
+          <p>Dari wong kito, untuk wong kito</p>
+        </div>
+      </div>
+    </ScrollArea>
+  );
 }

@@ -14,7 +14,7 @@ export function MenuContent() {
             width={30}
             height={30}
             loading="lazy"
-            className="rounded-full border shadow-sm"
+            className="rounded-full"
           />
           <div className="flex flex-col">
             <span className="text-sm font-semibold tracking-tight">
