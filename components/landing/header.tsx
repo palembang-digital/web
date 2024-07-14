@@ -32,7 +32,7 @@ async function Header() {
           <div className="mr-4 flex  items-center">
             <Link href="/">
               <Image
-                src="logo-black-bg.svg"
+                src="/logo-black-bg.png"
                 height={32}
                 width={32}
                 alt="Palembang Digital Logo"

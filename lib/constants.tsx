@@ -1,8 +1,11 @@
 import {
+  CircleHelpIcon,
   HeartHandshakeIcon,
   HouseIcon,
   InstagramIcon,
+  PhoneIcon,
   TicketIcon,
+  UsersIcon,
   VideoIcon,
 } from "lucide-react";
 
@@ -30,8 +33,23 @@ export const MENU_LINKS: MenuLink[] = [
   },
   {
     href: "/ecosystem",
-    label: "Ecosystem",
+    label: "Ekosistem",
     icon: <HeartHandshakeIcon size={16} />,
+  },
+  {
+    href: "/members",
+    label: "Anggota",
+    icon: <UsersIcon size={16} />,
+  },
+  {
+    href: "/about",
+    label: "Tentang",
+    icon: <CircleHelpIcon size={16} />,
+  },
+  {
+    href: "/contact",
+    label: "Kontak",
+    icon: <PhoneIcon size={16} />,
   },
 ];
 

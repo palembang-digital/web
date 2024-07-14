@@ -9,12 +9,11 @@ export function MobileDrawer() {
       <DrawerTrigger asChild>
         <Button variant="ghost" size="icon" title="Toggle drawer">
           <Image
-            src="/logo-black-bg.svg"
+            src="/logo-black-bg.png"
             alt="Palembang Digital"
             width={20}
             height={20}
             loading="lazy"
-            className="rounded-full"
           />
         </Button>
       </DrawerTrigger>

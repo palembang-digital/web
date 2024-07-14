@@ -1,5 +1,5 @@
 import { NavigationLink } from "@/components/navigation-link";
-import { MENU_LINKS, SOCIAL_LINKS } from "@/lib/constants";
+import { MENU_LINKS } from "@/lib/constants";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -9,12 +9,11 @@ export function MenuContent() {
       <div className="flex flex-col gap-4">
         <Link href="/" className="link-card inline-flex items-center gap-2 p-2">
           <Image
-            src="/logo-black-bg.svg"
+            src="/logo-black-bg.png"
             alt="Palembang Digital"
             width={30}
             height={30}
             loading="lazy"
-            className="rounded-full"
           />
           <div className="flex flex-col">
             <span className="text-sm font-semibold tracking-tight">
@@ -35,7 +34,7 @@ export function MenuContent() {
         </div>
       </div>
 
-      <hr />
+      {/* <hr />
 
       <div className="flex flex-col gap-2 text-sm">
         <div className="flex flex-col gap-1">
@@ -48,7 +47,7 @@ export function MenuContent() {
             />
           ))}
         </div>
-      </div>
+      </div> */}
     </div>
   );
 }

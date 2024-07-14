@@ -6,7 +6,7 @@ function Footer() {
       <div className="grid grid-cols-2 px-20 py-4">
         <div className="flex">
           <Image
-            src="logo-white-bg.svg"
+            src="/logo-black-bg.png"
             height={32}
             width={32}
             alt="Palembang Digital Logo"

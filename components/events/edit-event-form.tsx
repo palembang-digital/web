@@ -3,16 +3,15 @@
 import { UploadWidget } from "@/components/cloudinary/upload-widget";
 import AutoForm, { AutoFormSubmit } from "@/components/ui/auto-form";
 import { Button } from "@/components/ui/button";
-import { useToast } from "@/components/ui/use-toast";
 import { insertEventSchema } from "@/db/schema";
 import { CloudinaryUploadWidgetInfo } from "next-cloudinary";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { toast } from "sonner";
 
 export default function EditEventForm({ event }: { event: any }) {
   const router = useRouter();
-  const { toast } = useToast();
 
   const [values, setValues] = useState(event);
 
@@ -44,7 +43,7 @@ export default function EditEventForm({ event }: { event: any }) {
             console.log(response);
 
             if (response.ok) {
-              toast({ title: "Event successfully updated!" });
+              toast("Event successfully updated!");
               router.push(`/events/${event.id}`);
             } else {
               alert("Failed to update event");

@@ -2,7 +2,7 @@ import { cn } from "@/lib/utils";
 
 export function TypographyH1({
   className,
-  children
+  children,
 }: {
   className?: string;
   children: React.ReactNode;
@@ -19,23 +19,28 @@ export function TypographyH1({
   );
 }
 
-export function TypographyP({
+export function TypographyH2({
   className,
-  children
+  children,
 }: {
   className?: string;
   children: React.ReactNode;
 }) {
   return (
-    <p className={cn("leading-7 [&:not(:first-child)]:mt-6", className)}>
+    <h2
+      className={cn(
+        "scroll-m-20 border-b pb-2 text-3xl font-semibold tracking-tight first:mt-0",
+        className
+      )}
+    >
       {children}
-    </p>
+    </h2>
   );
 }
 
 export function TypographyLead({
   className,
-  children
+  children,
 }: {
   className?: string;
   children: React.ReactNode;
