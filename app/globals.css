@@ -92,4 +92,8 @@
   .content {
     @apply mx-auto w-full lg:mb-0 lg:max-w-3xl;
   }
+
+  .scrollable-area {
+    @apply h-full max-h-dynamic-screen min-h-dynamic-screen overflow-y-auto overflow-x-hidden;
+  }
 }

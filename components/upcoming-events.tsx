@@ -12,7 +12,7 @@ export default function UpcomingEvents({ events }: { events: any[] }) {
         {events.map((event) => (
           <li
             key={`upcoming-event-${event.id}`}
-            className="flex flex-col sm:flex-row  items-start gap-4 mb-6 ms-4"
+            className="flex flex-col sm:flex-row items-start gap-4 mb-6 ps-4 hover:bg-neutral-800"
           >
             <div className="absolute w-3 h-3 bg-slate-400 rounded-full mt-1.5 -start-1.5 border border-slate-400"></div>
             <div className="flex-1">

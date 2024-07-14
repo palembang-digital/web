@@ -47,7 +47,7 @@ function Cmp({ href, label, icon, shortcutNumber }: NavigationLinkProps) {
       key={href}
       href={href}
       className={cn(
-        "group flex items-center justify-between rounded-lg p-2",
+        "group flex items-center justify-between rounded-lg p-3",
         isActive ? "bg-black text-white" : "hover:bg-gray-200"
       )}
     >

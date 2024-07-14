@@ -22,7 +22,7 @@ export function MenuContent() {
           </div>
         </Link>
 
-        <div className="flex flex-col gap-1">
+        <div className="flex flex-col gap-2">
           {MENU_LINKS.map((link) => (
             <NavigationLink
               key={link.href}

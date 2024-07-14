@@ -16,7 +16,7 @@ function Cmp({ scrollTitle, title, children }: FloatingHeaderProps) {
     translateY: 0,
     opacity: scrollTitle ? 0 : 1,
   });
-  SCROLL_AREA_ID;
+
   useEffect(() => {
     const scrollAreaElem = document.querySelector(`#${SCROLL_AREA_ID}`);
 
@@ -46,6 +46,7 @@ function Cmp({ scrollTitle, title, children }: FloatingHeaderProps) {
         passive: true,
       });
     }
+
     return () => scrollAreaElem?.removeEventListener("scroll", onScroll);
   }, [scrollTitle]);
 

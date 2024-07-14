@@ -49,7 +49,7 @@ export default function Hero({
       </TypographyH1>
 
       <p className="z-10 text-center">
-        <strong>Palembang Digital</strong> adalah platform komunitas digital
+        <strong>Palembang Digital (Patal)</strong> adalah platform komunitas
         terbesar di Sumatera Selatan untuk tumbuh bersama di bidang IT.
       </p>
 

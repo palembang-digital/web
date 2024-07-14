@@ -1,4 +1,6 @@
-import EventsGrid from "@/components/events/events-grid";
+import { FloatingHeader } from "@/components/floating-header";
+import { ScrollArea } from "@/components/scroll-area";
+import UpcomingEvents from "@/components/upcoming-events";
 import { db } from "@/db";
 
 export default async function Page() {
@@ -6,5 +8,14 @@ export default async function Page() {
     orderBy: (events, { desc }) => [desc(events.scheduledStart)],
   });
 
-  return <EventsGrid events={events} />;
+  return (
+    <ScrollArea useScrollAreaId>
+      <FloatingHeader scrollTitle="Kegiatan Patal" />
+      <div className="content-wrapper">
+        <div className="content">
+          <UpcomingEvents events={events} />
+        </div>
+      </div>
+    </ScrollArea>
+  );
 }
