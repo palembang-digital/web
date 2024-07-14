@@ -2,6 +2,7 @@ import EventsGrid from "@/components/events/events-grid";
 import { FloatingHeader } from "@/components/floating-header";
 import Hero from "@/components/hero";
 import { ScrollArea } from "@/components/scroll-area";
+import UpcomingEvents from "@/components/upcoming-events";
 import { db } from "@/db";
 
 async function LandingPage() {
@@ -22,17 +23,20 @@ export default async function Page() {
     orderBy: (events, { desc }) => [desc(events.scheduledStart)],
   });
 
+  const upcomingEvents = events.slice(0, 3);
+
   return (
     <ScrollArea useScrollAreaId>
       <FloatingHeader scrollTitle="Palembang Digital" />
       <div className="content-wrapper">
         <div className="content">
-          {/* <p>Dari wong kito, untuk wong kito</p> */}
           <Hero
             eventCount={events.length}
             startupCount={45}
             organizationCount={34}
           />
+
+          <UpcomingEvents events={upcomingEvents} />
         </div>
       </div>
     </ScrollArea>

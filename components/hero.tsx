@@ -1,5 +1,8 @@
+import GridPattern from "@/components//magicui/grid-pattern";
+import { Button } from "@/components//ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { TypographyH1 } from "@/components/ui/typography";
+import { cn } from "@/lib/utils";
 
 export default function Hero({
   memberCount,
@@ -32,17 +35,25 @@ export default function Hero({
   ];
 
   return (
-    <div className="flex flex-col items-center justify-center gap-4">
+    <div className="relative flex flex-col items-center justify-center gap-4">
+      <GridPattern
+        width={15}
+        height={15}
+        className={cn(
+          "[mask-image:radial-gradient(ellipse,white,transparent)]"
+        )}
+      />
+
       <TypographyH1 className="z-10 whitespace-pre-wrap text-center text-neutral-900 lg:text-4xl">
         Dari wong kito, untuk wong kito!
       </TypographyH1>
 
-      <p className="text-center">
+      <p className="z-10 text-center">
         <strong>Palembang Digital</strong> adalah platform komunitas digital
         terbesar di Sumatera Selatan untuk tumbuh bersama di bidang IT.
       </p>
 
-      <div className="grid grid-cols-3 gap-2">
+      <div className="z-10 grid grid-cols-3 gap-2">
         {stats.map(
           (stat) =>
             stat.value && (
@@ -60,6 +71,8 @@ export default function Hero({
             )
         )}
       </div>
+
+      <Button className="z-10">Bergabung sekarang!</Button>
     </div>
   );
 }
