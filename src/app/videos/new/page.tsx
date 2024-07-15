@@ -1,7 +1,7 @@
-import { MultiSelect } from "@//components/ui/multi-select";
-import { TypographyH1 } from "@//components/ui/typography";
-import { db } from "@//db";
 import { auth } from "@/auth";
+import { MultiSelect } from "@/components/ui/multi-select";
+import { TypographyH1 } from "@/components/ui/typography";
+import { db } from "@/db";
 
 export default async function Page() {
   const session = await auth();

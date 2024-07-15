@@ -1,22 +1,8 @@
-import EventsGrid from "@//components/events/events-grid";
-import { FloatingHeader } from "@//components/floating-header";
-import Hero from "@//components/hero";
-import { ScrollArea } from "@//components/scroll-area";
-import UpcomingEvents from "@//components/upcoming-events";
-import { db } from "@//db";
-
-async function LandingPage() {
-  const events = await db.query.events.findMany({
-    orderBy: (events, { desc }) => [desc(events.scheduledStart)],
-  });
-
-  return (
-    <>
-      <Hero />
-      <EventsGrid events={events} end={5} />
-    </>
-  );
-}
+import { FloatingHeader } from "@/components/floating-header";
+import Hero from "@/components/hero";
+import { ScrollArea } from "@/components/scroll-area";
+import UpcomingEvents from "@/components/upcoming-events";
+import { db } from "@/db";
 
 export default async function Page() {
   const events = await db.query.events.findMany({

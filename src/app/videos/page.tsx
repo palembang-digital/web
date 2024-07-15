@@ -1,6 +1,6 @@
-import { Button } from "@//components/ui/button";
-import { TypographyH1 } from "@//components/ui/typography";
-import { db } from "@//db";
+import { Button } from "@/components/ui/button";
+import { TypographyH1 } from "@/components/ui/typography";
+import { db } from "@/db";
 import Link from "next/link";
 
 export default async function Page() {

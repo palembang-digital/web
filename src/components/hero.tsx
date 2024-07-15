@@ -1,8 +1,8 @@
-import GridPattern from "@//components/magicui/grid-pattern";
-import { Button } from "@//components/ui/button";
-import { Card, CardContent } from "@//components/ui/card";
-import { TypographyH1 } from "@//components/ui/typography";
-import { cn } from "@//lib/utils";
+import GridPattern from "@/components/magicui/grid-pattern";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { TypographyH1 } from "@/components/ui/typography";
+import { cn } from "@/lib/utils";
 
 export default function Hero({
   memberCount,

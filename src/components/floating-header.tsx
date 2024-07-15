@@ -1,7 +1,7 @@
 "use client";
 
-import { MobileDrawer } from "@//components/mobile-drawer";
-import { MOBILE_SCROLL_THRESHOLD, SCROLL_AREA_ID } from "@//lib/constants";
+import { MobileDrawer } from "@/components/mobile-drawer";
+import { MOBILE_SCROLL_THRESHOLD, SCROLL_AREA_ID } from "@/lib/constants";
 import { memo, useEffect, useState } from "react";
 import Balancer from "react-wrap-balancer";
 

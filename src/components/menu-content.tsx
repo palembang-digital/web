@@ -1,9 +1,15 @@
-import { NavigationLink } from "@//components/navigation-link";
-import { MENU_LINKS } from "@//lib/constants";
+"use server";
+
+import { auth } from "@/auth";
+import { NavigationLink } from "@/components/navigation-link";
+import { MENU_LINKS } from "@/lib/constants";
 import Image from "next/image";
 import Link from "next/link";
+import { SignIn } from "./sign-in";
 
-export function MenuContent() {
+export async function MenuContent() {
+  const session = await auth();
+
   return (
     <div className="flex w-full flex-col text-sm">
       <div className="flex flex-col gap-4">
@@ -31,6 +37,23 @@ export function MenuContent() {
               icon={link.icon}
             />
           ))}
+          {session ? (
+            <NavigationLink
+              // @ts-ignore
+              href={`/${session.user?.email}`}
+              label={session.user?.name || "Profil"}
+              icon={
+                <Image
+                  src={session.user?.image || ""}
+                  width={30}
+                  height={30}
+                  alt={session.user?.name || "Profile Picture"}
+                />
+              }
+            />
+          ) : (
+            <SignIn />
+          )}
         </div>
       </div>
 

@@ -1,7 +1,7 @@
-import { FloatingHeader } from "@//components/floating-header";
-import { ScrollArea } from "@//components/scroll-area";
-import UpcomingEvents from "@//components/upcoming-events";
-import { db } from "@//db";
+import { FloatingHeader } from "@/components/floating-header";
+import { ScrollArea } from "@/components/scroll-area";
+import UpcomingEvents from "@/components/upcoming-events";
+import { db } from "@/db";
 
 export default async function Page() {
   const events = await db.query.events.findMany({

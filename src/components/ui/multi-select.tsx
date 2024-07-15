@@ -1,12 +1,12 @@
 "use client";
 
-import { Badge } from "@//components/ui/badge";
+import { Badge } from "@/components/ui/badge";
 import {
   Command,
   CommandGroup,
   CommandItem,
   CommandList,
-} from "@//components/ui/command";
+} from "@/components/ui/command";
 import { Command as CommandPrimitive } from "cmdk";
 import { X } from "lucide-react";
 import * as React from "react";

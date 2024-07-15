@@ -1,8 +1,8 @@
-import { MenuContent } from "@//components/menu-content";
-import { SideMenu } from "@//components/side-menu";
-import { Toaster } from "@//components/ui/sonner";
-import { cn } from "@//lib/utils";
 import "@/app/globals.css";
+import { MenuContent } from "@/components/menu-content";
+import { SideMenu } from "@/components/side-menu";
+import { Toaster } from "@/components/ui/sonner";
+import { cn } from "@/lib/utils";
 import type { Metadata, Viewport } from "next";
 import { Inter as FontSans } from "next/font/google";
 

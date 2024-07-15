@@ -1,5 +1,5 @@
-import { Checkbox } from "@//components/ui/checkbox";
-import { FormControl, FormItem } from "@//components/ui/form";
+import { Checkbox } from "@/components/ui/checkbox";
+import { FormControl, FormItem } from "@/components/ui/form";
 import AutoFormLabel from "../common/label";
 import AutoFormTooltip from "../common/tooltip";
 import { AutoFormInputComponentProps } from "../types";

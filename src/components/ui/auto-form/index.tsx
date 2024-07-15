@@ -1,11 +1,11 @@
 "use client";
-import { Form } from "@//components/ui/form";
+import { Form } from "@/components/ui/form";
 import React from "react";
 import { DefaultValues, FormState, useForm } from "react-hook-form";
 import { z } from "zod";
 
-import { Button } from "@//components/ui/button";
-import { cn } from "@//lib/utils";
+import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import AutoFormObject from "./fields/object";

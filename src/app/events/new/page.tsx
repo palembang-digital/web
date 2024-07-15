@@ -1,5 +1,5 @@
-import NewEventForm from "@//components/events/new-event-form";
 import { auth } from "@/auth";
+import NewEventForm from "@/components/events/new-event-form";
 
 export default async function Page() {
   const session = await auth();

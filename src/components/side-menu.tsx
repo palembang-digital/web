@@ -1,7 +1,7 @@
 "use client";
 
-import { ScrollArea } from "@//components/scroll-area";
-import { cn } from "@//lib/utils";
+import { ScrollArea } from "@/components/scroll-area";
+import { cn } from "@/lib/utils";
 
 export function SideMenu({
   children,

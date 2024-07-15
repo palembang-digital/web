@@ -1,7 +1,7 @@
 "use client";
 
-import { Label } from "@//components/ui/label";
-import { TimePickerInput } from "@//components/ui/time-picker-input";
+import { Label } from "@/components/ui/label";
+import { TimePickerInput } from "@/components/ui/time-picker-input";
 import { Clock } from "lucide-react";
 import * as React from "react";
 

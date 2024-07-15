@@ -1,6 +1,6 @@
-import EventCard from "@//components/events/event-card";
-import { db } from "@//db";
 import { auth } from "@/auth";
+import EventCard from "@/components/events/event-card";
+import { db } from "@/db";
 import Link from "next/link";
 
 export default async function Page({ params }: { params: { id: number } }) {

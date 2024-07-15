@@ -1,4 +1,4 @@
-import { Button } from "@//components/ui/button";
+import { Button } from "@/components/ui/button";
 import { CldUploadWidget, CldUploadWidgetProps } from "next-cloudinary";
 
 export function UploadWidget(props: CldUploadWidgetProps) {

@@ -6,12 +6,12 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@//components/ui/select";
+} from "@/components/ui/select";
 import {
   Period,
   display12HourValue,
   setDateByType,
-} from "@//components/ui/time-picker-utils";
+} from "@/components/ui/time-picker-utils";
 import * as React from "react";
 
 export interface PeriodSelectorProps {

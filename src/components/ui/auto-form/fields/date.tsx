@@ -1,4 +1,4 @@
-import { FormControl, FormItem, FormMessage } from "@//components/ui/form";
+import { FormControl, FormItem, FormMessage } from "@/components/ui/form";
 import { DateTimePicker } from "../../date-time-picker";
 import AutoFormLabel from "../common/label";
 import AutoFormTooltip from "../common/tooltip";

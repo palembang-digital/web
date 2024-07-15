@@ -1,6 +1,6 @@
-import EditEventForm from "@//components/events/edit-event-form";
-import { db } from "@//db";
 import { auth } from "@/auth";
+import EditEventForm from "@/components/events/edit-event-form";
+import { db } from "@/db";
 
 export default async function Page({ params }: { params: { id: number } }) {
   const session = await auth();

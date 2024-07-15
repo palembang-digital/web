@@ -1,9 +1,9 @@
 "use client";
 
-import { UploadWidget } from "@//components/cloudinary/upload-widget";
-import AutoForm, { AutoFormSubmit } from "@//components/ui/auto-form";
-import { Button } from "@//components/ui/button";
-import { insertEventSchema } from "@//db/schema";
+import { UploadWidget } from "@/components/cloudinary/upload-widget";
+import AutoForm, { AutoFormSubmit } from "@/components/ui/auto-form";
+import { Button } from "@/components/ui/button";
+import { insertEventSchema } from "@/db/schema";
 import { CloudinaryUploadWidgetInfo } from "next-cloudinary";
 import Image from "next/image";
 import { useRouter } from "next/navigation";

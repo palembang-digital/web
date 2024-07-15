@@ -1,12 +1,12 @@
-import { MenuContent } from "@//components/menu-content";
-import { Button } from "@//components/ui/button";
+import { MenuContent } from "@/components/menu-content";
+import { Button } from "@/components/ui/button";
 import {
   Drawer,
   DrawerContent,
   DrawerDescription,
   DrawerTitle,
   DrawerTrigger,
-} from "@//components/ui/drawer";
+} from "@/components/ui/drawer";
 import Image from "next/image";
 
 export function MobileDrawer() {

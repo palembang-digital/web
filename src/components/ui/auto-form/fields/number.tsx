@@ -1,5 +1,5 @@
-import { FormControl, FormItem, FormMessage } from "@//components/ui/form";
-import { Input } from "@//components/ui/input";
+import { FormControl, FormItem, FormMessage } from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
 import AutoFormLabel from "../common/label";
 import AutoFormTooltip from "../common/tooltip";
 import { AutoFormInputComponentProps } from "../types";

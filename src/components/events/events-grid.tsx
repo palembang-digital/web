@@ -1,4 +1,4 @@
-import EventCard from "@//components/events/event-card";
+import EventCard from "@/components/events/event-card";
 import Link from "next/link";
 
 function EventsGrid({
