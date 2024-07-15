@@ -51,7 +51,7 @@ function Cmp({ href, label, icon, shortcutNumber }: NavigationLinkProps) {
         isActive ? "bg-black text-white" : "hover:bg-gray-200"
       )}
     >
-      <span className="flex items-center gap-2">
+      <span className="flex items-center gap-3">
         {iconCmp}
         <span className={cn("font-medium", isActive && "text-white")}>
           {label}

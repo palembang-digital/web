@@ -2,16 +2,18 @@
 
 import { MobileDrawer } from "@/components/mobile-drawer";
 import { MOBILE_SCROLL_THRESHOLD, SCROLL_AREA_ID } from "@/lib/constants";
+import { Session } from "next-auth";
 import { memo, useEffect, useState } from "react";
 import Balancer from "react-wrap-balancer";
 
 interface FloatingHeaderProps {
   scrollTitle?: string;
   title?: string;
+  session: Session | null;
   children?: React.ReactNode;
 }
 
-function Cmp({ scrollTitle, title, children }: FloatingHeaderProps) {
+function Cmp({ scrollTitle, title, session, children }: FloatingHeaderProps) {
   const [transformValues, setTransformValues] = useState({
     translateY: 0,
     opacity: scrollTitle ? 0 : 1,
@@ -55,7 +57,7 @@ function Cmp({ scrollTitle, title, children }: FloatingHeaderProps) {
       <div className="flex size-full items-center px-3">
         <div className="flex w-full items-center justify-between gap-2">
           <div className="flex flex-1 items-center gap-1">
-            <MobileDrawer />
+            <MobileDrawer session={session} />
 
             <div className="flex flex-1 items-center justify-between">
               {scrollTitle && (

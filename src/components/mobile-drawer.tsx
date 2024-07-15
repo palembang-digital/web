@@ -7,9 +7,10 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from "@/components/ui/drawer";
+import { Session } from "next-auth";
 import Image from "next/image";
 
-export function MobileDrawer() {
+export function MobileDrawer({ session }: { session: Session | null }) {
   return (
     <Drawer>
       <DrawerTitle />
@@ -27,7 +28,7 @@ export function MobileDrawer() {
       </DrawerTrigger>
       <DrawerContent className="h-4/5">
         <div className="overflow-y-auto p-4">
-          <MenuContent />
+          <MenuContent session={session} />
         </div>
       </DrawerContent>
     </Drawer>

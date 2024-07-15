@@ -1,4 +1,5 @@
 import "@/app/globals.css";
+import { auth } from "@/auth";
 import { MenuContent } from "@/components/menu-content";
 import { SideMenu } from "@/components/side-menu";
 import { Toaster } from "@/components/ui/sonner";
@@ -24,11 +25,13 @@ export const viewport: Viewport = {
   initialScale: 1,
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const session = await auth();
+
   return (
     <html lang="en" suppressHydrationWarning>
       <body
@@ -41,7 +44,7 @@ export default function RootLayout({
         <main vaul-drawer-wrapper="" className="min-h-screen bg-white">
           <div className="lg:flex">
             <SideMenu className="relative hidden lg:flex">
-              <MenuContent />
+              <MenuContent session={session} />
             </SideMenu>
             <div className="flex flex-1">{children}</div>
           </div>

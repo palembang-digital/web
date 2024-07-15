@@ -1,3 +1,4 @@
+import { auth } from "@/auth";
 import { FloatingHeader } from "@/components/floating-header";
 import Hero from "@/components/hero";
 import { ScrollArea } from "@/components/scroll-area";
@@ -5,6 +6,8 @@ import UpcomingEvents from "@/components/upcoming-events";
 import { db } from "@/db";
 
 export default async function Page() {
+  const session = await auth();
+
   const events = await db.query.events.findMany({
     orderBy: (events, { desc }) => [desc(events.scheduledStart)],
   });
@@ -13,7 +16,7 @@ export default async function Page() {
 
   return (
     <ScrollArea useScrollAreaId>
-      <FloatingHeader scrollTitle="Palembang Digital" />
+      <FloatingHeader session={session} scrollTitle="Palembang Digital" />
       <div className="content-wrapper">
         <div className="content">
           <Hero

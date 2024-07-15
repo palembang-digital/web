@@ -19,37 +19,37 @@ export const MENU_LINKS: MenuLink[] = [
   {
     href: "/",
     label: "Beranda",
-    icon: <HouseIcon size={16} />,
+    icon: <HouseIcon size={24} />,
   },
   {
     href: "/events",
     label: "Kegiatan",
-    icon: <TicketIcon size={16} />,
+    icon: <TicketIcon size={24} />,
   },
   {
     href: "/videos",
     label: "Video",
-    icon: <VideoIcon size={16} />,
+    icon: <VideoIcon size={24} />,
   },
   {
     href: "/ecosystem",
     label: "Ekosistem",
-    icon: <HeartHandshakeIcon size={16} />,
+    icon: <HeartHandshakeIcon size={24} />,
   },
   {
     href: "/members",
     label: "Anggota",
-    icon: <UsersIcon size={16} />,
+    icon: <UsersIcon size={24} />,
   },
   {
     href: "/about",
     label: "Tentang",
-    icon: <CircleHelpIcon size={16} />,
+    icon: <CircleHelpIcon size={24} />,
   },
   {
     href: "/contact",
     label: "Kontak",
-    icon: <PhoneIcon size={16} />,
+    icon: <PhoneIcon size={24} />,
   },
 ];
 
@@ -57,9 +57,9 @@ export const SOCIAL_LINKS = {
   instagram: {
     title: "Instagram",
     url: "https://instagram.com/palembang_digital",
-    icon: <InstagramIcon size={16} />,
+    icon: <InstagramIcon size={24} />,
   },
 };
 
 export const SCROLL_AREA_ID = "scroll-area";
-export const MOBILE_SCROLL_THRESHOLD = 20;
+export const MOBILE_SCROLL_THRESHOLD = 24;

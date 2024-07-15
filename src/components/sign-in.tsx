@@ -1,15 +1,12 @@
-import { signIn } from "@/auth";
+"use client";
+
 import { Button } from "@/components/ui/button";
+import { signIn } from "next-auth/react";
 
 export function SignIn() {
   return (
-    <form
-      action={async () => {
-        "use server";
-        await signIn("google");
-      }}
-    >
-      <Button type="submit">Masuk</Button>
-    </form>
+    <Button variant="outline" onClick={() => signIn()}>
+      Masuk
+    </Button>
   );
 }

@@ -1,15 +1,11 @@
-"use server";
-
-import { auth } from "@/auth";
 import { NavigationLink } from "@/components/navigation-link";
+import { SignIn } from "@/components/sign-in";
 import { MENU_LINKS } from "@/lib/constants";
+import { Session } from "next-auth";
 import Image from "next/image";
 import Link from "next/link";
-import { SignIn } from "./sign-in";
 
-export async function MenuContent() {
-  const session = await auth();
-
+export function MenuContent({ session }: { session: Session | null }) {
   return (
     <div className="flex w-full flex-col text-sm">
       <div className="flex flex-col gap-4">
@@ -22,7 +18,7 @@ export async function MenuContent() {
             loading="lazy"
           />
           <div className="flex flex-col">
-            <span className="text-sm font-semibold tracking-tight">
+            <span className="text-base font-semibold tracking-tight">
               Palembang Digital
             </span>
           </div>
@@ -39,15 +35,15 @@ export async function MenuContent() {
           ))}
           {session ? (
             <NavigationLink
-              // @ts-ignore
-              href={`/${session.user?.email}`}
+              href={`/profile`}
               label={session.user?.name || "Profil"}
               icon={
                 <Image
                   src={session.user?.image || ""}
-                  width={30}
-                  height={30}
+                  width={24}
+                  height={24}
                   alt={session.user?.name || "Profile Picture"}
+                  className="rounded-full"
                 />
               }
             />
