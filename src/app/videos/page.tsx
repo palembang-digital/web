@@ -10,7 +10,9 @@ import Link from "next/link";
 export default async function Page() {
   const session = await auth();
 
-  const videos = await db.query.videos.findMany();
+  const videos = await db.query.videos.findMany({
+    orderBy: (videos, { desc }) => [desc(videos.publishedAt)],
+  });
 
   return (
     <ScrollArea useScrollAreaId>
