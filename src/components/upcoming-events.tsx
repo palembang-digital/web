@@ -14,6 +14,7 @@ export default function UpcomingEvents({ events }: { events: any[] }) {
 
       <ol className="relative border-s border-dashed border-slate-400 mt-6">
         {events.map((event) => (
+          // TODO: #77 Create a new UpcomingEventCard component
           <li
             key={`upcoming-event-${event.id}`}
             className="flex flex-col sm:flex-row items-start gap-4 mb-6 ps-4 hover:bg-neutral-800"
