@@ -71,7 +71,7 @@ export default function Hero({
             )
         )}
       </div>
-
+      {/* TODO: #75 Implement sign in flow from hero component */}
       <Button className="z-10">Bergabung sekarang!</Button>
     </div>
   );

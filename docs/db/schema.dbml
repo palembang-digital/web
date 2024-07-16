@@ -3,6 +3,11 @@ enum user_role {
   member
 }
 
+enum video_type {
+  upload
+  youtube
+}
+
 table accounts {
   userId text [not null]
   type text [not null]
@@ -87,11 +92,13 @@ table verificationTokens {
 table videos {
   id serial [pk, not null, increment]
   title text [not null]
-  video_url text
-  thumbnail_url text
+  description text
+  video_url text [unique]
+  thumbnails json
+  video_type video_type [not null, default: 'upload']
+  published_at timestamp [not null, default: `now()`]
   created_at timestamp [not null, default: `now()`]
   updated_at timestamp [not null, default: `now()`]
-  description text
 }
 
 table videos_speakers {

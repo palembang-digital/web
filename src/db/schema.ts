@@ -2,6 +2,7 @@ import { relations } from "drizzle-orm";
 import {
   boolean,
   integer,
+  json,
   pgEnum,
   pgTable,
   primaryKey,
@@ -136,14 +137,18 @@ export const eventsVideos = pgTable("events_videos", {
     .references(() => videos.id, { onDelete: "cascade" }),
 });
 
+export const videoTypeEnum = pgEnum("video_type", ["upload", "youtube"]);
+
 export const videos = pgTable("videos", {
   id: serial("id").primaryKey(),
   title: text("title").notNull(),
-  videoUrl: text("video_url"),
-  thumbnailUrl: text("thumbnail_url"),
+  description: text("description"),
+  videoUrl: text("video_url").unique(),
+  thumbnails: json("thumbnails"),
+  videoType: videoTypeEnum("video_type").notNull().default("upload"),
+  publishedAt: timestamp("published_at").notNull().defaultNow(),
   createdAt: timestamp("created_at").notNull().defaultNow(),
   updatedAt: timestamp("updated_at").notNull().defaultNow(),
-  description: text("description"),
 });
 
 export const videosSpeakers = pgTable("videos_speakers", {
