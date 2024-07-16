@@ -3,6 +3,7 @@ import {
   ImagePlayIcon,
   InstagramIcon,
   TicketIcon,
+  UsersIcon,
 } from "lucide-react";
 
 interface MenuLink {
@@ -32,11 +33,11 @@ export const MENU_LINKS: MenuLink[] = [
   //   label: "Ekosistem",
   //   icon: <HeartHandshakeIcon size={24} />,
   // },
-  // {
-  //   href: "/members",
-  //   label: "Anggota",
-  //   icon: <UsersIcon size={24} />,
-  // },
+  {
+    href: "/members",
+    label: "Anggota",
+    icon: <UsersIcon size={24} />,
+  },
   // {
   //   href: "/about",
   //   label: "Tentang",
