@@ -57,11 +57,19 @@ table events {
 table events_speakers {
   event_id integer [not null]
   user_id text [not null]
+
+  indexes {
+    (event_id, user_id) [pk]
+  }
 }
 
 table events_videos {
   event_id integer [not null]
   video_id integer [not null]
+
+  indexes {
+    (event_id, video_id) [pk]
+  }
 }
 
 table sessions {
@@ -104,6 +112,10 @@ table videos {
 table videos_speakers {
   video_id integer [not null]
   user_id text [not null]
+
+  indexes {
+    (video_id, user_id) [pk]
+  }
 }
 
 ref: events_speakers.event_id > events.id

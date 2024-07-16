@@ -119,23 +119,35 @@ export const insertEventSchema = createInsertSchema(events, {
   description: true,
 });
 
-export const eventsSpeakers = pgTable("events_speakers", {
-  eventId: integer("event_id")
-    .notNull()
-    .references(() => events.id, { onDelete: "cascade" }),
-  userId: text("user_id")
-    .notNull()
-    .references(() => users.id, { onDelete: "cascade" }),
-});
+export const eventsSpeakers = pgTable(
+  "events_speakers",
+  {
+    eventId: integer("event_id")
+      .notNull()
+      .references(() => events.id, { onDelete: "cascade" }),
+    userId: text("user_id")
+      .notNull()
+      .references(() => users.id, { onDelete: "cascade" }),
+  },
+  (t) => ({
+    pk: primaryKey({ columns: [t.eventId, t.userId] }),
+  })
+);
 
-export const eventsVideos = pgTable("events_videos", {
-  eventId: integer("event_id")
-    .notNull()
-    .references(() => events.id, { onDelete: "cascade" }),
-  videoId: integer("video_id")
-    .notNull()
-    .references(() => videos.id, { onDelete: "cascade" }),
-});
+export const eventsVideos = pgTable(
+  "events_videos",
+  {
+    eventId: integer("event_id")
+      .notNull()
+      .references(() => events.id, { onDelete: "cascade" }),
+    videoId: integer("video_id")
+      .notNull()
+      .references(() => videos.id, { onDelete: "cascade" }),
+  },
+  (t) => ({
+    pk: primaryKey({ columns: [t.eventId, t.videoId] }),
+  })
+);
 
 export const videoTypeEnum = pgEnum("video_type", ["upload", "youtube"]);
 
@@ -151,14 +163,20 @@ export const videos = pgTable("videos", {
   updatedAt: timestamp("updated_at").notNull().defaultNow(),
 });
 
-export const videosSpeakers = pgTable("videos_speakers", {
-  videoId: integer("video_id")
-    .notNull()
-    .references(() => videos.id, { onDelete: "cascade" }),
-  userId: text("user_id")
-    .notNull()
-    .references(() => users.id, { onDelete: "cascade" }),
-});
+export const videosSpeakers = pgTable(
+  "videos_speakers",
+  {
+    videoId: integer("video_id")
+      .notNull()
+      .references(() => videos.id, { onDelete: "cascade" }),
+    userId: text("user_id")
+      .notNull()
+      .references(() => users.id, { onDelete: "cascade" }),
+  },
+  (t) => ({
+    pk: primaryKey({ columns: [t.videoId, t.userId] }),
+  })
+);
 
 // ==================================================
 //

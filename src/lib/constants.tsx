@@ -1,12 +1,8 @@
 import {
-  CircleHelpIcon,
-  HeartHandshakeIcon,
   HouseIcon,
+  ImagePlayIcon,
   InstagramIcon,
-  PhoneIcon,
   TicketIcon,
-  UsersIcon,
-  VideoIcon,
 } from "lucide-react";
 
 interface MenuLink {
@@ -27,30 +23,30 @@ export const MENU_LINKS: MenuLink[] = [
     icon: <TicketIcon size={24} />,
   },
   {
-    href: "/videos",
-    label: "Video",
-    icon: <VideoIcon size={24} />,
+    href: "/gallery",
+    label: "Galeri",
+    icon: <ImagePlayIcon size={24} />,
   },
-  {
-    href: "/ecosystem",
-    label: "Ekosistem",
-    icon: <HeartHandshakeIcon size={24} />,
-  },
-  {
-    href: "/members",
-    label: "Anggota",
-    icon: <UsersIcon size={24} />,
-  },
-  {
-    href: "/about",
-    label: "Tentang",
-    icon: <CircleHelpIcon size={24} />,
-  },
-  {
-    href: "/contact",
-    label: "Kontak",
-    icon: <PhoneIcon size={24} />,
-  },
+  // {
+  //   href: "/ecosystem",
+  //   label: "Ekosistem",
+  //   icon: <HeartHandshakeIcon size={24} />,
+  // },
+  // {
+  //   href: "/members",
+  //   label: "Anggota",
+  //   icon: <UsersIcon size={24} />,
+  // },
+  // {
+  //   href: "/about",
+  //   label: "Tentang",
+  //   icon: <CircleHelpIcon size={24} />,
+  // },
+  // {
+  //   href: "/contact",
+  //   label: "Kontak",
+  //   icon: <PhoneIcon size={24} />,
+  // },
 ];
 
 export const SOCIAL_LINKS = {
