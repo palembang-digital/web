@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { TypographyH1 } from "@/components/ui/typography";
 import { cn } from "@/lib/utils";
+import Link from "next/link";
 
 export default function Hero({
   memberCount,
@@ -72,7 +73,9 @@ export default function Hero({
         )}
       </div>
       {/* TODO: #75 Implement sign in flow from hero component */}
-      <Button className="z-10">Bergabung sekarang!</Button>
+      <Link href="/api/auth/signin">
+        <Button className="z-10">Bergabung sekarang!</Button>
+      </Link>
     </div>
   );
 }
