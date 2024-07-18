@@ -1,7 +1,7 @@
 import { auth } from "@/auth";
-import EventCard from "@/components/events/event-card";
+import { FloatingHeader } from "@/components/floating-header";
+import { ScrollArea } from "@/components/scroll-area";
 import { db } from "@/db";
-import Link from "next/link";
 
 export default async function Page({ params }: { params: { id: number } }) {
   const session = await auth();
@@ -11,12 +11,14 @@ export default async function Page({ params }: { params: { id: number } }) {
   });
 
   return (
-    <>
-      <EventCard event={event} />
-      {/* @ts-ignore */}
-      {session && session.user?.role === "administrator" && (
-        <Link href={`/events/${params.id}/edit`}>Edit</Link>
-      )}
-    </>
+    <ScrollArea useScrollAreaId>
+      <FloatingHeader session={session} scrollTitle={event?.name} />
+      <div className="content-wrapper">
+        <div className="content">
+          <p>{JSON.stringify(session)}</p>
+          <p>{JSON.stringify(event)}</p>
+        </div>
+      </div>
+    </ScrollArea>
   );
 }
