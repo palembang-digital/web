@@ -10,6 +10,9 @@ export default async function Page() {
 
   const users = await db.query.users.findMany({
     orderBy: (users, { asc }) => [asc(users.name)],
+    with: {
+      eventsSpeakers: true,
+    },
   });
 
   return (
@@ -30,6 +33,11 @@ export default async function Page() {
                   />
                   <p>{`${user.name}`}</p>
                   <p className="text-sm text-neutral-500">{`${user.username}`}</p>
+                  {user.eventsSpeakers?.length > 0 && (
+                    <p className="text-sm text-neutral-500">
+                      {user.eventsSpeakers?.length}x speaker
+                    </p>
+                  )}
                 </div>
               </Link>
             ))}
