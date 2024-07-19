@@ -26,10 +26,24 @@ export const users = pgTable("users", {
   emailVerified: timestamp("emailVerified", { mode: "date" }),
   image: text("image"),
   role: userRoleEnum("user_role").notNull().default("member"),
+  onboarded: boolean("onboarded").notNull().default(false),
   username: text("username")
     .notNull()
     .$defaultFn((): string => generateUsername())
     .unique(),
+  phoneNumber: text("phone_number"),
+  occupation: text("occupation"),
+  institution: text("institution"),
+  bio: text("bio"),
+});
+
+export const onboardingSchema = createInsertSchema(users).pick({
+  name: true,
+  username: true,
+  phoneNumber: true,
+  occupation: true,
+  institution: true,
+  bio: true,
 });
 
 export const accounts = pgTable(

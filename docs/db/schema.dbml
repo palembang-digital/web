@@ -85,7 +85,12 @@ table users {
   emailVerified timestamp
   image text
   user_role user_role [not null, default: 'member']
+  onboarded boolean [not null, default: false]
   username text [not null, unique]
+  phone_number text
+  occupation text
+  institution text
+  bio text
 }
 
 table verificationTokens {
