@@ -35,7 +35,8 @@ export function MenuContent({ session }: { session: Session | null }) {
           ))}
           {session ? (
             <NavigationLink
-              href={`/profile`}
+              // @ts-ignore
+              href={`/${session.user?.username}`}
               label={session.user?.name || "Profil"}
               icon={
                 <Image

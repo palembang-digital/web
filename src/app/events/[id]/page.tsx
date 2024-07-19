@@ -8,6 +8,16 @@ export default async function Page({ params }: { params: { id: number } }) {
 
   const event = await db.query.events.findFirst({
     where: (events, { eq }) => eq(events.id, params.id),
+    with: {
+      eventsSpeakers: {
+        with: {
+          user: {
+            columns: { id: true, name: true, username: true, image: true },
+          },
+        },
+      },
+      eventsVideos: true,
+    },
   });
 
   return (

@@ -1,5 +1,5 @@
 {
-  "id": "899c46d4-87df-4e23-b75a-f7dda66c8194",
+  "id": "a4ff2531-0de5-4de1-b128-361a5833f427",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -308,7 +308,15 @@
           "onUpdate": "no action"
         }
       },
-      "compositePrimaryKeys": {},
+      "compositePrimaryKeys": {
+        "events_speakers_event_id_user_id_pk": {
+          "name": "events_speakers_event_id_user_id_pk",
+          "columns": [
+            "event_id",
+            "user_id"
+          ]
+        }
+      },
       "uniqueConstraints": {}
     },
     "public.events_videos": {
@@ -357,7 +365,15 @@
           "onUpdate": "no action"
         }
       },
-      "compositePrimaryKeys": {},
+      "compositePrimaryKeys": {
+        "events_videos_event_id_video_id_pk": {
+          "name": "events_videos_event_id_video_id_pk",
+          "columns": [
+            "event_id",
+            "video_id"
+          ]
+        }
+      },
       "uniqueConstraints": {}
     },
     "public.sessions": {
@@ -443,12 +459,26 @@
           "primaryKey": false,
           "notNull": true,
           "default": "'member'"
+        },
+        "username": {
+          "name": "username",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
         }
       },
       "indexes": {},
       "foreignKeys": {},
       "compositePrimaryKeys": {},
-      "uniqueConstraints": {}
+      "uniqueConstraints": {
+        "users_username_unique": {
+          "name": "users_username_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "username"
+          ]
+        }
+      }
     },
     "public.verificationTokens": {
       "name": "verificationTokens",
@@ -502,17 +532,38 @@
           "primaryKey": false,
           "notNull": true
         },
+        "description": {
+          "name": "description",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
         "video_url": {
           "name": "video_url",
           "type": "text",
           "primaryKey": false,
           "notNull": false
         },
-        "thumbnail_url": {
-          "name": "thumbnail_url",
-          "type": "text",
+        "thumbnails": {
+          "name": "thumbnails",
+          "type": "json",
           "primaryKey": false,
           "notNull": false
+        },
+        "video_type": {
+          "name": "video_type",
+          "type": "video_type",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'upload'"
+        },
+        "published_at": {
+          "name": "published_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
         },
         "created_at": {
           "name": "created_at",
@@ -527,18 +578,20 @@
           "primaryKey": false,
           "notNull": true,
           "default": "now()"
-        },
-        "description": {
-          "name": "description",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false
         }
       },
       "indexes": {},
       "foreignKeys": {},
       "compositePrimaryKeys": {},
-      "uniqueConstraints": {}
+      "uniqueConstraints": {
+        "videos_video_url_unique": {
+          "name": "videos_video_url_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "video_url"
+          ]
+        }
+      }
     },
     "public.videos_speakers": {
       "name": "videos_speakers",
@@ -586,7 +639,15 @@
           "onUpdate": "no action"
         }
       },
-      "compositePrimaryKeys": {},
+      "compositePrimaryKeys": {
+        "videos_speakers_video_id_user_id_pk": {
+          "name": "videos_speakers_video_id_user_id_pk",
+          "columns": [
+            "video_id",
+            "user_id"
+          ]
+        }
+      },
       "uniqueConstraints": {}
     }
   },
@@ -597,6 +658,14 @@
       "values": [
         "administrator",
         "member"
+      ]
+    },
+    "public.video_type": {
+      "name": "video_type",
+      "schema": "public",
+      "values": [
+        "upload",
+        "youtube"
       ]
     }
   },

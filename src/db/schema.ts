@@ -12,6 +12,7 @@ import {
 } from "drizzle-orm/pg-core";
 import { createInsertSchema } from "drizzle-zod";
 import type { AdapterAccountType } from "next-auth/adapters";
+import { generateUsername } from "unique-username-generator";
 import { z } from "zod";
 
 export const userRoleEnum = pgEnum("user_role", ["administrator", "member"]);
@@ -25,6 +26,10 @@ export const users = pgTable("users", {
   emailVerified: timestamp("emailVerified", { mode: "date" }),
   image: text("image"),
   role: userRoleEnum("user_role").notNull().default("member"),
+  username: text("username")
+    .notNull()
+    .$defaultFn((): string => generateUsername())
+    .unique(),
 });
 
 export const accounts = pgTable(

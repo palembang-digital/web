@@ -16,17 +16,22 @@ type Option = Record<"value" | "label", string>;
 export function MultiSelect({
   options,
   placeholder,
+  selected,
+  setSelected,
 }: {
   options: Option[];
   placeholder: string;
+  selected: Option[];
+  setSelected: React.Dispatch<React.SetStateAction<Option[]>>;
 }) {
   const inputRef = React.useRef<HTMLInputElement>(null);
   const [open, setOpen] = React.useState(false);
-  const [selected, setSelected] = React.useState<Option[]>([]);
   const [inputValue, setInputValue] = React.useState("");
+  // const [selectables, setSelectables] = React.useState<Option[]>(options);
 
   const handleUnselect = React.useCallback((option: Option) => {
     setSelected((prev) => prev.filter((s) => s.value !== option.value));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleKeyDown = React.useCallback(
@@ -48,10 +53,13 @@ export function MultiSelect({
         }
       }
     },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     []
   );
 
-  const selectables = options.filter((option) => !selected.includes(option));
+  const selectables = options.filter(
+    (option) => !selected.some((s) => s.value === option.value)
+  );
 
   return (
     <Command

@@ -4,6 +4,12 @@ EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;
 --> statement-breakpoint
+DO $$ BEGIN
+ CREATE TYPE "public"."video_type" AS ENUM('upload', 'youtube');
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "accounts" (
 	"userId" text NOT NULL,
 	"type" text NOT NULL,
@@ -47,12 +53,14 @@ CREATE TABLE IF NOT EXISTS "events" (
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "events_speakers" (
 	"event_id" integer NOT NULL,
-	"user_id" text NOT NULL
+	"user_id" text NOT NULL,
+	CONSTRAINT "events_speakers_event_id_user_id_pk" PRIMARY KEY("event_id","user_id")
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "events_videos" (
 	"event_id" integer NOT NULL,
-	"video_id" integer NOT NULL
+	"video_id" integer NOT NULL,
+	CONSTRAINT "events_videos_event_id_video_id_pk" PRIMARY KEY("event_id","video_id")
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "sessions" (
@@ -67,7 +75,9 @@ CREATE TABLE IF NOT EXISTS "users" (
 	"email" text NOT NULL,
 	"emailVerified" timestamp,
 	"image" text,
-	"user_role" "user_role" DEFAULT 'member' NOT NULL
+	"user_role" "user_role" DEFAULT 'member' NOT NULL,
+	"username" text NOT NULL,
+	CONSTRAINT "users_username_unique" UNIQUE("username")
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "verificationTokens" (
@@ -80,16 +90,20 @@ CREATE TABLE IF NOT EXISTS "verificationTokens" (
 CREATE TABLE IF NOT EXISTS "videos" (
 	"id" serial PRIMARY KEY NOT NULL,
 	"title" text NOT NULL,
+	"description" text,
 	"video_url" text,
-	"thumbnail_url" text,
+	"thumbnails" json,
+	"video_type" "video_type" DEFAULT 'upload' NOT NULL,
+	"published_at" timestamp DEFAULT now() NOT NULL,
 	"created_at" timestamp DEFAULT now() NOT NULL,
 	"updated_at" timestamp DEFAULT now() NOT NULL,
-	"description" text
+	CONSTRAINT "videos_video_url_unique" UNIQUE("video_url")
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "videos_speakers" (
 	"video_id" integer NOT NULL,
-	"user_id" text NOT NULL
+	"user_id" text NOT NULL,
+	CONSTRAINT "videos_speakers_video_id_user_id_pk" PRIMARY KEY("video_id","user_id")
 );
 --> statement-breakpoint
 DO $$ BEGIN

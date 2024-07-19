@@ -7,13 +7,38 @@ import { insertEventSchema } from "@/db/schema";
 import { CloudinaryUploadWidgetInfo } from "next-cloudinary";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "sonner";
+import { FormControl, FormItem, FormLabel } from "../ui/form";
+import { MultiSelect } from "../ui/multi-select";
 
 export default function EditEventForm({ event }: { event: any }) {
   const router = useRouter();
 
   const [values, setValues] = useState(event);
+
+  const [speakers, setSpeakers] = useState([]);
+  const [selectedSpeakers, setSelectedSpeakers] = useState(
+    event.eventsSpeakers
+      .map((es: any) => ({
+        value: es.userId,
+        label: es.user.name,
+      }))
+      .sort((a: any, b: any) => a.label.localeCompare(b.label))
+  );
+
+  useEffect(() => {
+    fetch("/api/v1/users")
+      .then((res) => res.json())
+      .then((data) => {
+        setSpeakers(
+          data.map((user: any) => ({
+            value: user.id,
+            label: user.name,
+          }))
+        );
+      });
+  }, []);
 
   return (
     <>
@@ -32,18 +57,22 @@ export default function EditEventForm({ event }: { event: any }) {
         formSchema={insertEventSchema}
         values={values}
         onSubmit={async (data) => {
+          const requestData = {
+            event: data,
+            speakers: selectedSpeakers,
+          };
+
           try {
-            const response = await fetch(`/api/events/${event.id}`, {
+            const response = await fetch(`/api/v1/events/${event.id}`, {
               method: "PUT",
-              body: JSON.stringify(data),
+              body: JSON.stringify(requestData),
               headers: {
                 "content-type": "application/json",
               },
             });
-            console.log(response);
 
             if (response.ok) {
-              toast("Event successfully updated!");
+              toast("Event updated!");
               router.push(`/events/${event.id}`);
             } else {
               alert("Failed to update event");
@@ -53,6 +82,19 @@ export default function EditEventForm({ event }: { event: any }) {
           }
         }}
       >
+        <div className="flex flex-row  items-center space-x-2">
+          <FormItem className="flex w-full flex-col justify-start">
+            <FormLabel>Speakers</FormLabel>
+            <FormControl>
+              <MultiSelect
+                options={speakers}
+                placeholder="Pilih speaker(s)"
+                selected={selectedSpeakers}
+                setSelected={setSelectedSpeakers}
+              />
+            </FormControl>
+          </FormItem>
+        </div>
         <AutoFormSubmit>Save</AutoFormSubmit>
       </AutoForm>
       <Button variant="link" onClick={() => router.push(`/events/${event.id}`)}>
