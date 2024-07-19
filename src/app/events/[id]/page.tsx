@@ -16,7 +16,13 @@ export default async function Page({ params }: { params: { id: number } }) {
           },
         },
       },
-      eventsVideos: true,
+      eventsVideos: {
+        with: {
+          video: {
+            columns: { id: true, title: true, thumbnails: true },
+          },
+        },
+      },
     },
   });
 

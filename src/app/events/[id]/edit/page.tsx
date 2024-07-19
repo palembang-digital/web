@@ -20,7 +20,11 @@ export default async function Page({ params }: { params: { id: number } }) {
           user: true,
         },
       },
-      eventsVideos: true,
+      eventsVideos: {
+        with: {
+          video: true,
+        },
+      },
     },
   });
 

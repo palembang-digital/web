@@ -1,6 +1,6 @@
 import { auth } from "@/auth";
 import { db } from "@/db";
-import { events, eventsSpeakers } from "@/db/schema";
+import { events, eventsSpeakers, eventsVideos } from "@/db/schema";
 import { and, eq } from "drizzle-orm";
 
 export async function PUT(
@@ -24,6 +24,8 @@ export async function PUT(
       eventsVideos: true,
     },
   });
+  const currentSpeakers = currentEvent?.eventsSpeakers;
+  const currentVideos = currentEvent?.eventsVideos;
 
   const data = await req.json();
 
@@ -38,7 +40,10 @@ export async function PUT(
     userId: speaker.value,
   }));
 
-  const currentSpeakers = currentEvent?.eventsSpeakers;
+  const inputVideos = data.videos.map((video: any) => ({
+    eventId: currentEvent?.id,
+    videoId: video.value,
+  }));
 
   const newSpeakers = inputSpeakers?.filter(
     (inputSpeaker: any) =>
@@ -58,8 +63,27 @@ export async function PUT(
       )
   );
 
+  const newVideos = inputVideos?.filter(
+    (inputVideo: any) =>
+      !currentVideos?.some(
+        (currentVideo: any) =>
+          currentVideo.eventId === inputVideo.eventId &&
+          currentVideo.videoId === inputVideo.videoId
+      )
+  );
+
+  const deletedVideos = currentVideos?.filter(
+    (currentVideo) =>
+      !inputVideos.some(
+        (inputVideo: any) =>
+          currentVideo.eventId === inputVideo.eventId &&
+          currentVideo.videoId === inputVideo.videoId
+      )
+  );
+
   await db.transaction(async (tx) => {
     await tx.update(events).set(inputEvent).where(eq(events.id, params.id));
+
     if (newSpeakers && newSpeakers.length > 0) {
       await tx.insert(eventsSpeakers).values(newSpeakers);
     }
@@ -71,6 +95,22 @@ export async function PUT(
             and(
               eq(eventsSpeakers.eventId, deletedSpeaker.eventId),
               eq(eventsSpeakers.userId, deletedSpeaker.userId)
+            )
+          );
+      });
+    }
+
+    if (newVideos && newVideos.length > 0) {
+      await tx.insert(eventsVideos).values(newVideos);
+    }
+    if (deletedVideos && deletedVideos.length > 0) {
+      deletedVideos.forEach(async (deletedVideo: any) => {
+        await tx
+          .delete(eventsVideos)
+          .where(
+            and(
+              eq(eventsVideos.eventId, deletedVideo.eventId),
+              eq(eventsVideos.videoId, deletedVideo.videoId)
             )
           );
       });

@@ -26,7 +26,6 @@ export default function EditEventForm({ event }: { event: any }) {
       }))
       .sort((a: any, b: any) => a.label.localeCompare(b.label))
   );
-
   useEffect(() => {
     fetch("/api/v1/users")
       .then((res) => res.json())
@@ -35,6 +34,28 @@ export default function EditEventForm({ event }: { event: any }) {
           data.map((user: any) => ({
             value: user.id,
             label: user.name,
+          }))
+        );
+      });
+  }, []);
+
+  const [videos, setVideos] = useState([]);
+  const [selectedVideos, setSelectedVideos] = useState(
+    event.eventsVideos
+      .map((es: any) => ({
+        value: es.videoId,
+        label: es.video.title,
+      }))
+      .sort((a: any, b: any) => a.label.localeCompare(b.label))
+  );
+  useEffect(() => {
+    fetch("/api/v1/videos")
+      .then((res) => res.json())
+      .then((data) => {
+        setVideos(
+          data.map((video: any) => ({
+            value: video.id,
+            label: video.title,
           }))
         );
       });
@@ -60,6 +81,7 @@ export default function EditEventForm({ event }: { event: any }) {
           const requestData = {
             event: data,
             speakers: selectedSpeakers,
+            videos: selectedVideos,
           };
 
           try {
@@ -73,7 +95,7 @@ export default function EditEventForm({ event }: { event: any }) {
 
             if (response.ok) {
               toast("Event updated!");
-              router.push(`/events/${event.id}`);
+              // router.push(`/events/${event.id}`);
             } else {
               alert("Failed to update event");
             }
@@ -91,6 +113,20 @@ export default function EditEventForm({ event }: { event: any }) {
                 placeholder="Pilih speaker(s)"
                 selected={selectedSpeakers}
                 setSelected={setSelectedSpeakers}
+              />
+            </FormControl>
+          </FormItem>
+        </div>
+
+        <div className="flex flex-row  items-center space-x-2">
+          <FormItem className="flex w-full flex-col justify-start">
+            <FormLabel>Videos</FormLabel>
+            <FormControl>
+              <MultiSelect
+                options={videos}
+                placeholder="Pilih video(s)"
+                selected={selectedVideos}
+                setSelected={setSelectedVideos}
               />
             </FormControl>
           </FormItem>
