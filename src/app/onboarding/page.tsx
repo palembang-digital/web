@@ -2,12 +2,17 @@ import { auth } from "@/auth";
 import { FloatingHeader } from "@/components/floating-header";
 import OnboardingForm from "@/components/onboarding/onboarding-form";
 import { ScrollArea } from "@/components/scroll-area";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Onboarding",
+};
 
 export default async function Page() {
   const session = await auth();
 
   // @ts-ignore
-  if (!session || session.user?.role !== "administrator") {
+  if (!session) {
     return <p>Not authenticated</p>;
   }
 

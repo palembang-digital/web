@@ -4,6 +4,7 @@ import { UploadWidget } from "@/components/cloudinary/upload-widget";
 import AutoForm, { AutoFormSubmit } from "@/components/ui/auto-form";
 import { Button } from "@/components/ui/button";
 import { insertEventSchema } from "@/db/schema";
+import { useSession } from "next-auth/react";
 import { CloudinaryUploadWidgetInfo } from "next-cloudinary";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
@@ -14,7 +15,7 @@ import { MultiSelect } from "../ui/multi-select";
 
 export default function EditEventForm({ event }: { event: any }) {
   const router = useRouter();
-
+  const session = useSession();
   const [values, setValues] = useState(event);
 
   const [speakers, setSpeakers] = useState([]);

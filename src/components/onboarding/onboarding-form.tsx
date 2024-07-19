@@ -2,12 +2,9 @@
 
 import AutoForm, { AutoFormSubmit } from "@/components/ui/auto-form";
 import { onboardingSchema } from "@/db/schema";
-import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 
 export default function OnboardingForm({ user }: { user: any }) {
-  const router = useRouter();
-
   return (
     <AutoForm
       formSchema={onboardingSchema}
@@ -24,7 +21,9 @@ export default function OnboardingForm({ user }: { user: any }) {
 
           if (response.ok) {
             toast("You are onboarded! Have fun!");
-            router.push(`/`);
+            setTimeout(() => {
+              location.href = "/";
+            }, 2000);
           } else {
             alert("Failed to update user data");
           }

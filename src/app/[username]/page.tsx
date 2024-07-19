@@ -1,6 +1,7 @@
 import { auth } from "@/auth";
 import { FloatingHeader } from "@/components/floating-header";
 import { ScrollArea } from "@/components/scroll-area";
+import { SignOut } from "@/components/sign-out";
 import { TypographyH4 } from "@/components/ui/typography";
 import { db } from "@/db";
 import Image from "next/image";
@@ -63,6 +64,7 @@ export default async function Page({
               </Link>
             ))}
           </ol>
+          <SignOut />
         </div>
       </div>
     </ScrollArea>
