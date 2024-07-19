@@ -95,7 +95,7 @@ export default function EditEventForm({ event }: { event: any }) {
 
             if (response.ok) {
               toast("Event updated!");
-              // router.push(`/events/${event.id}`);
+              router.push(`/events/${event.id}`);
             } else {
               alert("Failed to update event");
             }

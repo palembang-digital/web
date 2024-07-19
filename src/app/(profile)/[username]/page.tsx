@@ -1,8 +1,10 @@
 import { auth } from "@/auth";
 import { FloatingHeader } from "@/components/floating-header";
 import { ScrollArea } from "@/components/scroll-area";
+import { TypographyH4 } from "@/components/ui/typography";
 import { db } from "@/db";
 import Image from "next/image";
+import Link from "next/link";
 
 export default async function Page({
   params,
@@ -13,6 +15,15 @@ export default async function Page({
 
   const user = await db.query.users.findFirst({
     where: (users, { eq }) => eq(users.username, params.username),
+    with: {
+      eventsSpeakers: {
+        with: {
+          event: {
+            columns: { id: true, name: true },
+          },
+        },
+      },
+    },
   });
 
   if (!user) {
@@ -35,7 +46,6 @@ export default async function Page({
       />
       <div className="content-wrapper">
         <div className="content">
-          <p>{JSON.stringify(user)}</p>
           <Image
             src={user.image || ""}
             width={48}
@@ -45,6 +55,14 @@ export default async function Page({
           />
           <p>{user.name}</p>
           <p>{user.username}</p>
+          <TypographyH4>Pernah menjadi speakers di event berikut:</TypographyH4>
+          <ol className="list-decimal">
+            {user.eventsSpeakers.map(({ event }) => (
+              <Link key={event.id} href={`/events/${event.id}`}>
+                <li>{event.name}</li>
+              </Link>
+            ))}
+          </ol>
         </div>
       </div>
     </ScrollArea>
