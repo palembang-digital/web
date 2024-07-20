@@ -39,18 +39,18 @@ function YouTubeVideoCard({ video }: { video: any }) {
   ];
 
   return (
-    <div className="rounded-lg p-2 hover:shadow-sm hover:cursor-pointer">
+    <div className="border rounded-lg hover:shadow-sm hover:cursor-pointer">
       {/* <div className="bg-zinc-400 h-40 flex items-center justify-center text-white text-xl rounded-md">
         Video
       </div> */}
       <Image
-        className="rounded-lg"
+        className="rounded-t-lg"
         src={video.thumbnails?.medium.url}
         width={video.thumbnails?.medium.width}
         height={video.thumbnails?.medium.height}
         alt={video.title}
       />
-      <div className="mt-4">
+      <div className="p-3">
         <p className="text-muted-foreground text-sm">
           {DateTime.fromJSDate(video.publishedAt)
             .setLocale("id")
