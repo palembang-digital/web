@@ -3,7 +3,13 @@ import { TypographyH2, TypographyH3 } from "@/components/ui/typography";
 import Link from "next/link";
 
 // TODO: #78 Implement past events component
-export default function PastEvents({ events }: { events: any[] }) {
+export default function PastEvents({
+  events,
+  hideSeeMoreButton,
+}: {
+  events: any[];
+  hideSeeMoreButton?: boolean;
+}) {
   return (
     <div className="rounded-lg p-6 mt-20">
       <TypographyH2 className="text-neutral-800">
@@ -21,9 +27,11 @@ export default function PastEvents({ events }: { events: any[] }) {
         ))}
       </div>
 
-      <Link href="/events">
-        <Button variant="outline">Lihat semuanya</Button>
-      </Link>
+      {!hideSeeMoreButton && (
+        <Link href="/events">
+          <Button variant="outline">Lihat semuanya</Button>
+        </Link>
+      )}
     </div>
   );
 }

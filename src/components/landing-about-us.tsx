@@ -8,8 +8,8 @@ export default function LandingAboutUs() {
       <TypographyH2 className="text-neutral-800">Tentang kami</TypographyH2>
 
       <p>
-        Palembang Digital (Patal) adalah platform komunitas digital pertama dari
-        dan untuk seluruh masyarakat Sumatera Selatan 🇮🇩.
+        Palembang Digital (Patal) adalah platform komunitas digital dari dan
+        untuk masyarakat Sumatera Selatan 🇮🇩.
       </p>
     </div>
   );

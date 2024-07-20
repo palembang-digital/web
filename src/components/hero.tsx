@@ -1,3 +1,4 @@
+import { auth } from "@/auth";
 import GridPattern from "@/components/magicui/grid-pattern";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -5,7 +6,7 @@ import { TypographyH1 } from "@/components/ui/typography";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 
-export default function Hero({
+export default async function Hero({
   memberCount,
   eventCount,
   startupCount,
@@ -16,6 +17,8 @@ export default function Hero({
   startupCount?: number;
   organizationCount?: number;
 }) {
+  const session = await auth();
+
   const stats = [
     {
       title: "Anggota",
@@ -72,10 +75,16 @@ export default function Hero({
             )
         )}
       </div>
-      {/* TODO: #75 Implement sign in flow from hero component */}
-      <Link href="/api/auth/signin">
-        <Button className="z-10">Bergabung sekarang!</Button>
-      </Link>
+
+      {session ? (
+        <Link href="/events">
+          <Button className="z-10">Explore our events!</Button>
+        </Link>
+      ) : (
+        <Link href="/api/auth/signin">
+          <Button className="z-10">Bergabung sekarang!</Button>
+        </Link>
+      )}
     </div>
   );
 }

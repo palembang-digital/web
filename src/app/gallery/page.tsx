@@ -7,7 +7,7 @@ import Image from "next/image";
 
 function YouTubeVideoCard({ video }: { video: any }) {
   return (
-    <div className="rounded-lg p-2 hover:shadow-sm">
+    <div className="rounded-lg p-2 hover:shadow-sm hover:cursor-pointer">
       {/* <div className="bg-zinc-400 h-40 flex items-center justify-center text-white text-xl rounded-md">
         Video
       </div> */}

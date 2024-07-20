@@ -34,7 +34,11 @@ export default async function Page() {
             startupCount={45}
             organizationCount={34}
           />
-          {upcomingEvents && <UpcomingEvents events={upcomingEvents} />}
+          {upcomingEvents && (
+            <div className="mt-20">
+              <UpcomingEvents events={upcomingEvents} />
+            </div>
+          )}
           <PastEvents events={pastEvents} />
           <LandingAboutUs />
           <LandingFAQ />
