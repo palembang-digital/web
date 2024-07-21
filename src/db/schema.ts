@@ -197,6 +197,21 @@ export const videosSpeakers = pgTable(
   })
 );
 
+export const organizations = pgTable("organizations", {
+  id: serial("id").primaryKey(),
+  name: text("name"),
+  image: text("image"),
+  slug: text("slug").notNull().unique(),
+  organizationType: text("organization_type"),
+  email: text("email"),
+  phoneNumber: text("phone_number"),
+  website: text("website"),
+  shortBio: text("short_bio"),
+  longBio: text("long_bio"),
+  createdAt: timestamp("created_at").notNull().defaultNow(),
+  updatedAt: timestamp("updated_at").notNull().defaultNow(),
+});
+
 // ==================================================
 //
 // RELATIONS

@@ -5,29 +5,8 @@
     {
       "idx": 0,
       "version": "7",
-      "when": 1721307740721,
-      "tag": "0000_bent_bulldozer",
-      "breakpoints": true
-    },
-    {
-      "idx": 1,
-      "version": "7",
-      "when": 1721395712845,
-      "tag": "0001_nifty_arachne",
-      "breakpoints": true
-    },
-    {
-      "idx": 2,
-      "version": "7",
-      "when": 1721399020631,
-      "tag": "0002_silky_viper",
-      "breakpoints": true
-    },
-    {
-      "idx": 3,
-      "version": "7",
-      "when": 1721399126189,
-      "tag": "0003_charming_the_fallen",
+      "when": 1721567703077,
+      "tag": "0000_smiling_spacker_dave",
       "breakpoints": true
     }
   ]

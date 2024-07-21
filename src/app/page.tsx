@@ -24,6 +24,9 @@ export default async function Page() {
     .filter((event) => new Date(event.scheduledStart) < new Date())
     .slice(0, 6);
 
+  const orgs = await db.query.organizations.findMany();
+  const startups = orgs.filter((org) => org.organizationType === "startup");
+
   return (
     <ScrollArea useScrollAreaId>
       <FloatingHeader session={session} scrollTitle="Palembang Digital" />
@@ -31,8 +34,8 @@ export default async function Page() {
         <div className="content">
           <Hero
             eventCount={events.length}
-            startupCount={45}
-            organizationCount={34}
+            startupCount={startups.length}
+            organizationCount={orgs.length - startups.length}
           />
           {upcomingEvents && (
             <div className="mt-20">

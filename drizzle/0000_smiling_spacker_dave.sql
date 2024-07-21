@@ -63,6 +63,22 @@ CREATE TABLE IF NOT EXISTS "events_videos" (
 	CONSTRAINT "events_videos_event_id_video_id_pk" PRIMARY KEY("event_id","video_id")
 );
 --> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "organizations" (
+	"id" serial PRIMARY KEY NOT NULL,
+	"name" text,
+	"image" text,
+	"slug" text NOT NULL,
+	"organization_type" text,
+	"email" text,
+	"phone_number" text,
+	"website" text,
+	"short_bio" text,
+	"long_bio" text,
+	"created_at" timestamp DEFAULT now() NOT NULL,
+	"updated_at" timestamp DEFAULT now() NOT NULL,
+	CONSTRAINT "organizations_slug_unique" UNIQUE("slug")
+);
+--> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "sessions" (
 	"sessionToken" text PRIMARY KEY NOT NULL,
 	"userId" text NOT NULL,
@@ -76,7 +92,12 @@ CREATE TABLE IF NOT EXISTS "users" (
 	"emailVerified" timestamp,
 	"image" text,
 	"user_role" "user_role" DEFAULT 'member' NOT NULL,
+	"onboarded" boolean DEFAULT false NOT NULL,
 	"username" text NOT NULL,
+	"phone_number" text,
+	"occupation" text,
+	"institution" text,
+	"bio" text,
 	CONSTRAINT "users_username_unique" UNIQUE("username")
 );
 --> statement-breakpoint

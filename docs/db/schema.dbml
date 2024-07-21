@@ -72,6 +72,21 @@ table events_videos {
   }
 }
 
+table organizations {
+  id serial [pk, not null, increment]
+  name text
+  image text
+  slug text [not null, unique]
+  organization_type text
+  email text
+  phone_number text
+  website text
+  short_bio text
+  long_bio text
+  created_at timestamp [not null, default: `now()`]
+  updated_at timestamp [not null, default: `now()`]
+}
+
 table sessions {
   sessionToken text [pk, not null]
   userId text [not null]

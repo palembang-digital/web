@@ -1,4 +1,5 @@
 import {
+  HeartHandshakeIcon,
   HouseIcon,
   ImagePlayIcon,
   InstagramIcon,
@@ -28,11 +29,11 @@ export const MENU_LINKS: MenuLink[] = [
     label: "Galeri",
     icon: <ImagePlayIcon size={24} />,
   },
-  // {
-  //   href: "/ecosystem",
-  //   label: "Ekosistem",
-  //   icon: <HeartHandshakeIcon size={24} />,
-  // },
+  {
+    href: "/ecosystem",
+    label: "Ekosistem",
+    icon: <HeartHandshakeIcon size={24} />,
+  },
   {
     href: "/members",
     label: "Anggota",
