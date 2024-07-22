@@ -28,11 +28,14 @@ export function localeDate(date: Date, locale: string = "id"): string {
 }
 
 export function localeTime(date: Date, locale: string = "id"): string {
-  return DateTime.fromJSDate(date)
-    .setLocale(locale)
-    .toLocaleString({
-      hour: "2-digit",
-      minute: "2-digit",
-      timeZoneName: "short",
-    });
+  return DateTime.fromJSDate(date).setLocale(locale).toLocaleString({
+    hour: "2-digit",
+    minute: "2-digit",
+    timeZoneName: "short",
+  });
+}
+
+export function getYoutubeVideoId(url: string): string {
+  const urlParams = new URLSearchParams(new URL(url).search);
+  return urlParams.get("v") || "";
 }
