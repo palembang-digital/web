@@ -124,6 +124,7 @@ export const events = pgTable("events", {
   updatedAt: timestamp("updated_at").notNull().defaultNow(),
   registrationFee: integer("registration_fee"),
   description: text("description"),
+  attendeeLimit: integer("attendee_limit"),
 });
 
 export const insertEventSchema = createInsertSchema(events, {
@@ -150,6 +151,36 @@ export const eventsSpeakers = pgTable(
   },
   (t) => ({
     pk: primaryKey({ columns: [t.eventId, t.userId] }),
+  })
+);
+
+export const eventsHostsUsers = pgTable(
+  "events_hosts_users",
+  {
+    eventId: integer("event_id")
+      .notNull()
+      .references(() => events.id, { onDelete: "cascade" }),
+    userId: text("user_id")
+      .notNull()
+      .references(() => users.id, { onDelete: "cascade" }),
+  },
+  (t) => ({
+    pk: primaryKey({ columns: [t.eventId, t.userId] }),
+  })
+);
+
+export const eventsHostsOrganizations = pgTable(
+  "events_hosts_organizations",
+  {
+    eventId: integer("event_id")
+      .notNull()
+      .references(() => events.id, { onDelete: "cascade" }),
+    organizationId: integer("organization_id")
+      .notNull()
+      .references(() => organizations.id, { onDelete: "cascade" }),
+  },
+  (t) => ({
+    pk: primaryKey({ columns: [t.eventId, t.organizationId] }),
   })
 );
 
@@ -242,6 +273,34 @@ export const eventsSpeakersRelations = relations(eventsSpeakers, ({ one }) => ({
     references: [users.id],
   }),
 }));
+
+export const eventsHostsUsersRelations = relations(
+  eventsHostsUsers,
+  ({ one }) => ({
+    event: one(events, {
+      fields: [eventsHostsUsers.eventId],
+      references: [events.id],
+    }),
+    user: one(users, {
+      fields: [eventsHostsUsers.userId],
+      references: [users.id],
+    }),
+  })
+);
+
+export const eventsHostsOrganizationsRelations = relations(
+  eventsHostsOrganizations,
+  ({ one }) => ({
+    event: one(events, {
+      fields: [eventsHostsOrganizations.eventId],
+      references: [events.id],
+    }),
+    organization: one(organizations, {
+      fields: [eventsHostsOrganizations.organizationId],
+      references: [organizations.id],
+    }),
+  })
+);
 
 export const eventsVideosRelations = relations(eventsVideos, ({ one }) => ({
   event: one(events, {

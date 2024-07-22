@@ -3,7 +3,7 @@ import {
   TypographyH3,
   TypographyH4,
 } from "@/components/ui/typography";
-import { DateTime } from "luxon";
+import { localeDate } from "@/lib/utils";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -21,9 +21,7 @@ export default function UpcomingEvents({ events }: { events: any[] }) {
               <div className="absolute w-3 h-3 bg-slate-400 rounded-full mt-1.5 -start-1.5 border border-slate-400"></div>
               <div className="flex-1">
                 <TypographyH4 className="text-md text-neutral-50">
-                  {DateTime.fromJSDate(event.scheduledStart)
-                    .setLocale("id")
-                    .toLocaleString(DateTime.DATE_FULL)}
+                  {localeDate(new Date(event.scheduledStart))}
                 </TypographyH4>
                 <TypographyH3 className="text-lg font-semibold text-neutral-50">
                   {event.name}

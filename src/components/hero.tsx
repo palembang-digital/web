@@ -77,12 +77,12 @@ export default async function Hero({
       </div>
 
       {session ? (
-        <Link href="/events">
-          <Button className="z-10">Explore our events!</Button>
+        <Link href="/events" className="z-10">
+          <Button>Explore our events!</Button>
         </Link>
       ) : (
-        <Link href="/api/auth/signin">
-          <Button className="z-10">Bergabung sekarang!</Button>
+        <Link href="/api/auth/signin" className="z-10">
+          <Button>Bergabung sekarang!</Button>
         </Link>
       )}
     </div>

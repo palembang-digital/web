@@ -52,6 +52,25 @@ table events {
   updated_at timestamp [not null, default: `now()`]
   registration_fee integer
   description text
+  attendee_limit integer
+}
+
+table events_hosts_organizations {
+  event_id integer [not null]
+  organization_id integer [not null]
+
+  indexes {
+    (event_id, organization_id) [pk]
+  }
+}
+
+table events_hosts_users {
+  event_id integer [not null]
+  user_id text [not null]
+
+  indexes {
+    (event_id, user_id) [pk]
+  }
 }
 
 table events_speakers {
@@ -138,6 +157,14 @@ table videos_speakers {
     (video_id, user_id) [pk]
   }
 }
+
+ref: events_hosts_organizations.event_id - events.id
+
+ref: events_hosts_organizations.organization_id - organizations.id
+
+ref: events_hosts_users.event_id - events.id
+
+ref: events_hosts_users.user_id - users.id
 
 ref: events_speakers.event_id > events.id
 

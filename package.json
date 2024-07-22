@@ -7,6 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
+    "test": "vitest",
     "db:generate": "drizzle-kit generate && npm run db:erd",
     "db:migrate": "drizzle-kit migrate",
     "db:studio": "drizzle-kit studio",
@@ -64,18 +65,22 @@
   },
   "devDependencies": {
     "@softwaretechnik/dbml-renderer": "^1.0.30",
+    "@testing-library/react": "^16.0.0",
     "@types/luxon": "^3.4.2",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
     "@typescript-eslint/eslint-plugin": "^7.15.0",
+    "@vitejs/plugin-react": "^4.3.1",
     "drizzle-dbml-generator": "^0.7.0",
     "drizzle-kit": "^0.22.8",
     "eslint": "^8",
     "eslint-config-next": "14.2.4",
+    "jsdom": "^24.1.1",
     "postcss": "^8",
     "tailwindcss": "^3.4.1",
     "tsx": "^4.16.2",
-    "typescript": "^5"
+    "typescript": "^5",
+    "vitest": "^2.0.3"
   }
 }

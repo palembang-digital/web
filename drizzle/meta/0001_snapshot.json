@@ -1,6 +1,6 @@
 {
-  "id": "4d60fd02-fca8-4e6a-9997-6b146c955bde",
-  "prevId": "00000000-0000-0000-0000-000000000000",
+  "id": "8a9a1af0-aefa-47d7-9b68-47335fe80b09",
+  "prevId": "4d60fd02-fca8-4e6a-9997-6b146c955bde",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
@@ -253,6 +253,12 @@
         "description": {
           "name": "description",
           "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "attendee_limit": {
+          "name": "attendee_limit",
+          "type": "integer",
           "primaryKey": false,
           "notNull": false
         }

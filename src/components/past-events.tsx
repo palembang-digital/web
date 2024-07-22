@@ -19,11 +19,11 @@ export default function PastEvents({
 
       <div className="grid grid-cols-1 sm:grid-cols-2">
         {events.map((event) => (
-          <div key={`upcoming-event-${event.id}`}>
+          <Link key={`upcoming-event-${event.id}`} href={`/events/${event.id}`}>
             <TypographyH3 className="text-lg font-semibold text-neutral-800">
               {event.name}
             </TypographyH3>
-          </div>
+          </Link>
         ))}
       </div>
 
