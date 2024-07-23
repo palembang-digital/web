@@ -113,6 +113,12 @@ export const authenticators = pgTable(
   })
 );
 
+export const eventLocationTypeEnum = pgEnum("event_location_type", [
+  "offline",
+  "online",
+  "hybrid",
+]);
+
 export const events = pgTable("events", {
   id: serial("id").primaryKey(),
   name: text("name").notNull(),
@@ -125,6 +131,9 @@ export const events = pgTable("events", {
   registrationFee: integer("registration_fee"),
   description: text("description"),
   attendeeLimit: integer("attendee_limit"),
+  locationName: text("location"),
+  locationUrl: text("location_url"),
+  locationType: eventLocationTypeEnum("location_type"),
 });
 
 export const insertEventSchema = createInsertSchema(events, {
@@ -230,7 +239,7 @@ export const videosSpeakers = pgTable(
 
 export const organizations = pgTable("organizations", {
   id: serial("id").primaryKey(),
-  name: text("name"),
+  name: text("name").notNull(),
   image: text("image"),
   slug: text("slug").notNull().unique(),
   organizationType: text("organization_type"),
@@ -243,6 +252,18 @@ export const organizations = pgTable("organizations", {
   updatedAt: timestamp("updated_at").notNull().defaultNow(),
 });
 
+export const insertOrganizationSchema = createInsertSchema(organizations).pick({
+  name: true,
+  image: true,
+  slug: true,
+  organizationType: true,
+  email: true,
+  phoneNumber: true,
+  website: true,
+  shortBio: true,
+  longBio: true,
+});
+
 // ==================================================
 //
 // RELATIONS
@@ -251,11 +272,18 @@ export const organizations = pgTable("organizations", {
 
 export const usersRelations = relations(users, ({ many }) => ({
   eventsSpeakers: many(eventsSpeakers),
+  eventsHostsUsers: many(eventsHostsUsers),
+}));
+
+export const organizationsRelations = relations(users, ({ many }) => ({
+  eventsHostsOrganizations: many(eventsHostsOrganizations),
 }));
 
 export const eventsRelations = relations(events, ({ many }) => ({
   eventsSpeakers: many(eventsSpeakers),
   eventsVideos: many(eventsVideos),
+  eventsHostsUsers: many(eventsHostsUsers),
+  eventsHostsOrganizations: many(eventsHostsOrganizations),
 }));
 
 export const videosRelations = relations(videos, ({ many }) => ({

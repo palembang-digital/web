@@ -38,7 +38,7 @@ export default async function Page() {
             organizationCount={orgs.length - startups.length}
           />
           {upcomingEvents && (
-            <div className="mt-20">
+            <div className="mt-16">
               <UpcomingEvents events={upcomingEvents} />
             </div>
           )}

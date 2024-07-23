@@ -1,3 +1,9 @@
+enum event_location_type {
+  offline
+  online
+  hybrid
+}
+
 enum user_role {
   administrator
   member
@@ -53,6 +59,9 @@ table events {
   registration_fee integer
   description text
   attendee_limit integer
+  location text
+  location_url text
+  location_type event_location_type
 }
 
 table events_hosts_organizations {
@@ -93,7 +102,7 @@ table events_videos {
 
 table organizations {
   id serial [pk, not null, increment]
-  name text
+  name text [not null]
   image text
   slug text [not null, unique]
   organization_type text
@@ -158,13 +167,13 @@ table videos_speakers {
   }
 }
 
-ref: events_hosts_organizations.event_id - events.id
+ref: events_hosts_organizations.event_id > events.id
 
 ref: events_hosts_organizations.organization_id - organizations.id
 
-ref: events_hosts_users.event_id - events.id
+ref: events_hosts_users.event_id > events.id
 
-ref: events_hosts_users.user_id - users.id
+ref: events_hosts_users.user_id > users.id
 
 ref: events_speakers.event_id > events.id
 

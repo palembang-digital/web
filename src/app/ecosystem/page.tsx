@@ -15,7 +15,7 @@ function OrganizationList({ orgs }: { orgs: any }) {
         >
           <div className="flex items-center gap-4">
             <Image
-              src={org.image}
+              src={org.image || ""}
               alt={org.name}
               width={48}
               height={48}

@@ -20,6 +20,16 @@ export default async function Page({ params }: { params: { id: number } }) {
           user: true,
         },
       },
+      eventsHostsUsers: {
+        with: {
+          user: true,
+        },
+      },
+      eventsHostsOrganizations: {
+        with: {
+          organization: true,
+        },
+      },
       eventsVideos: {
         with: {
           video: true,

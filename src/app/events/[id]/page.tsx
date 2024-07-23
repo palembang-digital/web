@@ -1,6 +1,8 @@
 import { auth } from "@/auth";
 import { FloatingHeader } from "@/components/floating-header";
+import ShimmerButton from "@/components/magicui/shimmer-button";
 import { ScrollArea } from "@/components/scroll-area";
+import { Button } from "@/components/ui/button";
 import {
   TypographyH2,
   TypographyH3,
@@ -9,8 +11,15 @@ import {
 import YouTubeVideoCard from "@/components/youtube-video-card";
 import { db } from "@/db";
 import { getDate, getMonthYear, localeDate, localeTime } from "@/lib/utils";
-import { MapPinIcon, UsersIcon } from "lucide-react";
+import {
+  CircleCheckBigIcon,
+  MapPinIcon,
+  TicketIcon,
+  UsersIcon,
+  VideoIcon,
+} from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 
 export default async function Page({ params }: { params: { id: number } }) {
   const session = await auth();
@@ -22,6 +31,20 @@ export default async function Page({ params }: { params: { id: number } }) {
         with: {
           user: {
             columns: { id: true, name: true, username: true, image: true },
+          },
+        },
+      },
+      eventsHostsUsers: {
+        with: {
+          user: {
+            columns: { id: true, name: true, username: true, image: true },
+          },
+        },
+      },
+      eventsHostsOrganizations: {
+        with: {
+          organization: {
+            columns: { id: true, name: true, slug: true, image: true },
           },
         },
       },
@@ -64,7 +87,8 @@ export default async function Page({ params }: { params: { id: number } }) {
                 <div>
                   <TypographyH4>Speakers</TypographyH4>
                   {event.eventsSpeakers.map((speaker) => (
-                    <div
+                    <Link
+                      href={`/${speaker.user.username}`}
                       key={speaker.user.id}
                       className="flex items-center my-4"
                     >
@@ -76,9 +100,42 @@ export default async function Page({ params }: { params: { id: number } }) {
                         className="rounded-full"
                       />
                       <p className="ml-2 text-sm">{speaker.user.name}</p>
-                    </div>
+                    </Link>
                   ))}
-                  <TypographyH4>Hosts</TypographyH4>
+                  <div>
+                    <TypographyH4>Hosts</TypographyH4>
+                    {event.eventsHostsOrganizations.map(({ organization }) => (
+                      <div
+                        key={organization.id}
+                        className="flex items-center my-4"
+                      >
+                        <Image
+                          src={organization.image || ""}
+                          alt={organization.name || ""}
+                          width={24}
+                          height={24}
+                          className="rounded-lg"
+                        />
+                        <p className="ml-2 text-sm">{organization.name}</p>
+                      </div>
+                    ))}
+                    {event.eventsHostsUsers.map((host) => (
+                      <Link
+                        href={`/${host.user.username}`}
+                        key={host.user.id}
+                        className="flex items-center my-4"
+                      >
+                        <Image
+                          src={host.user.image || ""}
+                          alt={host.user.name || ""}
+                          width={24}
+                          height={24}
+                          className="rounded-full"
+                        />
+                        <p className="ml-2 text-sm">{host.user.name}</p>
+                      </Link>
+                    ))}
+                  </div>
                 </div>
               </div>
             </div>
@@ -129,26 +186,48 @@ export default async function Page({ params }: { params: { id: number } }) {
                   </div>
 
                   {/* Location component */}
-                  <div className="flex flex-row gap-3 items-center">
-                    <div className="rounded-md p-4 border text-md text-center">
-                      <MapPinIcon />
+                  {event.locationName && (
+                    <div className="flex flex-row gap-3 items-center">
+                      <div className="rounded-md p-4 border text-md text-center">
+                        {event.locationType === "offline" && <MapPinIcon />}
+                        {event.locationType === "online" && <VideoIcon />}
+                      </div>
                     </div>
-                  </div>
+                  )}
 
                   {/* Quota component */}
-                  <div className="flex flex-row gap-3 items-center">
-                    <div className="rounded-md p-4 border text-md text-center">
-                      <UsersIcon />
+                  {event.attendeeLimit && (
+                    <div className="flex flex-row gap-3 items-center">
+                      <div className="rounded-md p-4 border text-md text-center">
+                        <UsersIcon />
+                      </div>
+                      <div>
+                        <TypographyH2 className="text-md pb-0">
+                          {event.attendeeLimit} slot tersedia
+                        </TypographyH2>
+                        <p className="text-xs text-neutral-500">
+                          dari {event.attendeeLimit} kuota
+                        </p>
+                      </div>
                     </div>
+                  )}
+
+                  {/* Registration component */}
+                  {event.scheduledStart < new Date() ? (
                     <div>
-                      <TypographyH2 className="text-md pb-0">
-                        {event.attendeeLimit} slot tersedia
-                      </TypographyH2>
-                      <p className="text-xs text-neutral-500">
-                        dari {event.attendeeLimit} kuota
-                      </p>
+                      <Button className="text-xs bg-green-600 hover:bg-green-600 hover:cursor-default">
+                        <CircleCheckBigIcon className="mr-2 h-3 w-3" /> Kegiatan
+                        ini telah berakhir
+                      </Button>
                     </div>
-                  </div>
+                  ) : (
+                    <ShimmerButton>
+                      <TicketIcon className="mr-2 h-4 w-4" />
+                      <span className="whitespace-pre-wrap text-center text-sm font-medium leading-none tracking-tight text-white dark:from-white dark:to-slate-900/10">
+                        Daftar sekarang!
+                      </span>
+                    </ShimmerButton>
+                  )}
                 </div>
 
                 <div className="border border-slate-200 rounded-lg p-4">
@@ -160,22 +239,24 @@ export default async function Page({ params }: { params: { id: number } }) {
               </div>
             </div>
 
-            <div className="col-span-3">
-              <div className="flex flex-col gap-2">
-                <TypographyH4>Dokumentasi Kegiatan</TypographyH4>
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-x-4 gap-y-6">
-                  {event.eventsVideos.map(({ video }) => (
-                    <div key={video.id}>
-                      {video.videoType === "youtube" ? (
-                        <YouTubeVideoCard video={video} />
-                      ) : (
-                        <video src={video.videoUrl || ""} controls />
-                      )}
-                    </div>
-                  ))}
+            {event.eventsVideos.length > 0 && (
+              <div className="col-span-1 sm:col-span-3">
+                <div className="flex flex-col gap-2">
+                  <TypographyH4>Dokumentasi Kegiatan</TypographyH4>
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-x-4 gap-y-6">
+                    {event.eventsVideos.map(({ video }) => (
+                      <div key={video.id}>
+                        {video.videoType === "youtube" ? (
+                          <YouTubeVideoCard video={video} />
+                        ) : (
+                          <video src={video.videoUrl || ""} controls />
+                        )}
+                      </div>
+                    ))}
+                  </div>
                 </div>
               </div>
-            </div>
+            )}
           </div>
         </div>
       </div>

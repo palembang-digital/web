@@ -39,7 +39,7 @@ export default async function Hero({
   ];
 
   return (
-    <div className="relative flex flex-col items-center justify-center gap-4">
+    <div className="relative flex flex-col items-center justify-center gap-4 py-8">
       <GridPattern
         width={15}
         height={15}

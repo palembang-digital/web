@@ -11,7 +11,7 @@ export default function PastEvents({
   hideSeeMoreButton?: boolean;
 }) {
   return (
-    <div className="rounded-lg p-6 mt-20">
+    <div className="rounded-lg p-6 mt-16">
       <TypographyH2 className="text-neutral-800">
         Kegiatan sebelumnya
       </TypographyH2>

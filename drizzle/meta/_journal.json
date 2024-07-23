@@ -15,6 +15,20 @@
       "when": 1721650028993,
       "tag": "0001_married_nighthawk",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1721724003040,
+      "tag": "0002_absurd_northstar",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1721733412612,
+      "tag": "0003_worthless_dreaming_celestial",
+      "breakpoints": true
     }
   ]
 }
