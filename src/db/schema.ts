@@ -275,7 +275,7 @@ export const usersRelations = relations(users, ({ many }) => ({
   eventsHostsUsers: many(eventsHostsUsers),
 }));
 
-export const organizationsRelations = relations(users, ({ many }) => ({
+export const organizationsRelations = relations(organizations, ({ many }) => ({
   eventsHostsOrganizations: many(eventsHostsOrganizations),
 }));
 

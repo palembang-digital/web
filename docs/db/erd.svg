@@ -366,7 +366,7 @@
 <path fill="none" stroke="#29235c" stroke-width="3" d="M659.79,-3241.09C1085.43,-3241.09 564.59,-4135.5 974.98,-4149.92"/>
 <polygon fill="#29235c" stroke="#29235c" stroke-width="3" points="975.11,-4153.42 985.17,-4150.09 975.23,-4146.42 975.11,-4153.42"/>
 <text text-anchor="middle" x="976.28" y="-4159.69" font-family="Helvetica,sans-Serif" font-size="32.00" fill="#29235c">1</text>
-<text text-anchor="middle" x="650.89" y="-3250.69" font-family="Helvetica,sans-Serif" font-size="32.00" fill="#29235c">1</text>
+<text text-anchor="middle" x="653.57" y="-3250.69" font-family="Helvetica,sans-Serif" font-size="32.00" fill="#29235c">*</text>
 </g>
 <!-- events_hosts_users -->
 <g id="events_hosts_users" class="node">

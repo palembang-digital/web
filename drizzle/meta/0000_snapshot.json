@@ -1,5 +1,5 @@
 {
-  "id": "4d60fd02-fca8-4e6a-9997-6b146c955bde",
+  "id": "7ac479d1-5bce-4c3c-967e-f2602c5045c2",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -255,6 +255,31 @@
           "type": "text",
           "primaryKey": false,
           "notNull": false
+        },
+        "attendee_limit": {
+          "name": "attendee_limit",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "location": {
+          "name": "location",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "location_url": {
+          "name": "location_url",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "location_type": {
+          "name": "location_type",
+          "type": "event_location_type",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": false
         }
       },
       "indexes": {},
@@ -504,7 +529,7 @@
           "name": "name",
           "type": "text",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true
         },
         "image": {
           "name": "image",
@@ -889,6 +914,15 @@
     }
   },
   "enums": {
+    "public.event_location_type": {
+      "name": "event_location_type",
+      "schema": "public",
+      "values": [
+        "offline",
+        "online",
+        "hybrid"
+      ]
+    },
     "public.user_role": {
       "name": "user_role",
       "schema": "public",

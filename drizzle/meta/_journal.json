@@ -5,29 +5,8 @@
     {
       "idx": 0,
       "version": "7",
-      "when": 1721630063939,
-      "tag": "0000_soft_speedball",
-      "breakpoints": true
-    },
-    {
-      "idx": 1,
-      "version": "7",
-      "when": 1721650028993,
-      "tag": "0001_married_nighthawk",
-      "breakpoints": true
-    },
-    {
-      "idx": 2,
-      "version": "7",
-      "when": 1721724003040,
-      "tag": "0002_absurd_northstar",
-      "breakpoints": true
-    },
-    {
-      "idx": 3,
-      "version": "7",
-      "when": 1721733412612,
-      "tag": "0003_worthless_dreaming_celestial",
+      "when": 1721736882413,
+      "tag": "0000_light_leopardon",
       "breakpoints": true
     }
   ]

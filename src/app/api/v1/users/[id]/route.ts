@@ -17,7 +17,6 @@ export async function PUT(
   }
 
   const data = await req.json();
-  console.log("UPDATE USER", data);
 
   await db.update(users).set(data).where(eq(users.id, params.id));
 

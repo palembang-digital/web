@@ -38,7 +38,6 @@ export async function PUT(
   const currentVideos = currentEvent?.eventsVideos;
 
   const data = await req.json();
-  console.log("data", data);
 
   const inputEvent = {
     ...data.event,

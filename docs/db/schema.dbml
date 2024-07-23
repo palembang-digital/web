@@ -169,7 +169,7 @@ table videos_speakers {
 
 ref: events_hosts_organizations.event_id > events.id
 
-ref: events_hosts_organizations.organization_id - organizations.id
+ref: events_hosts_organizations.organization_id > organizations.id
 
 ref: events_hosts_users.event_id > events.id
 

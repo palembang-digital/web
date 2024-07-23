@@ -1,4 +1,10 @@
 DO $$ BEGIN
+ CREATE TYPE "public"."event_location_type" AS ENUM('offline', 'online', 'hybrid');
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
  CREATE TYPE "public"."user_role" AS ENUM('administrator', 'member');
 EXCEPTION
  WHEN duplicate_object THEN null;
@@ -48,7 +54,11 @@ CREATE TABLE IF NOT EXISTS "events" (
 	"created_at" timestamp DEFAULT now() NOT NULL,
 	"updated_at" timestamp DEFAULT now() NOT NULL,
 	"registration_fee" integer,
-	"description" text
+	"description" text,
+	"attendee_limit" integer,
+	"location" text,
+	"location_url" text,
+	"location_type" "event_location_type"
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "events_hosts_organizations" (
@@ -77,7 +87,7 @@ CREATE TABLE IF NOT EXISTS "events_videos" (
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "organizations" (
 	"id" serial PRIMARY KEY NOT NULL,
-	"name" text,
+	"name" text NOT NULL,
 	"image" text,
 	"slug" text NOT NULL,
 	"organization_type" text,
