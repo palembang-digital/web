@@ -149,9 +149,7 @@ export default async function Page({ params }: { params: { id: number } }) {
             <div className="col-span-1 sm:col-span-2">
               <div className="grid grid-cols-1 gap-4">
                 <div className="border border-slate-200 rounded-lg p-4 flex flex-col gap-2">
-                  <TypographyH3 className="mb-2">{event.name}</TypographyH3>
-
-                  <div className="grid grid-cols-2"></div>
+                  <TypographyH3>{event.name}</TypographyH3>
 
                   {/* Schedule component */}
                   <div className="flex flex-row gap-3 items-center">
