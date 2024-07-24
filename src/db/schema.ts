@@ -131,7 +131,7 @@ export const events = pgTable("events", {
   registrationFee: integer("registration_fee"),
   description: text("description"),
   attendeeLimit: integer("attendee_limit"),
-  locationName: text("location"),
+  locationName: text("location_name"),
   locationUrl: text("location_url"),
   locationType: eventLocationTypeEnum("location_type"),
 });

@@ -242,7 +242,7 @@
 <text text-anchor="start" x="1343.37" y="-2389.29" font-family="Helvetica,sans-Serif" font-style="italic" font-size="32.00" fill="#29235c">integer</text>
 <polygon fill="#e7e2dd" stroke="transparent" points="922.17,-2308.09 922.17,-2368.09 1452.17,-2368.09 1452.17,-2308.09 922.17,-2308.09"/>
 <polygon fill="none" stroke="#29235c" points="922.17,-2308.09 922.17,-2368.09 1452.17,-2368.09 1452.17,-2308.09 922.17,-2308.09"/>
-<text text-anchor="start" x="933.17" y="-2328.29" font-family="Helvetica,sans-Serif" font-size="32.00" fill="#29235c">location &#160;&#160;&#160;</text>
+<text text-anchor="start" x="933.17" y="-2328.29" font-family="Helvetica,sans-Serif" font-size="32.00" fill="#29235c">location_name &#160;&#160;&#160;</text>
 <text text-anchor="start" x="1389.6" y="-2329.29" font-family="Helvetica,sans-Serif" font-style="italic" font-size="32.00" fill="#29235c">text</text>
 <polygon fill="#e7e2dd" stroke="transparent" points="922.17,-2248.09 922.17,-2308.09 1452.17,-2308.09 1452.17,-2248.09 922.17,-2248.09"/>
 <polygon fill="none" stroke="#29235c" points="922.17,-2248.09 922.17,-2308.09 1452.17,-2308.09 1452.17,-2248.09 922.17,-2248.09"/>

@@ -11,6 +11,7 @@ import {
 import YouTubeVideoCard from "@/components/youtube-video-card";
 import { db } from "@/db";
 import { getDate, getMonthYear, localeDate, localeTime } from "@/lib/utils";
+import { GoogleMapsEmbed } from "@next/third-parties/google";
 import {
   CircleCheckBigIcon,
   MapPinIcon,
@@ -84,24 +85,29 @@ export default async function Page({ params }: { params: { id: number } }) {
                   height={300}
                   className="rounded-lg"
                 />
-                <div>
-                  <TypographyH4>Speakers</TypographyH4>
-                  {event.eventsSpeakers.map((speaker) => (
-                    <Link
-                      href={`/${speaker.user.username}`}
-                      key={speaker.user.id}
-                      className="flex items-center my-4"
-                    >
-                      <Image
-                        src={speaker.user.image || ""}
-                        alt={speaker.user.name || ""}
-                        width={24}
-                        height={24}
-                        className="rounded-full"
-                      />
-                      <p className="ml-2 text-sm">{speaker.user.name}</p>
-                    </Link>
-                  ))}
+                {event.eventsSpeakers.length > 0 && (
+                  <div>
+                    <TypographyH4>Speakers</TypographyH4>
+                    {event.eventsSpeakers.map((speaker) => (
+                      <Link
+                        href={`/${speaker.user.username}`}
+                        key={speaker.user.id}
+                        className="flex items-center my-4"
+                      >
+                        <Image
+                          src={speaker.user.image || ""}
+                          alt={speaker.user.name || ""}
+                          width={24}
+                          height={24}
+                          className="rounded-full"
+                        />
+                        <p className="ml-2 text-sm">{speaker.user.name}</p>
+                      </Link>
+                    ))}
+                  </div>
+                )}
+                {(event.eventsHostsOrganizations.length > 0 ||
+                  event.eventsHostsUsers.length > 0) && (
                   <div>
                     <TypographyH4>Hosts</TypographyH4>
                     {event.eventsHostsOrganizations.map(({ organization }) => (
@@ -136,7 +142,7 @@ export default async function Page({ params }: { params: { id: number } }) {
                       </Link>
                     ))}
                   </div>
-                </div>
+                )}
               </div>
             </div>
 
@@ -192,6 +198,14 @@ export default async function Page({ params }: { params: { id: number } }) {
                         {event.locationType === "offline" && <MapPinIcon />}
                         {event.locationType === "online" && <VideoIcon />}
                       </div>
+                      <div>
+                        <TypographyH2 className="text-md pb-0">
+                          {event.locationName}
+                        </TypographyH2>
+                        <p className="text-xs text-neutral-500">
+                          {event.locationType}
+                        </p>
+                      </div>
                     </div>
                   )}
 
@@ -230,12 +244,45 @@ export default async function Page({ params }: { params: { id: number } }) {
                   )}
                 </div>
 
-                <div className="border border-slate-200 rounded-lg p-4">
-                  <div className="flex flex-col gap-2">
-                    <TypographyH4>Tentang</TypographyH4>
-                    <p className="text-sm">{event.description}</p>
+                {event.description && (
+                  <div className="border border-slate-200 rounded-lg p-4">
+                    <div className="flex flex-col gap-2">
+                      <TypographyH4>Tentang</TypographyH4>
+                      <p className="text-sm">{event.description}</p>
+                    </div>
                   </div>
-                </div>
+                )}
+
+                {event.locationType === "offline" && (
+                  <div className="border border-slate-200 rounded-lg p-4">
+                    <div className="flex flex-col gap-2">
+                      <div className="flex flex-row gap-3 items-center">
+                        <div className="rounded-md p-4 border text-md text-center">
+                          <MapPinIcon />
+                        </div>
+                        <div>
+                          <TypographyH2 className="text-md pb-0">
+                            {event.locationName}
+                          </TypographyH2>
+                          <p className="text-xs text-neutral-500">
+                            <Link href={event.locationUrl || ""}>
+                              Lihat peta
+                            </Link>
+                          </p>
+                        </div>
+                      </div>
+                      <GoogleMapsEmbed
+                        apiKey={process.env.GOOGLE_MAPS_API_KEY || ""}
+                        mode="place"
+                        q={event.locationName || ""}
+                        height={256}
+                        width="100%"
+                        allowfullscreen={false}
+                        style="border-radius: 6px;"
+                      />
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
 
