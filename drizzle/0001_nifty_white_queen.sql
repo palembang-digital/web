@@ -1,1 +1,0 @@
-ALTER TABLE "events" RENAME COLUMN "location" TO "location_name";

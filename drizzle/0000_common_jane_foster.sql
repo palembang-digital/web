@@ -56,7 +56,7 @@ CREATE TABLE IF NOT EXISTS "events" (
 	"registration_fee" integer,
 	"description" text,
 	"attendee_limit" integer,
-	"location" text,
+	"location_name" text,
 	"location_url" text,
 	"location_type" "event_location_type"
 );

@@ -17,8 +17,8 @@ function OrganizationList({ orgs }: { orgs: any }) {
             <Image
               src={org.image || ""}
               alt={org.name}
-              width={48}
-              height={48}
+              width={128}
+              height={128}
               className="w-12 h-12 rounded-lg"
             />
             <div>

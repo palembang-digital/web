@@ -5,15 +5,8 @@
     {
       "idx": 0,
       "version": "7",
-      "when": 1721736882413,
-      "tag": "0000_light_leopardon",
-      "breakpoints": true
-    },
-    {
-      "idx": 1,
-      "version": "7",
-      "when": 1721789734594,
-      "tag": "0001_nifty_white_queen",
+      "when": 1721831016077,
+      "tag": "0000_common_jane_foster",
       "breakpoints": true
     }
   ]
