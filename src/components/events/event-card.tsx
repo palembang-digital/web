@@ -6,7 +6,7 @@ import Link from "next/link";
 
 export default function EventCard({ event }: { event: any }) {
   return (
-    <Link key={`upcoming-event-${event.id}`} href={`/events/${event.id}`}>
+    <Link href={`/events/${event.id}`}>
       <div className="grid grid-cols-3 justify-between border rounded-md p-2 h-full hover:bg-neutral-100 hover:border-neutral-100">
         <div className="col-span-2 px-2 py-4">
           <h3 className="text-xs mb-2">

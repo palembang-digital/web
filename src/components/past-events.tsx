@@ -1,7 +1,7 @@
+import EventCard from "@/components/events/event-card";
 import { Button } from "@/components/ui/button";
 import { TypographyH2, TypographyH3 } from "@/components/ui/typography";
 import Link from "next/link";
-import EventCard from "@/components/events/event-card";
 
 // TODO: #78 Implement past events component
 export default function PastEvents({
