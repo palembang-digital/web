@@ -1,7 +1,7 @@
 import { auth } from '@/auth';
 import { FloatingHeader } from '@/components/floating-header';
 import { ScrollArea } from '@/components/scroll-area';
-import EventList from '@/components/events/event-llist';
+import EventList from '@/components/events/event-list';
 import { Suspense } from 'react';
 import { Skeleton } from '@/components/ui/skeleton';
 
