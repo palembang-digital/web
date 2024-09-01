@@ -1,0 +1,1215 @@
+--
+-- PostgreSQL database dump
+--
+
+-- Dumped from database version 16.3
+-- Dumped by pg_dump version 16.3
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET idle_in_transaction_session_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SELECT pg_catalog.set_config('search_path', '', false);
+SET check_function_bodies = false;
+SET xmloption = content;
+SET client_min_messages = warning;
+SET row_security = off;
+
+--
+-- Name: drizzle; Type: SCHEMA; Schema: -; Owner: patal-bot
+--
+
+CREATE SCHEMA drizzle;
+
+
+ALTER SCHEMA drizzle OWNER TO "patal-bot";
+
+--
+-- Name: event_location_type; Type: TYPE; Schema: public; Owner: patal-bot
+--
+
+CREATE TYPE public.event_location_type AS ENUM (
+    'offline',
+    'online',
+    'hybrid'
+);
+
+
+ALTER TYPE public.event_location_type OWNER TO "patal-bot";
+
+--
+-- Name: user_role; Type: TYPE; Schema: public; Owner: patal-bot
+--
+
+CREATE TYPE public.user_role AS ENUM (
+    'administrator',
+    'member'
+);
+
+
+ALTER TYPE public.user_role OWNER TO "patal-bot";
+
+--
+-- Name: video_type; Type: TYPE; Schema: public; Owner: patal-bot
+--
+
+CREATE TYPE public.video_type AS ENUM (
+    'upload',
+    'youtube'
+);
+
+
+ALTER TYPE public.video_type OWNER TO "patal-bot";
+
+SET default_tablespace = '';
+
+SET default_table_access_method = heap;
+
+--
+-- Name: __drizzle_migrations; Type: TABLE; Schema: drizzle; Owner: patal-bot
+--
+
+CREATE TABLE drizzle.__drizzle_migrations (
+    id integer NOT NULL,
+    hash text NOT NULL,
+    created_at bigint
+);
+
+
+ALTER TABLE drizzle.__drizzle_migrations OWNER TO "patal-bot";
+
+--
+-- Name: __drizzle_migrations_id_seq; Type: SEQUENCE; Schema: drizzle; Owner: patal-bot
+--
+
+CREATE SEQUENCE drizzle.__drizzle_migrations_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER SEQUENCE drizzle.__drizzle_migrations_id_seq OWNER TO "patal-bot";
+
+--
+-- Name: __drizzle_migrations_id_seq; Type: SEQUENCE OWNED BY; Schema: drizzle; Owner: patal-bot
+--
+
+ALTER SEQUENCE drizzle.__drizzle_migrations_id_seq OWNED BY drizzle.__drizzle_migrations.id;
+
+
+--
+-- Name: accounts; Type: TABLE; Schema: public; Owner: patal-bot
+--
+
+CREATE TABLE public.accounts (
+    "userId" text NOT NULL,
+    type text NOT NULL,
+    provider text NOT NULL,
+    "providerAccountId" text NOT NULL,
+    refresh_token text,
+    access_token text,
+    expires_at integer,
+    token_type text,
+    scope text,
+    id_token text,
+    session_state text
+);
+
+
+ALTER TABLE public.accounts OWNER TO "patal-bot";
+
+--
+-- Name: authenticators; Type: TABLE; Schema: public; Owner: patal-bot
+--
+
+CREATE TABLE public.authenticators (
+    "credentialID" text NOT NULL,
+    "userId" text NOT NULL,
+    "providerAccountId" text NOT NULL,
+    "credentialPublicKey" text NOT NULL,
+    counter integer NOT NULL,
+    "credentialDeviceType" text NOT NULL,
+    "credentialBackedUp" boolean NOT NULL,
+    transports text
+);
+
+
+ALTER TABLE public.authenticators OWNER TO "patal-bot";
+
+--
+-- Name: events; Type: TABLE; Schema: public; Owner: patal-bot
+--
+
+CREATE TABLE public.events (
+    id integer NOT NULL,
+    name text NOT NULL,
+    image_url text,
+    scheduled_start timestamp without time zone NOT NULL,
+    registration_url text,
+    scheduled_end timestamp without time zone NOT NULL,
+    created_at timestamp without time zone DEFAULT now() NOT NULL,
+    updated_at timestamp without time zone DEFAULT now() NOT NULL,
+    registration_fee integer,
+    description text,
+    attendee_limit integer,
+    location_name text,
+    location_url text,
+    location_type public.event_location_type
+);
+
+
+ALTER TABLE public.events OWNER TO "patal-bot";
+
+--
+-- Name: events_hosts_organizations; Type: TABLE; Schema: public; Owner: patal-bot
+--
+
+CREATE TABLE public.events_hosts_organizations (
+    event_id integer NOT NULL,
+    organization_id integer NOT NULL
+);
+
+
+ALTER TABLE public.events_hosts_organizations OWNER TO "patal-bot";
+
+--
+-- Name: events_hosts_users; Type: TABLE; Schema: public; Owner: patal-bot
+--
+
+CREATE TABLE public.events_hosts_users (
+    event_id integer NOT NULL,
+    user_id text NOT NULL
+);
+
+
+ALTER TABLE public.events_hosts_users OWNER TO "patal-bot";
+
+--
+-- Name: events_id_seq; Type: SEQUENCE; Schema: public; Owner: patal-bot
+--
+
+CREATE SEQUENCE public.events_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER SEQUENCE public.events_id_seq OWNER TO "patal-bot";
+
+--
+-- Name: events_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: patal-bot
+--
+
+ALTER SEQUENCE public.events_id_seq OWNED BY public.events.id;
+
+
+--
+-- Name: events_speakers; Type: TABLE; Schema: public; Owner: patal-bot
+--
+
+CREATE TABLE public.events_speakers (
+    event_id integer NOT NULL,
+    user_id text NOT NULL
+);
+
+
+ALTER TABLE public.events_speakers OWNER TO "patal-bot";
+
+--
+-- Name: events_videos; Type: TABLE; Schema: public; Owner: patal-bot
+--
+
+CREATE TABLE public.events_videos (
+    event_id integer NOT NULL,
+    video_id integer NOT NULL
+);
+
+
+ALTER TABLE public.events_videos OWNER TO "patal-bot";
+
+--
+-- Name: organizations; Type: TABLE; Schema: public; Owner: patal-bot
+--
+
+CREATE TABLE public.organizations (
+    id integer NOT NULL,
+    name text NOT NULL,
+    image text,
+    slug text NOT NULL,
+    organization_type text,
+    email text,
+    phone_number text,
+    website text,
+    short_bio text,
+    long_bio text,
+    created_at timestamp without time zone DEFAULT now() NOT NULL,
+    updated_at timestamp without time zone DEFAULT now() NOT NULL
+);
+
+
+ALTER TABLE public.organizations OWNER TO "patal-bot";
+
+--
+-- Name: organizations_id_seq; Type: SEQUENCE; Schema: public; Owner: patal-bot
+--
+
+CREATE SEQUENCE public.organizations_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER SEQUENCE public.organizations_id_seq OWNER TO "patal-bot";
+
+--
+-- Name: organizations_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: patal-bot
+--
+
+ALTER SEQUENCE public.organizations_id_seq OWNED BY public.organizations.id;
+
+
+--
+-- Name: sessions; Type: TABLE; Schema: public; Owner: patal-bot
+--
+
+CREATE TABLE public.sessions (
+    "sessionToken" text NOT NULL,
+    "userId" text NOT NULL,
+    expires timestamp without time zone NOT NULL
+);
+
+
+ALTER TABLE public.sessions OWNER TO "patal-bot";
+
+--
+-- Name: users; Type: TABLE; Schema: public; Owner: patal-bot
+--
+
+CREATE TABLE public.users (
+    id text NOT NULL,
+    name text,
+    email text NOT NULL,
+    "emailVerified" timestamp without time zone,
+    image text,
+    user_role public.user_role DEFAULT 'member'::public.user_role NOT NULL,
+    username text NOT NULL,
+    onboarded boolean DEFAULT false NOT NULL,
+    phone_number text,
+    occupation text,
+    institution text,
+    bio text
+);
+
+
+ALTER TABLE public.users OWNER TO "patal-bot";
+
+--
+-- Name: verificationTokens; Type: TABLE; Schema: public; Owner: patal-bot
+--
+
+CREATE TABLE public."verificationTokens" (
+    identifier text NOT NULL,
+    token text NOT NULL,
+    expires timestamp without time zone NOT NULL
+);
+
+
+ALTER TABLE public."verificationTokens" OWNER TO "patal-bot";
+
+--
+-- Name: videos; Type: TABLE; Schema: public; Owner: patal-bot
+--
+
+CREATE TABLE public.videos (
+    id integer NOT NULL,
+    title text NOT NULL,
+    video_url text,
+    created_at timestamp without time zone DEFAULT now() NOT NULL,
+    updated_at timestamp without time zone DEFAULT now() NOT NULL,
+    description text,
+    thumbnails json,
+    video_type public.video_type DEFAULT 'upload'::public.video_type NOT NULL,
+    published_at timestamp without time zone DEFAULT now() NOT NULL
+);
+
+
+ALTER TABLE public.videos OWNER TO "patal-bot";
+
+--
+-- Name: videos_id_seq; Type: SEQUENCE; Schema: public; Owner: patal-bot
+--
+
+CREATE SEQUENCE public.videos_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER SEQUENCE public.videos_id_seq OWNER TO "patal-bot";
+
+--
+-- Name: videos_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: patal-bot
+--
+
+ALTER SEQUENCE public.videos_id_seq OWNED BY public.videos.id;
+
+
+--
+-- Name: videos_speakers; Type: TABLE; Schema: public; Owner: patal-bot
+--
+
+CREATE TABLE public.videos_speakers (
+    video_id integer NOT NULL,
+    user_id text NOT NULL
+);
+
+
+ALTER TABLE public.videos_speakers OWNER TO "patal-bot";
+
+--
+-- Name: __drizzle_migrations id; Type: DEFAULT; Schema: drizzle; Owner: patal-bot
+--
+
+ALTER TABLE ONLY drizzle.__drizzle_migrations ALTER COLUMN id SET DEFAULT nextval('drizzle.__drizzle_migrations_id_seq'::regclass);
+
+
+--
+-- Name: events id; Type: DEFAULT; Schema: public; Owner: patal-bot
+--
+
+ALTER TABLE ONLY public.events ALTER COLUMN id SET DEFAULT nextval('public.events_id_seq'::regclass);
+
+
+--
+-- Name: organizations id; Type: DEFAULT; Schema: public; Owner: patal-bot
+--
+
+ALTER TABLE ONLY public.organizations ALTER COLUMN id SET DEFAULT nextval('public.organizations_id_seq'::regclass);
+
+
+--
+-- Name: videos id; Type: DEFAULT; Schema: public; Owner: patal-bot
+--
+
+ALTER TABLE ONLY public.videos ALTER COLUMN id SET DEFAULT nextval('public.videos_id_seq'::regclass);
+
+
+--
+-- Data for Name: __drizzle_migrations; Type: TABLE DATA; Schema: drizzle; Owner: patal-bot
+--
+
+COPY drizzle.__drizzle_migrations (id, hash, created_at) FROM stdin;
+1	111e9c727d86e9de77df2f46d65f47085133545052e1190f37a13115ae760b40	1720007045791
+2	3b5b29917d76d3b46e6e154c1987020c90c1c56f6eba2e9d7d0d43c8f4d4fc3c	1720012743353
+3	bcbb97d4b87f48f5a19a332710c77fc22945b588a173cfed33ee1ca416603e04	1720277489044
+4	7d5f5341d0d33e1fbdb4f025805aa8fa72e531ada05e6654ff10f85ccb72c582	1720454793747
+5	fed6bb902706c6ac33d4b8dfbaf5f967ab3ca29dfc474ca46cfa9dadf0c66e68	1720589844591
+6	0b877a7adabc9ffebcfe7e2e9c9b8e7d518bb9ceb588aab29d5b520b9ad10de5	1721020243287
+7	b1e4df6de8c18fe375d39bb0579c68adcdaa5069cc734e43f4b82916b537b383	1721108938174
+8	5f6b333538c561da78181cb83707f4bac2f84d3f1b5005927bdbb34903ebb7d4	1721143448305
+9	74e7dee81045047fb58e8d17fb5a5c407620e3281fffe291121635063efc7464	1721301232054
+10	5486a5fadc5f511c03c9a74c2235d095848fc6ac39eb3df518a7ee249a3564e4	1721301408609
+11	0a5a702100f2f00b8ad33c1b7dc8164543148658a6cb0a7254a8c1bffccae8c4	1721307740721
+12	354379e88fbfa0a3228318064561cd3e00c1052fcca0a8b65639033a9922fa9c	1721395712845
+13	6aac2ccb8f45eec20c6f7f95fe1c5b346380fe830e946e5b57df01e39613d01c	1721399020631
+14	b37270f157d4c1df3ce3ebe0a87f8458dc3ebebdabd0ffc43edad4743a42045a	1721399126189
+15	a3763104fc89723401a78872e91b072101de47570ff55ee0683267e9b0feb319	1721530925991
+16	25629526a980033645250dc251c3704d048b70a8e9946cf93b1e3e3a120aa87e	1721567568364
+17	6ce396e1dd8f690aa0fd7dfc7cca3b50c9767850ad4aaff04c75a7805f61d05f	1721567589644
+18	6ce396e1dd8f690aa0fd7dfc7cca3b50c9767850ad4aaff04c75a7805f61d05f	1721567703077
+19	9d21abab30789f126431f979fe89e81512bd71a868cc0a8de1ef7fcdbc41b843	1721630063939
+20	909c0013b415887dd6ad3389ec69e83b80975a424a8b403dc7dfd5e317d66d01	1721650028993
+21	1e7d514c7ba36a6ef000e54569ad0c0000c48625cbe1c646da921a1d56d2565c	1721724003040
+22	bab7a5b3ccc82c2254868ef7de6369bce7a41cea94f143ab64ab5fc0f085e319	1721733412612
+23	1ebac4abc9ca73b6454feb4b4bbf3864042ddf82661f03bf66ab9179ecd91814	1721736882413
+24	0f3cb25ed052628123387f3d8b910c587a17b723431d946aed7b83bddb0074ca	1721789734594
+25	cf723f12fc1cb2a99c320d71679bc92263566423a8b6d9e4734f2a84cb396a28	1721831016077
+\.
+
+
+--
+-- Data for Name: accounts; Type: TABLE DATA; Schema: public; Owner: patal-bot
+--
+
+COPY public.accounts ("userId", type, provider, "providerAccountId", refresh_token, access_token, expires_at, token_type, scope, id_token, session_state) FROM stdin;
+71b5d744-9cd0-4078-9c6c-0e03631778fa	oidc	google	116981939524317317480	\N	ya29.a0AXooCgtdq8wGzVQpFODCNl7PtYz-wSpJqMwOdQefYS0JvCaKTR2hMlxRyyeUS12W1y0WAG2dqRn8CLFUmBFjqlcl0gRMwo2Ku9NLMkpjVTjjhcvWhbU-a-NnH2xot-4TocrULNvHNWIVN6-LUS_7Yzoys4vnQbUfv3j5aCgYKAVUSARESFQHGX2Mi9qsLTVx3SYJTJiLx29JIjg0171	1720112056	bearer	openid https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email	eyJhbGciOiJSUzI1NiIsImtpZCI6Ijg3YmJlMDgxNWIwNjRlNmQ0NDljYWM5OTlmMGU1MGU3MmEzZTQzNzQiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL2FjY291bnRzLmdvb2dsZS5jb20iLCJhenAiOiIzNDkxNTQ3NjUwNzUtcjdqMHVyaHUyZzlpaGFlNjRyNmE0N3ExN20xczdiZGsuYXBwcy5nb29nbGV1c2VyY29udGVudC5jb20iLCJhdWQiOiIzNDkxNTQ3NjUwNzUtcjdqMHVyaHUyZzlpaGFlNjRyNmE0N3ExN20xczdiZGsuYXBwcy5nb29nbGV1c2VyY29udGVudC5jb20iLCJzdWIiOiIxMTY5ODE5Mzk1MjQzMTczMTc0ODAiLCJlbWFpbCI6InBhbGVtYmFuZ2RpZ2l0YWwwMUBnbWFpbC5jb20iLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwiYXRfaGFzaCI6ImJadzJkeXhZRE1teEJKWWUtemF4cGciLCJuYW1lIjoiUGFsZW1iYW5nIERpZ2l0YWwiLCJwaWN0dXJlIjoiaHR0cHM6Ly9saDMuZ29vZ2xldXNlcmNvbnRlbnQuY29tL2EvQUNnOG9jSzB2aFRyZV90NmdpXzItdTdjSUFoMU9fRy1Za3R4SEJhOGQ0UGNYWFdpbE9fbGJLQT1zOTYtYyIsImdpdmVuX25hbWUiOiJQYWxlbWJhbmciLCJmYW1pbHlfbmFtZSI6IkRpZ2l0YWwiLCJpYXQiOjE3MjAxMDg0NTcsImV4cCI6MTcyMDExMjA1N30.GbJjNnAOpbSJtaC1tje4UsfI9PtFAySnAB6Xfd5MOh6Z7Aw_VfT0mBktUSPthoSccLS2B_PnoSq7dLQ4zKycFDljBRo135RfC0U_jRTDtyct-CpV5rGCxO_d1VykDd5dF20g183sqAer6zFf193v-N5Q1WEW-Cang6TroBjiBeleIwPU4zws6MuXAp5unPhi_LKh_NPqWzn3i9gp9PzVY7BqTWXYx7g1BfWcmMnXabK05ZBqzXTz1NQQwJvLtnhvYJ_y8sa2RSEDsuFCttpm13MIOvuWLkqWi_K4HYki8UG2s4AikYZFsE7XIwoJ0KaKsCkvPUWGgAgRM3n0fx1hIw	\N
+11d621f5-6605-4cca-a538-2d7900d735aa	oidc	google	109205875569919925651	\N	ya29.a0AXooCgsi9WB5zr5uR4fSt8Fb9gyyUbyBOe2oZqXGCDPLaODotUJo0TY9JTjKVz7MBs4EeZp4wcXiS8WLB8kpoACAwUiJ0T-E168cZgJJWIZcIM6DhW2rlS_N03rg9YeRn7elTs4alqmwmAh8q1zWSolhXRC1p5mIJ-5XaCgYKAQ4SARESFQHGX2Miz6_sx-VSM96bPLBuOT9seQ0171	1721150208	bearer	https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile openid	eyJhbGciOiJSUzI1NiIsImtpZCI6IjBlMzQ1ZmQ3ZTRhOTcyNzFkZmZhOTkxZjVhODkzY2QxNmI4ZTA4MjciLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL2FjY291bnRzLmdvb2dsZS5jb20iLCJhenAiOiIzNDkxNTQ3NjUwNzUtcjdqMHVyaHUyZzlpaGFlNjRyNmE0N3ExN20xczdiZGsuYXBwcy5nb29nbGV1c2VyY29udGVudC5jb20iLCJhdWQiOiIzNDkxNTQ3NjUwNzUtcjdqMHVyaHUyZzlpaGFlNjRyNmE0N3ExN20xczdiZGsuYXBwcy5nb29nbGV1c2VyY29udGVudC5jb20iLCJzdWIiOiIxMDkyMDU4NzU1Njk5MTk5MjU2NTEiLCJlbWFpbCI6ImZha2hyaXJpenF1bGxhaDE2OEBnbWFpbC5jb20iLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwiYXRfaGFzaCI6Il9QNEx1UXdXVnhsVW92SkxuSVZyeVEiLCJuYW1lIjoiTXVoYW1tYWQgRmFraHJpIFJpenF1bGxhaCIsInBpY3R1cmUiOiJodHRwczovL2xoMy5nb29nbGV1c2VyY29udGVudC5jb20vYS9BQ2c4b2NMcWhISml5cFVQeF9qbWdlQUpaY3Y1UU1oazBSZWZWTWtCb1M4dHpSMWZfRi1WWVZNTT1zOTYtYyIsImdpdmVuX25hbWUiOiJNdWhhbW1hZCBGYWtocmkiLCJmYW1pbHlfbmFtZSI6IlJpenF1bGxhaCIsImlhdCI6MTcyMTE0NjYwOSwiZXhwIjoxNzIxMTUwMjA5fQ.WMPKKd9bbaIPiGCTZUhfnb4q-oMaI_qa2GCxPmf3hlaq89XO2BA95uUEK4a_7SL5QaJc1Da4-XNiugah7QoVQMgZj-dBq07VuaUXaJX7wtTbxop2ahaZKGmJnU15GDfDYVxDPyWFt1wd7S3Y7Uy3MJYzV3shkjQBCLmR63wXLKAGe1-q54kjNp1axg6tF4GhObmAIG_9Omfz4bee4OhK_aeDXQSS2O_nEKZ22zlKnalBpYKZzg4dvgo7kIT2Y2Nq-z780_OTbEflMzaeFxhYQ0FntLZKeIPB1Q5hzpgpPc0rMLhlF4r_ZqgwQrkhEYwAa2fl9m2ZHgjnkxsBVVZt_Q	\N
+8639237e-933f-4e73-bf31-77014a267d98	oidc	google	104087785584050280282	\N	ya29.a0AXooCgswumEiVRTerJ-1znOdBFhGOamkN-UYnZ5xddJDfcMOvLqmGYF5h6dXxk9FBRm65ocJqGRkqWcaql-H3AjQb1hCEt9xIxRhmcqu9QLBzmy4Pl8JEquA3OqRNXTGsg8GtInogTjmBefIDb9Xt7pTiy3iNQ5Nylo4aCgYKAWYSARMSFQHGX2MiYOEFReRECWqv4O_YGS_aDw0171	1721150238	bearer	openid https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile	eyJhbGciOiJSUzI1NiIsImtpZCI6IjBlMzQ1ZmQ3ZTRhOTcyNzFkZmZhOTkxZjVhODkzY2QxNmI4ZTA4MjciLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL2FjY291bnRzLmdvb2dsZS5jb20iLCJhenAiOiIzNDkxNTQ3NjUwNzUtcjdqMHVyaHUyZzlpaGFlNjRyNmE0N3ExN20xczdiZGsuYXBwcy5nb29nbGV1c2VyY29udGVudC5jb20iLCJhdWQiOiIzNDkxNTQ3NjUwNzUtcjdqMHVyaHUyZzlpaGFlNjRyNmE0N3ExN20xczdiZGsuYXBwcy5nb29nbGV1c2VyY29udGVudC5jb20iLCJzdWIiOiIxMDQwODc3ODU1ODQwNTAyODAyODIiLCJlbWFpbCI6ImZlYnJpeWFudGluaXNyaW5hQGdtYWlsLmNvbSIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJhdF9oYXNoIjoiZEc4cEhfMkk1QXY0dXZaYkRxbXgyQSIsIm5hbWUiOiJOaXNyaW5hIEZlYnJpeWFudGkiLCJwaWN0dXJlIjoiaHR0cHM6Ly9saDMuZ29vZ2xldXNlcmNvbnRlbnQuY29tL2EvQUNnOG9jS2ppSE8yUWctOFN0VnpFOXg4aVAwMnJfODJXbk5KTEhxTjZJc0ZjSThDRnVSeGlvQXJPQT1zOTYtYyIsImdpdmVuX25hbWUiOiJOaXNyaW5hIiwiZmFtaWx5X25hbWUiOiJGZWJyaXlhbnRpIiwiaWF0IjoxNzIxMTQ2NjM5LCJleHAiOjE3MjExNTAyMzl9.nDgZSDmTp5B4nw5dtM6yizwX-E6Bm0ixY3OouIh9EDxu82XVnou1geQZc9U4lm--GzB7xDcx1iiW2AFvIAJVwV8cTarsPA0GKJApYhVtxPHr-ncrdbA4g3djrIy511MUIgowBHuT3Gb5kLBTxhIQGn8d2IQkwzH99mamtiIsYxHQcSH86oW6h_7133y0YCRtP5Ya3bt0S_WZCtEf7HxHp_a8bpnpNfss6xaPAlWU8InkHixc3KD_lcjyX5Qadb4UkKc-0o2hbyzSC0MEYt-AYw1Y9YH4fMOTa3DvTha51J6jGTVC9O2xPBAszbIz_13QuoJySJ7nuSoXh37VPprH0A	\N
+d76c5a86-847d-40ce-a1c4-3ca242b62a09	oidc	google	114154060928475650663	\N	ya29.a0AXooCgs4zY-VEp9MFMbV2WxKR4AOYQc7WXZ5_cSDiZO-_ADdskmoPH1pFXcT2Ixh0IAPWUFbAm6Qx0OpzlRCWgRgklMme3CFm_GEs7jXbvq7Azwam8S_bkiBdFm9LkF5iSUXLrK6OoChnBwoNvJLcir_-ubIanB8r2inaCgYKAS0SARASFQHGX2Mi0looY2N25aD6AbtZG8EfjQ0171	1721150385	bearer	https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile openid	eyJhbGciOiJSUzI1NiIsImtpZCI6IjBlMzQ1ZmQ3ZTRhOTcyNzFkZmZhOTkxZjVhODkzY2QxNmI4ZTA4MjciLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL2FjY291bnRzLmdvb2dsZS5jb20iLCJhenAiOiIzNDkxNTQ3NjUwNzUtcjdqMHVyaHUyZzlpaGFlNjRyNmE0N3ExN20xczdiZGsuYXBwcy5nb29nbGV1c2VyY29udGVudC5jb20iLCJhdWQiOiIzNDkxNTQ3NjUwNzUtcjdqMHVyaHUyZzlpaGFlNjRyNmE0N3ExN20xczdiZGsuYXBwcy5nb29nbGV1c2VyY29udGVudC5jb20iLCJzdWIiOiIxMTQxNTQwNjA5Mjg0NzU2NTA2NjMiLCJlbWFpbCI6InRyaXNzYXd1bGFuZGE5MkBnbWFpbC5jb20iLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwiYXRfaGFzaCI6IkgxMDZhY0l6ZjVVeHloOXdhdmxDUkEiLCJuYW1lIjoiVHJpc3NhIFd1bGFuZGEiLCJwaWN0dXJlIjoiaHR0cHM6Ly9saDMuZ29vZ2xldXNlcmNvbnRlbnQuY29tL2EvQUNnOG9jSkt3Qnd3ZU1ETEc4UnBwdGxhSnUzVE9XcXNFeW43MGFQV0pxWi1OSF9rZTNobXlwWjREZz1zOTYtYyIsImdpdmVuX25hbWUiOiJUcmlzc2EiLCJmYW1pbHlfbmFtZSI6Ild1bGFuZGEiLCJpYXQiOjE3MjExNDY3ODYsImV4cCI6MTcyMTE1MDM4Nn0.diKqZGukSfGfMCLOVTcbbkl23_c10W35zRKOGm42hOlqsNNUoU0SaptcgLTWcl4b8Z8QywH1UPow5LTq97wG0lypb57kC53dHIrbcmn7z9nictTj_0Tyh615u5DiEU8FrfeeFP36eiw4YxNenopsoDjxsZdv8DptBCsru3Hc-a2KJQDWDxX75RybH8nB2AmdTS9EWgYarYhmF2aSWQjhMbcThwMhRqwNMVxTmGJqIxPtpFdnXfov75wHaRBwaMbbeSNXao25W6K3AK6l7SAbi7PRYcTGGKEPQ2kSt_vudq9bhJFKUO_IEoMvv65V6Ox_4S3UOSrvIJ7n-m0Yx41hIA	\N
+f129ea02-24ea-4518-bd3e-eea39f39953a	oidc	google	101447332488797815855	\N	ya29.a0AXooCgsLNtwsrJpJ6WyFpNxobmDxPvfS5pBMbNrT1q_peP9snpf4aOTLgo5eU5fg5vdKQ21PKCL6MD_nXFSwGvbiAbfmCMscFJeOaPYyElhvzkZwBa7NbELyehtgNyFa1X_Xxs-05ikm2y-hebgJ-0LephCp0vq6xzGWaCgYKAQUSARISFQHGX2MiRSMTq8o4KOY4PVh_iMg2yw0171	1721186027	bearer	openid https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile	eyJhbGciOiJSUzI1NiIsImtpZCI6IjBlMzQ1ZmQ3ZTRhOTcyNzFkZmZhOTkxZjVhODkzY2QxNmI4ZTA4MjciLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL2FjY291bnRzLmdvb2dsZS5jb20iLCJhenAiOiIzNDkxNTQ3NjUwNzUtcjdqMHVyaHUyZzlpaGFlNjRyNmE0N3ExN20xczdiZGsuYXBwcy5nb29nbGV1c2VyY29udGVudC5jb20iLCJhdWQiOiIzNDkxNTQ3NjUwNzUtcjdqMHVyaHUyZzlpaGFlNjRyNmE0N3ExN20xczdiZGsuYXBwcy5nb29nbGV1c2VyY29udGVudC5jb20iLCJzdWIiOiIxMDE0NDczMzI0ODg3OTc4MTU4NTUiLCJlbWFpbCI6Im1lLnNvZmlhbi5oYWRpd2lqYXlhQGdtYWlsLmNvbSIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJhdF9oYXNoIjoidGYxME00UXBTVTgxSkE0eUl5R1lPZyIsIm5hbWUiOiJTb2ZpYW4gSGFkaXdpamF5YSIsInBpY3R1cmUiOiJodHRwczovL2xoMy5nb29nbGV1c2VyY29udGVudC5jb20vYS9BQ2c4b2NMckp2WTJBUFFUcTZVdmRMa3VYci1hdmtqTEhUZ1BmWkpSSXpyMzNkbkRUNElPQUtBPXM5Ni1jIiwiZ2l2ZW5fbmFtZSI6IlNvZmlhbiIsImZhbWlseV9uYW1lIjoiSGFkaXdpamF5YSIsImlhdCI6MTcyMTE4MjQyOCwiZXhwIjoxNzIxMTg2MDI4fQ.T8A_vbGpto5OtOMweJtQlNFG6Y1n6FazDm3gVRl6a0bbLNWEmCvuqaZKfJ-ghJfA5mOrsrFCvwEeGI3QW4-NFFhfHyof3cnBEwv6uzMdOczZ5M7KYRmeBRtJNmo9j5MLeORKEXiiVijVPtf7DKtJ0dv-2gi94VCUwu1s4d5XTe1gtMlE4PF9_tp5MfKdRQTRdPyPVIK1la9I90gXB_IPhhsTdiXd92h_yl-4yF_YoDB-zY2JG7AmZyJxXUijVDE4yIqhn2G817vm1uWDyenvmBdy_3lgU-IfX9hsrtI5fT0y-AqWpM39YjdPnqyxYa5yA3zpyfUCq-i_i4PLvoRCBw	\N
+31d20aaf-84f6-40ef-8da0-fe55ed3869b7	oidc	google	104948638491288196340	\N	ya29.a0AXooCgvIXCTK640v8kb0S5ffUxwNPujp5uFvpm0XW1NDxZEC7Il-pZfGeU0MN9P96RzlvBuU7x7J8eUODq-dekUJB10Ygbp2xW1MH3CxAd42Sfig2bv38GIPZz6L9jl9sCQfWZ3hcfaeAIQ3fA7BQ7coI1KTRUX6ByhsaCgYKAXwSARASFQHGX2Mio-ISt2ztZl673PLlf6kvPA0171	1721188094	bearer	https://www.googleapis.com/auth/userinfo.email openid https://www.googleapis.com/auth/userinfo.profile	eyJhbGciOiJSUzI1NiIsImtpZCI6IjBlMzQ1ZmQ3ZTRhOTcyNzFkZmZhOTkxZjVhODkzY2QxNmI4ZTA4MjciLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL2FjY291bnRzLmdvb2dsZS5jb20iLCJhenAiOiIzNDkxNTQ3NjUwNzUtcjdqMHVyaHUyZzlpaGFlNjRyNmE0N3ExN20xczdiZGsuYXBwcy5nb29nbGV1c2VyY29udGVudC5jb20iLCJhdWQiOiIzNDkxNTQ3NjUwNzUtcjdqMHVyaHUyZzlpaGFlNjRyNmE0N3ExN20xczdiZGsuYXBwcy5nb29nbGV1c2VyY29udGVudC5jb20iLCJzdWIiOiIxMDQ5NDg2Mzg0OTEyODgxOTYzNDAiLCJlbWFpbCI6ImpvbmV0ZW45MUBnbWFpbC5jb20iLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwiYXRfaGFzaCI6ImZ6VW1FeU92OXZHbkVnYkVKT3pGUlEiLCJuYW1lIjoiSm9uZXRlbiBTYXB1dHJhIiwicGljdHVyZSI6Imh0dHBzOi8vbGgzLmdvb2dsZXVzZXJjb250ZW50LmNvbS9hL0FDZzhvY0twQTJrQ3hPcmFVaDVicklfSEtZekpYMWw4N2t1RW1hQ0pjUTg5YmdYQ0RPMWxCdVlsPXM5Ni1jIiwiZ2l2ZW5fbmFtZSI6IkpvbmV0ZW4iLCJmYW1pbHlfbmFtZSI6IlNhcHV0cmEiLCJpYXQiOjE3MjExODQ0OTUsImV4cCI6MTcyMTE4ODA5NX0.lLmT0lH3TWIM4X7TBjlYvAUqOO9kPVT1_NDFhEM5gR--L69lbIRXQ4kNYD15mgV4nORMydiVyhlBWbc1eHerrykTgFddKKjfUrdt0v_GipMVh9MfuJIUF6MYs3LKvvTI1_dPreKfTlY4tyr01frPbfTcGJm9JziRXP8lzQXIwqEfBP4-4NfFXSOcjFweUw9_SaJY9CnzZmroprIAhww97tE8ZBno2sI_qQweYTgJNYvOuX8hV8BywaKc53ioxtYy7hZdl1JOQJ88jqJFsqWH0fKtaT-zb15EhAeCSeBv_syxmNKaSS3SnPipFO2ucDPq9LEELWSN8wy9EO_1sQzl7Q	\N
+8628d57b-b60b-402e-bd22-e147df4131a0	oidc	google	100906181920475719059	\N	ya29.a0AXooCgt6jHuqhkt2hxIykJ-e-T7CNERAkuAnHOsRgwA99zTHDYtPvdwHNCGc51uzInUSQuPM_g63vH5OwBvXbNDkiYFhrS5Xig4QGN7RjrNG1JlFAz1E07W4Jge6BnuPLkbX-VYwwpnwV1RNvLyeVZULf7rzHL0IcSuSaCgYKAWYSARESFQHGX2Mil45DTs6NAEnMV3H9vC4rjw0171	1721190001	bearer	https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email openid	eyJhbGciOiJSUzI1NiIsImtpZCI6IjBlMzQ1ZmQ3ZTRhOTcyNzFkZmZhOTkxZjVhODkzY2QxNmI4ZTA4MjciLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL2FjY291bnRzLmdvb2dsZS5jb20iLCJhenAiOiIzNDkxNTQ3NjUwNzUtcjdqMHVyaHUyZzlpaGFlNjRyNmE0N3ExN20xczdiZGsuYXBwcy5nb29nbGV1c2VyY29udGVudC5jb20iLCJhdWQiOiIzNDkxNTQ3NjUwNzUtcjdqMHVyaHUyZzlpaGFlNjRyNmE0N3ExN20xczdiZGsuYXBwcy5nb29nbGV1c2VyY29udGVudC5jb20iLCJzdWIiOiIxMDA5MDYxODE5MjA0NzU3MTkwNTkiLCJlbWFpbCI6ImFyaXNhbmRpLm5ldHdvcmtAZ21haWwuY29tIiwiZW1haWxfdmVyaWZpZWQiOnRydWUsImF0X2hhc2giOiIyVl9lR2NkcnRPdE1CZng4YzdHYXRBIiwibmFtZSI6Ik1lbHkgQXJpc2FuZGkiLCJwaWN0dXJlIjoiaHR0cHM6Ly9saDMuZ29vZ2xldXNlcmNvbnRlbnQuY29tL2EvQUNnOG9jTGlNVHAtOVZwcktpanlXXzZYTzh4MC1SVmdZbEJKcXlTOXgyb2V6M2VUTHY3dTBTaz1zOTYtYyIsImdpdmVuX25hbWUiOiJNZWx5IiwiZmFtaWx5X25hbWUiOiJBcmlzYW5kaSIsImlhdCI6MTcyMTE4NjQwMiwiZXhwIjoxNzIxMTkwMDAyfQ.bl3p7e0Wa8P2Tm_VHOmpNfANYgY7XpIfpNPevzZ4xrMCMy2QG2-SlRaw0XL0Cf-RUDjvgqf3WGZilIHboINjbfdO-qCnFp1sc12NFXZOzVQHEEJOBe7duSJBuEN6Qe-GK7dlHSYa68s69cQCmplbRTmWUHnAzEtRDOxbgdBjw2Bj8H_0wU0vzLI0-cjzzwMfAtSDWqRvkNpHRf5UyGcHSTiq5gxaMDTMauYC1jyqf8h2M9aOty-kSXkv5jj6RmxMruMDvwWBdvY0ki9_3PzQaEFCm7pL1vYc0__4Oy-AN1r-qy6RF-b-3EV3ZZqbBhjz01nB15uPjls1LL1qMaKV9A	\N
+56b913b8-6c52-4361-af3c-c45c7d0ccfb3	oidc	google	112769262809658157146	\N	ya29.a0AXooCgsBp_bDGKSbg71HrUpMAQ-5o-X7cZmhYTSfB0HqV2ruPPUA9mKjI1ZiPgGOTBQldjWokb6-xnW8KajeT9c2ijWr3_sXSItcHXRFQUaV4icgs1KYK9oxnB22sc0DqHaH30FE9uoNtOxArxoLdQMNj3cghfI6WeViaCgYKAUISARASFQHGX2MitnHPvseI0Me6a3zmW2BHuA0171	1721191308	bearer	https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile openid	eyJhbGciOiJSUzI1NiIsImtpZCI6IjBlMzQ1ZmQ3ZTRhOTcyNzFkZmZhOTkxZjVhODkzY2QxNmI4ZTA4MjciLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL2FjY291bnRzLmdvb2dsZS5jb20iLCJhenAiOiIzNDkxNTQ3NjUwNzUtcjdqMHVyaHUyZzlpaGFlNjRyNmE0N3ExN20xczdiZGsuYXBwcy5nb29nbGV1c2VyY29udGVudC5jb20iLCJhdWQiOiIzNDkxNTQ3NjUwNzUtcjdqMHVyaHUyZzlpaGFlNjRyNmE0N3ExN20xczdiZGsuYXBwcy5nb29nbGV1c2VyY29udGVudC5jb20iLCJzdWIiOiIxMTI3NjkyNjI4MDk2NTgxNTcxNDYiLCJlbWFpbCI6ImFjYXBwZW1lbmFuZ0BnbWFpbC5jb20iLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwiYXRfaGFzaCI6IjEyMEE1aUszNFhrOEpJVVdqc1ZFM2ciLCJuYW1lIjoiUm9saSBCZXJuYW5kYSIsInBpY3R1cmUiOiJodHRwczovL2xoMy5nb29nbGV1c2VyY29udGVudC5jb20vYS9BQ2c4b2NKYVVSbFdmVEs4cmxvU2IwUWZCMkZUbk1nTlY2d0RUaHJ1cVQxOEVDUDl6MmhQTGxncz1zOTYtYyIsImdpdmVuX25hbWUiOiJSb2xpIiwiZmFtaWx5X25hbWUiOiJCZXJuYW5kYSIsImlhdCI6MTcyMTE4NzcwOSwiZXhwIjoxNzIxMTkxMzA5fQ.aRvp1xrVu-f30WjexLxDkHl33GphBoEkaY3R2dgmXFzQFwMHpoST6Vab0iykkZG_YJuH0NtQ0py4udptQLxoyq6Z9V6BECHylEwS_s0h3Va8cLKo7HoEapI2cWA64TAsxxBFwKxhuKvbZfYP80e04G-iuSBzS6ItL64-0FXtZ9Zex-GQy2rml6Cykl_2vp1VXPNN3_a7SPrK3sGvPMbNeMYJgGQCVEfl8iONupyAsqHoeUmUnCALq3q-01Qsxu3w0S1SL7RypQN2vysBqtzzmmVQEH-FhG-Ke36vUzu0XhMF5SeIj3FjzCjj3csxblOgmjVb-daQCEdotBWnkLvHIg	\N
+672df9cf-6931-4bb9-977a-97785da3f0e3	oidc	google	115641185283935966576	\N	ya29.a0AXooCgu7uw6boHJnStV38_44BmLHv1YnGrTzagtiYz1xXxeAlLWXUYC98HS9AzBMDO3mwlw_43bBG1ig_vUEFc43FQevqRmebSZxBUrJ88rAyEyCbQXBB1nFp3wH-P9vvF3ew6oR2vQYA4XFMULKrn4vmpe50DnunzlCaCgYKAcgSARMSFQHGX2MivAOBcFOvVr50c736pjMEjA0171	1721396610	bearer	https://www.googleapis.com/auth/userinfo.profile openid https://www.googleapis.com/auth/userinfo.email	eyJhbGciOiJSUzI1NiIsImtpZCI6ImYyZTExOTg2MjgyZGU5M2YyN2IyNjRmZDJhNGRlMTkyOTkzZGNiOGMiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL2FjY291bnRzLmdvb2dsZS5jb20iLCJhenAiOiIzNDkxNTQ3NjUwNzUtcjdqMHVyaHUyZzlpaGFlNjRyNmE0N3ExN20xczdiZGsuYXBwcy5nb29nbGV1c2VyY29udGVudC5jb20iLCJhdWQiOiIzNDkxNTQ3NjUwNzUtcjdqMHVyaHUyZzlpaGFlNjRyNmE0N3ExN20xczdiZGsuYXBwcy5nb29nbGV1c2VyY29udGVudC5jb20iLCJzdWIiOiIxMTU2NDExODUyODM5MzU5NjY1NzYiLCJlbWFpbCI6ImZhaXNhbG1vcmVuc3lhQGdtYWlsLmNvbSIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJhdF9oYXNoIjoiR3pyTnNBOS1LN3VoMTNXMktJN1NPUSIsIm5hbWUiOiJGYWlzYWwgTW9yZW5zeWEiLCJwaWN0dXJlIjoiaHR0cHM6Ly9saDMuZ29vZ2xldXNlcmNvbnRlbnQuY29tL2EvQUNnOG9jSWJvek9iZ29hSDkzT0dBdVE0VkFoMkJCeDdUWlpSZTdMZERmdnpqV3gwbE5Rbjd2UWw9czk2LWMiLCJnaXZlbl9uYW1lIjoiRmFpc2FsIiwiZmFtaWx5X25hbWUiOiJNb3JlbnN5YSIsImlhdCI6MTcyMTM5MzAxMSwiZXhwIjoxNzIxMzk2NjExfQ.PB2ODz7VxobkEQ9oNlHL3KcqVu_KuXleLS9k0w8zUVqi8MMQGr6O8pjhperHeoLY6uIqLETYRjh2sQvTcF1gzSxyAzUu5Q7gAJObypk717_hZmgb6BfP1yqt-odudezBWGkK8F4WmMgpgrDQuDF-U-DHrz8LH9GeMhaiLvg5xe9InirpBN3Xu5s3MtE545hcaMKWjx2sjZ_8z6qWFiUNtb3SEDheefC54F2DRNqKjrHUG9IKw10qirMr7JzkySFKOUqPNKbdm8YeQKbCMaDkOsYWkDdHEngL1CHyx8sm3oDA9-TyDklH4qU7qM5h-RDyjSXHBRk8wttd4KxS2zKKqA	\N
+ced6fdf0-e34b-41ee-a622-43392e115bc9	oidc	google	112090799792399756025	\N	ya29.a0AXooCgsSyP7xj30oD8PsqnCRp1-Gzf-XK7eGjI1El4V4cVNfafdRLGZNM4aJ0b3Ip2E0EVDKXA2NKl6lBryZ-EsV6v6lUlvrWEiJ6IfSanDiQys-8QsALuMdKq3P9p_fPYegZYtvWDlHtIUjmPh0Y6BAbRTaqm4R1SkaCgYKAV8SARMSFQHGX2MibG74Lt-AFnewfp3CxUHOcQ0170	1721403531	bearer	openid https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile	eyJhbGciOiJSUzI1NiIsImtpZCI6IjBlMzQ1ZmQ3ZTRhOTcyNzFkZmZhOTkxZjVhODkzY2QxNmI4ZTA4MjciLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL2FjY291bnRzLmdvb2dsZS5jb20iLCJhenAiOiIzNDkxNTQ3NjUwNzUtNjA4OWlwYm9laXJjYW9kOWNiaTMxbzA3MGphbTl2YjEuYXBwcy5nb29nbGV1c2VyY29udGVudC5jb20iLCJhdWQiOiIzNDkxNTQ3NjUwNzUtNjA4OWlwYm9laXJjYW9kOWNiaTMxbzA3MGphbTl2YjEuYXBwcy5nb29nbGV1c2VyY29udGVudC5jb20iLCJzdWIiOiIxMTIwOTA3OTk3OTIzOTk3NTYwMjUiLCJlbWFpbCI6ImFyaWVmcmFobWFuc3lhaDIzQGdtYWlsLmNvbSIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJhdF9oYXNoIjoiM3Mxa1BrWWJRRjJXVm9ZZ1RtN2FpdyIsIm5hbWUiOiJBcmllZiBSYWhtYW5zeWFoIiwicGljdHVyZSI6Imh0dHBzOi8vbGgzLmdvb2dsZXVzZXJjb250ZW50LmNvbS9hL0FDZzhvY0lESE9scDFMTzFkQjZOVGtxSzBlZUVCbkhUUnlFVGRWQXpTXzhWM0xvVURqSHlHajNFbkE9czk2LWMiLCJnaXZlbl9uYW1lIjoiQXJpZWYiLCJmYW1pbHlfbmFtZSI6IlJhaG1hbnN5YWgiLCJpYXQiOjE3MjEzOTk5MzIsImV4cCI6MTcyMTQwMzUzMn0.TAxLJ2T3quVHLJ6TNv4dhhJr4dtRHDJwSb-s1UDJe7xSj0NjziGjbc-0lgJ9hOfczHSw5_2hV1AByIJJgNScJSgxCLMluzjmY5ROyDmKhzUEVej53NF4FWz1msb89cpXtfKA5ufay764THKXzIp54P6s-5nqdjKsqHDztWircSRNc576UxWVd9oe-BYWsAeqPa-wu-1eY3u6BYsyamcAjwHdlzvgSPVqw6dPy7TNKqOvFC3_JwvHJ7NTBpr1-hLejjW8pXe8go7PsnW_n23vWyR20mfMhmX125OJ4BEiXZpMK53erpVshEey3iMgyyNUQTMS1h1f06RooM1W9GGRPw	\N
+374ffe39-c99d-405b-9188-6c9153f1bf32	oidc	google	116318485843362979529	\N	ya29.a0AXooCguMOa5RJAMFktGBcTM-FFbRY4iMOHYlJd1LJMy0LTQ6sr_ggKBFm2ps9OxpyKRLxyGSpQOlDPaaI8hVkSUsME9_xTvke2CbkbST1kwRSoXkIsGGwUGodtg2auDOtBrXEdOMOhcbbLewIqY-sTLtWJICfErCaGZkaCgYKAeMSARASFQHGX2MiSvcfm7ZoHK2ZEv1stOV8SQ0171	1721642596	bearer	https://www.googleapis.com/auth/userinfo.email openid https://www.googleapis.com/auth/userinfo.profile	eyJhbGciOiJSUzI1NiIsImtpZCI6ImYyZTExOTg2MjgyZGU5M2YyN2IyNjRmZDJhNGRlMTkyOTkzZGNiOGMiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL2FjY291bnRzLmdvb2dsZS5jb20iLCJhenAiOiIzNDkxNTQ3NjUwNzUtcjdqMHVyaHUyZzlpaGFlNjRyNmE0N3ExN20xczdiZGsuYXBwcy5nb29nbGV1c2VyY29udGVudC5jb20iLCJhdWQiOiIzNDkxNTQ3NjUwNzUtcjdqMHVyaHUyZzlpaGFlNjRyNmE0N3ExN20xczdiZGsuYXBwcy5nb29nbGV1c2VyY29udGVudC5jb20iLCJzdWIiOiIxMTYzMTg0ODU4NDMzNjI5Nzk1MjkiLCJlbWFpbCI6Im5hZGlhbGFyYXNjaW5sQGdtYWlsLmNvbSIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJhdF9oYXNoIjoiU01nUmVoY3AwZk1SbTJCMmNBS2J6ZyIsIm5hbWUiOiJOYWRpYSBMYXJhcyIsInBpY3R1cmUiOiJodHRwczovL2xoMy5nb29nbGV1c2VyY29udGVudC5jb20vYS9BQ2c4b2NLSnpkWlVHaFU0QTZBT2FOZlAwWmNpNVF3Qm9Jcl9qRkNENEVEUFYwU29SVTRSNWlCMD1zOTYtYyIsImdpdmVuX25hbWUiOiJOYWRpYSIsImZhbWlseV9uYW1lIjoiTGFyYXMiLCJpYXQiOjE3MjE2Mzg5OTcsImV4cCI6MTcyMTY0MjU5N30.Ln8FHHwCbDA-i4yX4Bqy9NISzbAj12PeqcW5Rn7IlEFn_0o6_7LpuMcpx1U6bxFLwzf64ml-kZkg_GY0pIIknduSFRJqON5i-DtFg3NFqioZgVdEOvxKPv1LPOHFKET6ZeVVQPILjUQrzkQVO2hdikJ5cjxWxnN2tNWvR_7wXfGltAxSC_fciqrVwbVU9_oUJzPirSVmz_jjUVJBt4BQjKKIvOqfefpxTAwU9nAq1c7mWYZb-G8e4devbievad-3Wiv2o2cBANLIJIMjrMj12-dt_Gfw6HaBvZ99T9ZYiMX37EMslpfxgjrEsDE_Ee_PciE0iD6y6gzrxXFu5yYDIQ	\N
+55420c92-c54b-45b4-a219-f81a8f4d7594	oidc	google	112681514040902253676	\N	ya29.a0AXooCgvonRqYiAvQCYUuL40JRZQRbdB-V0jwzKb-ER9rE75TdNsY9wQTgED9ovLf-RU1qT-mZCESM3oulxUDiN7Zn0GzCHSgYK4enKww8taMZG5iUoU-vDM5vxOon-YSZV5xtVSc3Am79d5wAjB3ddh8oJTU5vgtlqcraCgYKARQSARESFQHGX2MiWh-M0a_ej06O79Tawf7y_w0171	1721642868	bearer	https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email openid	eyJhbGciOiJSUzI1NiIsImtpZCI6ImYyZTExOTg2MjgyZGU5M2YyN2IyNjRmZDJhNGRlMTkyOTkzZGNiOGMiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL2FjY291bnRzLmdvb2dsZS5jb20iLCJhenAiOiIzNDkxNTQ3NjUwNzUtcjdqMHVyaHUyZzlpaGFlNjRyNmE0N3ExN20xczdiZGsuYXBwcy5nb29nbGV1c2VyY29udGVudC5jb20iLCJhdWQiOiIzNDkxNTQ3NjUwNzUtcjdqMHVyaHUyZzlpaGFlNjRyNmE0N3ExN20xczdiZGsuYXBwcy5nb29nbGV1c2VyY29udGVudC5jb20iLCJzdWIiOiIxMTI2ODE1MTQwNDA5MDIyNTM2NzYiLCJlbWFpbCI6ImF5dW5kYW1pbGxhdGlhemthQGdtYWlsLmNvbSIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJhdF9oYXNoIjoiVV85Y3NITjVQZ3ozUUhzRTNYWVUzQSIsIm5hbWUiOiJBeXVuZGEgTWlsbGF0aSBBemthIiwicGljdHVyZSI6Imh0dHBzOi8vbGgzLmdvb2dsZXVzZXJjb250ZW50LmNvbS9hL0FDZzhvY0tnaXpleGpQQnl6cWlXRGE3dk5SSEZXQUpmMVVRdmhZaUFHNUNZZ1FOdVBwQ1R2NGQwPXM5Ni1jIiwiZ2l2ZW5fbmFtZSI6IkF5dW5kYSBNaWxsYXRpIiwiZmFtaWx5X25hbWUiOiJBemthIiwiaWF0IjoxNzIxNjM5MjY5LCJleHAiOjE3MjE2NDI4Njl9.pONoVt-TEEuXsZOa29bIAhZcqHr9uIIh4VjEQmwQxm_jfq0wXA31u937hLSDqVe7nxuEHamRT9hwTEIQ1Cj6Rv0N-8re4SM9p15txeBZ0HYprKw39sDw3lWWBQ_WdX3aQ9JMb-zSbwLW_BefToEkWJU3ZtDTlnAn5SlfCwuqRK9BBws6YkPLvWkWROZfTG390f3oenYr55tcjt-0NO8tHQIxdQ-h2JMKQJ3rMZZRYMtEWL0dht7aa3JHZiF9CqshDUxqml7brtip36nDLhjievFrv_GjvGI20tCu3NQZhRR0UTLmbbkwmnuGA5SHSmfwiisz77chs9bB_rFsY9w2XQ	\N
+8d7092fd-f650-4441-b66d-a1a2a6d3e9dc	oidc	google	103772424446834740401	\N	ya29.a0AXooCgubaJLBgCyJXmPS0Aa5UHnc9XvsTZiWJzRMgzmg8boliIod2z801Nd6Vzmr0VHDFKGFsDg_65juxNYhk5LHW3eZY7yPlTnp6V5vbgSCTGCF3Io1dCoiJ6uAgXSTDSO02kXf8RmmDmHIsWLHoyOXsWMBVy_kXdSjaCgYKAUcSARMSFQHGX2MixsUoPSklkioBKfJF85fEbg0171	1721645837	bearer	https://www.googleapis.com/auth/userinfo.profile openid https://www.googleapis.com/auth/userinfo.email	eyJhbGciOiJSUzI1NiIsImtpZCI6ImYyZTExOTg2MjgyZGU5M2YyN2IyNjRmZDJhNGRlMTkyOTkzZGNiOGMiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL2FjY291bnRzLmdvb2dsZS5jb20iLCJhenAiOiIzNDkxNTQ3NjUwNzUtcjdqMHVyaHUyZzlpaGFlNjRyNmE0N3ExN20xczdiZGsuYXBwcy5nb29nbGV1c2VyY29udGVudC5jb20iLCJhdWQiOiIzNDkxNTQ3NjUwNzUtcjdqMHVyaHUyZzlpaGFlNjRyNmE0N3ExN20xczdiZGsuYXBwcy5nb29nbGV1c2VyY29udGVudC5jb20iLCJzdWIiOiIxMDM3NzI0MjQ0NDY4MzQ3NDA0MDEiLCJlbWFpbCI6Imh1cml5YWFmaWZhQGdtYWlsLmNvbSIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJhdF9oYXNoIjoiSmV3Q3U3bVpxNDIzZHNIVDhJQ1pWZyIsIm5hbWUiOiJIdXJpeWEgQWZpZmEiLCJwaWN0dXJlIjoiaHR0cHM6Ly9saDMuZ29vZ2xldXNlcmNvbnRlbnQuY29tL2EvQUNnOG9jS3dCR042MjlXaW5nOW1nTHp2SjJRRVUtY0xZNDhpVXFjMTlrVHcyQmN2VHZXSG5JR289czk2LWMiLCJnaXZlbl9uYW1lIjoiSHVyaXlhIiwiZmFtaWx5X25hbWUiOiJBZmlmYSIsImlhdCI6MTcyMTY0MjIzOCwiZXhwIjoxNzIxNjQ1ODM4fQ.rfjaD2MX_kOHDM-PIX4kHgbtAdnZZ-sL3VQUzCC0NtFWiU90L7T405mkYLT5cth3bIK6ar16U3DCgf-etCQdFqYrm9R9beCoWIAQjVocMQx3O8_L0O9SlRYKsZEm-qVWmHU-JxYFekao8KZo03rttY2GxGXDCCZjtwygshcdSMYqgyGTll7iTNghaI9Ut8oM1xtYhjgVSgDeciWL6eW3FJ1hKp53p3EvpJut9GKcaZA6PdJN427BgfWIZ2jtuVzIQTa_pI0C_IUqGumN7_qA0I3Sl3tSWAgwQGUs_U15BhaZtlrs83Qdob1JIkjLK-XfpWKZoGafTE006vz3Swk8bw	\N
+191c9b5c-2e9b-429d-9c4b-bfed354585bd	oidc	google	112725486780531288966	\N	ya29.a0AXooCgsw6tQzeJ2gwwChK-OdLeLljApvOdqWNxWY9LlgOwcvusCAoPaM6_Mq8AGXnFC-aN_mV22Vo2sA5ns7zGQMUpuLXqNFMLiElk1vW-ofS8cinxh_Ynl2Yfbk7LhaIQ3wlK_yGygnpGW-q7NwTTz-76RA5GEuaz_taCgYKAUESARASFQHGX2Mi3j2bHRbYK44GvDn4ZgHULg0171	1721646609	bearer	https://www.googleapis.com/auth/userinfo.email openid https://www.googleapis.com/auth/userinfo.profile	eyJhbGciOiJSUzI1NiIsImtpZCI6ImYyZTExOTg2MjgyZGU5M2YyN2IyNjRmZDJhNGRlMTkyOTkzZGNiOGMiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL2FjY291bnRzLmdvb2dsZS5jb20iLCJhenAiOiIzNDkxNTQ3NjUwNzUtcjdqMHVyaHUyZzlpaGFlNjRyNmE0N3ExN20xczdiZGsuYXBwcy5nb29nbGV1c2VyY29udGVudC5jb20iLCJhdWQiOiIzNDkxNTQ3NjUwNzUtcjdqMHVyaHUyZzlpaGFlNjRyNmE0N3ExN20xczdiZGsuYXBwcy5nb29nbGV1c2VyY29udGVudC5jb20iLCJzdWIiOiIxMTI3MjU0ODY3ODA1MzEyODg5NjYiLCJlbWFpbCI6Im0uZmFycmVsMjIyMkBnbWFpbC5jb20iLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwiYXRfaGFzaCI6ImtnLVZ4dUFPVjlpaXFEUjJXbFp5TlEiLCJuYW1lIjoiTXVoYW1tYWQgRmFycmVsIEFsLVdhZmkgRnJpenp5IiwicGljdHVyZSI6Imh0dHBzOi8vbGgzLmdvb2dsZXVzZXJjb250ZW50LmNvbS9hL0FDZzhvY0l1WGlqck85N0x3amFtaHh2N1Z1UFk3RXd6RUxRbzFwWjdiZl8xLXNjQW1xTTdvREl6PXM5Ni1jIiwiZ2l2ZW5fbmFtZSI6Ik11aGFtbWFkIEZhcnJlbCIsImZhbWlseV9uYW1lIjoiQWwtV2FmaSBGcml6enkiLCJpYXQiOjE3MjE2NDMwMTAsImV4cCI6MTcyMTY0NjYxMH0.p5mHjWO3eNXjSf66eRWPi2uCO76ZmrOhwVCHCYPdCtenjDQlELtKBq_Svrd6GxO0FttpKpLEhgOqh7i765tb2wnzFtbNifp2xyAmzaV7CzeZyHVL_lsz0idstxRlE5YEUYp8yEla319IJSo3ZWF8Zv6qZj7Uie8nH3z0YdpXRjgUp--7x4KpuARPAj3FL-Fq4yWjRUKmvyuFPinjfIemWGN3mMhnP53zoArpidlyBeiXU01-rOtzEXw2gJqM_TDQh4_n97tZg0UAdBzW3zkQPVGMBBJleOXyMvGq187nUjQo4Zul_h3jIIyouGq1Sp96GHqyhuctsQ60nC7vNXnNKA	\N
+51bc3e65-679b-42b2-9eb0-d23cc4f02452	oidc	google	108560493526670956634	\N	ya29.a0AXooCgteay4dUKlWi_IFjB52zeMxASeAQdRvmiwyyvdXzDDXbhNy7sdmr1Z5oMijCGG6yDMnUiYgl7fpAupwyD6K-P02SJgSa7-0awcO7Q6ygAfNv9DpAHDZsPBAEx9-s5bkhB4zDXHJPhFWsJMDvcvmhRCCCJP07NaLaCgYKAeMSARISFQHGX2Mi4B7KQc4NkAJrSY8eFUG3DQ0171	1721709708	bearer	openid https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email	eyJhbGciOiJSUzI1NiIsImtpZCI6ImYyZTExOTg2MjgyZGU5M2YyN2IyNjRmZDJhNGRlMTkyOTkzZGNiOGMiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL2FjY291bnRzLmdvb2dsZS5jb20iLCJhenAiOiIzNDkxNTQ3NjUwNzUtcjdqMHVyaHUyZzlpaGFlNjRyNmE0N3ExN20xczdiZGsuYXBwcy5nb29nbGV1c2VyY29udGVudC5jb20iLCJhdWQiOiIzNDkxNTQ3NjUwNzUtcjdqMHVyaHUyZzlpaGFlNjRyNmE0N3ExN20xczdiZGsuYXBwcy5nb29nbGV1c2VyY29udGVudC5jb20iLCJzdWIiOiIxMDg1NjA0OTM1MjY2NzA5NTY2MzQiLCJlbWFpbCI6ImZhZGVsam91cm5leUBnbWFpbC5jb20iLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwiYXRfaGFzaCI6InBLblNaWF9CQU16WERod2h1V1FuX2ciLCJuYW1lIjoiTXVoYW1tYWQgRmFkbGwiLCJwaWN0dXJlIjoiaHR0cHM6Ly9saDMuZ29vZ2xldXNlcmNvbnRlbnQuY29tL2EvQUNnOG9jTDJyMkppbXJ3X256ckZiV1o4bzQzNXpoeV9fQ3k3S3hWellpZlRySmVqaDAwZGxQbmtkUT1zOTYtYyIsImdpdmVuX25hbWUiOiJNdWhhbW1hZCIsImZhbWlseV9uYW1lIjoiRmFkbGwiLCJpYXQiOjE3MjE3MDYxMDksImV4cCI6MTcyMTcwOTcwOX0.dqMFNzYuTxuEUDRnLXUhAQNk61r72WnpYI9zjXEl10r6m42jGx5XOfHMdLb87k1r_C6mM9idvOv7urECKbAhGEpM8tRFIXPL-RJjHOueHGSVpfW-1bVHHtiRhDws-tPXLer_X6DtboXl-mLMT9nh7FSTGkpq-U8GO79LosuZTG-CDDWoSBh20vAH-FH6d5JUgDTQiLN9TUCPB1ZAtEFXELk671JCoBm69JqjQvYCEOfwyLogKzAK_kVyOVIkROhWHZ-2shSgJn7w-_C4UyoC84FuEPxyQwzpTGs1eKFKQhEVcySBdCnFowlGw7e4UxFBlzUjxAlKQMoJXpmWjkzRcA	\N
+d8de7bb2-caf6-4d52-8236-c9e9b6dc15f4	oidc	google	106319981920771987228	\N	ya29.a0AXooCgvJsx4iNofG1a0AOTD-kYudmWgZzfoiWIh3So-H5E2Fm6xvsEFxfWJ8Htl2kS4j3EDdyLzNOn8EWSk68UbLM9qbm6VPRYZHdZPh528wp5mvuM2m5PrcWpGLrlpV3ZSVOlfRmxqTPLKEpGJ13VsuNTgOnxQw_DG_aCgYKAcgSARESFQHGX2MiZrMo5b-KafCVWBClxZvXbA0171	1721740995	bearer	https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile openid	eyJhbGciOiJSUzI1NiIsImtpZCI6ImYyZTExOTg2MjgyZGU5M2YyN2IyNjRmZDJhNGRlMTkyOTkzZGNiOGMiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL2FjY291bnRzLmdvb2dsZS5jb20iLCJhenAiOiIzNDkxNTQ3NjUwNzUtcjdqMHVyaHUyZzlpaGFlNjRyNmE0N3ExN20xczdiZGsuYXBwcy5nb29nbGV1c2VyY29udGVudC5jb20iLCJhdWQiOiIzNDkxNTQ3NjUwNzUtcjdqMHVyaHUyZzlpaGFlNjRyNmE0N3ExN20xczdiZGsuYXBwcy5nb29nbGV1c2VyY29udGVudC5jb20iLCJzdWIiOiIxMDYzMTk5ODE5MjA3NzE5ODcyMjgiLCJoZCI6InN0dWRlbnQucG9sc3JpLmFjLmlkIiwiZW1haWwiOiIwNjIxNDA3MjA0NTBAc3R1ZGVudC5wb2xzcmkuYWMuaWQiLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwiYXRfaGFzaCI6IlpGY2RDMm5VQkMtTlQySm1HNlllbnciLCJuYW1lIjoiSXJwYW5zeWFoIiwicGljdHVyZSI6Imh0dHBzOi8vbGgzLmdvb2dsZXVzZXJjb250ZW50LmNvbS9hL0FDZzhvY0tPaC1fZEthd3pFTTBEbVdqZ0Y2Yndkc1ExZmZkeWpxVVJONGRfb2g4TUVJOVl3UT1zOTYtYyIsImdpdmVuX25hbWUiOiJJcnBhbnN5YWgiLCJpYXQiOjE3MjE3MzczOTYsImV4cCI6MTcyMTc0MDk5Nn0.cX8FG0oMccEHFOSTM7-rFtC2B9-ORdwYui62d6BgaiavCc7F6qauCYZ3aGsRvFtqZr6s18aQBO8oPNmSO_oGxL-If07VGUGPGez35CGqfgTwOohO7lpdHGte_HKDiIFfll5eCTAaj8eJa3IlxdV9X81UGh_vtLr0skBdz4xKJDsUsfHZNlNBKbeaowEXynlV3ZhDnT7AqdOCB76Y2--XXv8G7XFAczHrz2AFObMdaYcv1UPrIXPOcxMtORFig0XWgdfie7ukdXr9uL_1Te1ZIkLIQj_HbHG4yple9Lajqrh8o30O1Is_aWPY5NKs0pZgG55K3V6u6aUmc7ZqXjo5Dg	\N
+0f01b12c-efc0-4a67-8b8b-87e35f8f1e1f	oidc	google	115541591707962029212	\N	ya29.a0AXooCgsqDeFfxugzr_h20QBh4UlUndl2lY2wH37WDbLhnXT_Cr7XsLVlF1_ZGUyJhgPhKe2aCQEHVOvenoi44Hp3R8C2Z7vMsCN-UWkd2S8AMaWRgvjSY_HizK2RRKev4RZbbHTVRn5fCNgVSxIUhu5MWQZCXyZPvL6raCgYKASwSARISFQHGX2Miwotb82jj-XOmh31DVdUJIg0171	1721803451	bearer	https://www.googleapis.com/auth/userinfo.email openid https://www.googleapis.com/auth/userinfo.profile	eyJhbGciOiJSUzI1NiIsImtpZCI6ImYyZTExOTg2MjgyZGU5M2YyN2IyNjRmZDJhNGRlMTkyOTkzZGNiOGMiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL2FjY291bnRzLmdvb2dsZS5jb20iLCJhenAiOiIzNDkxNTQ3NjUwNzUtcjdqMHVyaHUyZzlpaGFlNjRyNmE0N3ExN20xczdiZGsuYXBwcy5nb29nbGV1c2VyY29udGVudC5jb20iLCJhdWQiOiIzNDkxNTQ3NjUwNzUtcjdqMHVyaHUyZzlpaGFlNjRyNmE0N3ExN20xczdiZGsuYXBwcy5nb29nbGV1c2VyY29udGVudC5jb20iLCJzdWIiOiIxMTU1NDE1OTE3MDc5NjIwMjkyMTIiLCJlbWFpbCI6InJpZnFpcmlhZGh5MjYzM0BnbWFpbC5jb20iLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwiYXRfaGFzaCI6IlJBbmRtV3BoOVByMFpvQVpFVnlfR1EiLCJuYW1lIjoiUmlmcWkgUmlhZGh5IiwiZ2l2ZW5fbmFtZSI6IlJpZnFpIiwiZmFtaWx5X25hbWUiOiJSaWFkaHkiLCJpYXQiOjE3MjE3OTk4NTIsImV4cCI6MTcyMTgwMzQ1Mn0.EfNsGWu2aVHVAuHaQbUoymk-19qwAHv2Ni0pCIGRgVNylSx-g3G6q_e6hJW_I12ND5xscupxfvT5lmNy4-P9IJqCpU6_YWBZgxPOa4VxZEohhKC8bkoAc0OaUlU9lMESyVrgshduBxmx-l-n5eQbwrK0VR-i4n6AJxw5B5OAm1fzkzeKxTidpDsGJascJJaMJTYNf1W6w2nyJo9AtpY-mizYhfAW2Rs8PzcND7IROBDR8ebvbVBZtMe1HhrY9qG5LOo_6oBIn4Uj9LIiIGR5TiyiOeo5mI3SClbow_tVBWSSfFNxEufidRopWZYOPtRgYSxQAmd9MJvslivtZToBrw	\N
+\.
+
+
+--
+-- Data for Name: authenticators; Type: TABLE DATA; Schema: public; Owner: patal-bot
+--
+
+COPY public.authenticators ("credentialID", "userId", "providerAccountId", "credentialPublicKey", counter, "credentialDeviceType", "credentialBackedUp", transports) FROM stdin;
+\.
+
+
+--
+-- Data for Name: events; Type: TABLE DATA; Schema: public; Owner: patal-bot
+--
+
+COPY public.events (id, name, image_url, scheduled_start, registration_url, scheduled_end, created_at, updated_at, registration_fee, description, attendee_limit, location_name, location_url, location_type) FROM stdin;
+1	Sriwijaya Digital Conference 2021	https://res.cloudinary.com/patal/image/upload/v1635784871/patal/events/E17D7D82-0F57-4AC9-AC88-C005605831F8_lyfi7a.png	2021-11-26 06:00:00	https://bit.ly/REGSDC2021	2021-11-27 15:00:00	2021-11-01 16:41:17.408894	2021-11-01 16:41:17.408894	0		\N	\N	\N	\N
+2	Introducing Flutter: Build your first app	https://res.cloudinary.com/patal/image/upload/v1637229575/patal/events/256386973_408216750983918_6436661406309482225_n_usspde.jpg	2021-11-20 02:00:14	https://bit.ly/patalflutter	2021-11-20 05:00:27	2021-11-18 10:00:42.898795	2021-11-18 10:00:42.898795	25000		\N	\N	\N	\N
+3	Membuat Aplikasi Mobile Apps Tanpa Coding	https://res.cloudinary.com/patal/image/upload/v1635784748/patal/events/B9C57E26-C975-427E-96AC-6B6FD7B70158_gwofob.png	2021-11-05 16:37:58	https://bit.ly/patalnocode	2021-11-05 16:38:20	2021-11-01 16:39:25.142253	2021-11-01 16:39:25.142253	25000		\N	\N	\N	\N
+4	Gathering Komunitas X OPI Mall	https://res.cloudinary.com/patal/image/upload/v1649863683/patal/events/3E5774A9-9B95-4FD4-B9A0-EA7C76BF4108_yljm3n.jpg	2022-03-17 15:27:34	palembangdigital.org	2022-03-18 15:27:42	2022-04-13 15:28:10.028525	2022-04-13 15:28:10.028525	0		\N	\N	\N	\N
+5	Build Aws Lightsail	https://res.cloudinary.com/patal/image/upload/v1649863737/patal/events/811D4A21-381E-49A0-9D5D-46B2D9E76479_dqkexh.jpg	2022-03-10 15:28:37	Palembangdigital.org	2022-03-10 15:28:42	2022-04-13 15:28:59.605943	2022-04-13 15:28:59.605943	0		\N	\N	\N	\N
+6	Dev Verse Microsoft X Palembang Digital	https://res.cloudinary.com/patal/image/upload/v1649863969/patal/events/02BE38C9-FFCE-4DB6-89F5-95C05E9C6692_i8wduu.jpg	2022-03-22 15:33:00	Palembangdigital.org	2022-03-25 15:33:07	2022-04-13 15:33:14.64342	2022-04-13 15:33:14.64342	0		\N	\N	\N	\N
+7	Build Aws with Ec2	https://res.cloudinary.com/patal/image/upload/v1649864114/patal/events/F5A724AD-784C-4F1B-BAD6-070673C85924_wqm13l.jpg	2022-04-08 15:34:50	palembangdigital.org	2022-04-08 15:34:59	2022-04-13 15:35:22.030668	2022-04-13 15:35:22.030668	0		\N	\N	\N	\N
+8	Startup Session FGD	https://res.cloudinary.com/patal/image/upload/v1649864178/patal/events/1FB8D532-4B6F-415C-8E53-442631FAB305_mh32bd.jpg	2022-03-24 15:36:27	palembangdigital.org	2022-03-24 15:36:33	2022-04-13 15:36:42.708868	2022-04-13 15:36:42.708868	0		\N	\N	\N	\N
+9	Babel X Palembang digital	https://res.cloudinary.com/patal/image/upload/v1649864258/patal/events/CA04B216-3296-4808-BA73-0A5F409B7275_cqj2sm.jpg	2022-04-07 15:37:45	palembangdigital.org	2022-04-07 15:37:53	2022-04-13 15:37:58.995646	2022-04-13 15:37:58.995646	0		\N	\N	\N	\N
+10	Sharing Session: Product Design	https://res.cloudinary.com/patal/image/upload/v1599606805/patal/events/1-18_bglben.jpg	2020-09-12 13:00:17	https://bit.ly/patalshare3	2020-09-12 14:00:17	2020-09-08 23:13:52.134192	2021-10-26 03:02:16.242908	0		\N	\N	\N	\N
+11	Introduction to Machine Learning	https://res.cloudinary.com/patal/image/upload/v1637231965/patal/events/106354655_274675057200989_2314900993790529184_n_fiwpye.jpg	2020-07-04 12:00:57	https://bit.ly/patalv52	2020-07-04 13:00:00	2021-11-18 10:40:12.032381	2021-11-18 10:40:12.032381	0		\N	\N	\N	\N
+12	AWS Code Build & Code Deploy	https://res.cloudinary.com/patal/image/upload/v1637232226/patal/events/96000122_115693656796431_5793194227361203769_n_uwuyz0.jpg	2020-05-06 09:00:15	https://bit.ly/awsxpatal	2020-05-06 10:00:00	2021-11-18 10:44:37.133141	2021-11-18 10:44:37.133141	0		\N	\N	\N	\N
+13	Kupas Tuntas Infrastruktur IT coronapalembang.com	https://res.cloudinary.com/patal/image/upload/v1637232511/patal/events/95847127_111720076997725_9215626137648874345_n_hrvsss.jpg	2020-05-09 09:00:00	https://bit.ly/patalv2	2020-05-09 10:00:00	2021-11-18 10:49:20.538912	2021-11-18 10:49:20.538912	0		\N	\N	\N	\N
+14	Basic App Development & Deployment with AWS	https://res.cloudinary.com/patal/image/upload/v1637232594/patal/events/97285886_234548901165224_2627970540859111508_n_yhyrmb.jpg	2020-05-16 12:00:00	https://bit.ly/patalv3	2020-05-16 13:00:00	2021-11-18 10:50:33.736939	2021-11-18 10:50:33.736939	0		\N	\N	\N	\N
+15	Dasar & Implementasi Penggunaan Git	https://res.cloudinary.com/patal/image/upload/v1637232716/patal/events/101025151_1167139823622704_5781962051990517660_n_sywgvp.jpg	2020-05-30 08:00:00	https://bit.ly/patalv4	2020-05-30 09:00:00	2021-11-18 10:51:59.238929	2021-11-18 10:51:59.238929	0		\N	\N	\N	\N
+16	Sharing Session: UI Designer	https://res.cloudinary.com/patal/image/upload/v1637232816/patal/events/103376191_671108553445698_5950459273074551952_n_ksvb9i.jpg	2020-06-14 12:00:00	https://bit.ly/patalshare1	2020-06-14 13:30:00	2021-11-18 10:53:39.017217	2021-11-18 10:53:39.017217	0		\N	\N	\N	\N
+17	Coding ala Anak Terminal	https://res.cloudinary.com/patal/image/upload/v1637232869/patal/events/103516336_2531810440403644_5182561020414114881_n_vc6qkh.jpg	2020-06-15 12:00:00	https://bit.ly/patalv5	2020-06-15 13:00:00	2021-11-18 10:54:32.429548	2021-11-18 10:54:32.429548	0		\N	\N	\N	\N
+18	Introduction to GraphDB	https://res.cloudinary.com/patal/image/upload/v1637232946/patal/events/80124134_182012103265537_8709979294516267551_n_zxawoj.jpg	2020-06-21 12:00:00	https://bit.ly/patalv51	2020-06-21 13:00:00	2021-11-18 10:55:50.0692	2021-11-18 10:55:50.0692	0		\N	\N	\N	\N
+19	Patal Performs	https://res.cloudinary.com/patal/image/upload/v1637233030/patal/events/104640373_2690620351169664_5974401967931719200_n_fcmiuv.jpg	2020-06-28 09:00:00	https://bit.ly/patalper2	2020-06-28 10:00:00	2021-11-18 10:57:13.65362	2021-11-18 10:57:13.65362	0		\N	\N	\N	\N
+20	Sharing Session: Software Engineer	https://res.cloudinary.com/patal/image/upload/v1637233175/patal/events/106582776_203014644348918_6770024266734830477_n_e12mts.jpg	2020-07-11 12:00:00	https://bit.ly/patalshare2	2020-07-11 13:30:00	2021-11-18 10:59:37.691167	2021-11-18 10:59:37.691167	0		\N	\N	\N	\N
+21	Perkenalan Dunia Product Development	https://res.cloudinary.com/patal/image/upload/v1637233287/patal/events/107871054_982417315526175_6009818428105066864_n_pgfcnn.jpg	2020-07-18 13:00:00	https://bit.ly/patalv6-0	2020-07-18 14:00:00	2021-11-18 11:01:30.354957	2021-11-18 11:01:30.354957	0		\N	\N	\N	\N
+22	Pentingnya Bergabung di Komunitas	https://res.cloudinary.com/patal/image/upload/v1637233445/patal/events/109448060_1278464675829065_2418449106056461554_n_t58kfq.jpg	2020-07-17 12:00:00	https://instagram.com/palembang_digital	2020-07-17 13:00:00	2021-11-18 11:04:07.810688	2021-11-18 11:04:07.810688	0		\N	\N	\N	\N
+23	AMA: Machine Learning	https://res.cloudinary.com/patal/image/upload/v1637233644/patal/events/118600995_341072880358536_4262803948314497343_n_nmu8mv.jpg	2020-08-27 13:00:00	https://www.instagram.com/palembang_digital/	2020-08-27 14:00:00	2021-11-18 11:07:26.939996	2021-11-18 11:07:26.939996	0		\N	\N	\N	\N
+24	How to Become a Backend Developer	https://res.cloudinary.com/patal/image/upload/v1637233859/patal/events/118140191_356928441970346_6360978122534067342_n_snrdlf.jpg	2020-08-29 09:00:00	https://bit.ly/PatalSTalks2	2020-08-29 10:00:00	2021-11-18 11:11:30.596362	2021-11-18 11:11:30.596362	0		\N	\N	\N	\N
+25	Tips Wawancara di Perusahaan Teknologi Nasional	https://res.cloudinary.com/patal/image/upload/v1637234083/patal/events/117904531_180927986885649_831191164174861035_n_au8xit.jpg	2020-08-22 08:00:00	https://www.instagram.com/palembang_digital/	2020-08-22 09:00:00	2021-11-18 11:15:11.84553	2021-11-18 11:15:11.84553	0		\N	\N	\N	\N
+26	Sharing Session Spesial Anniversary Palembang Digital	https://res.cloudinary.com/patal/image/upload/v1651113300/patal/events/5DC8B6F5-BF97-4C2A-B4EA-0BB6A6125065_wjvnfw_xyu8id.png	2022-04-29 09:00:03	https://palembangdigital.org	2022-04-29 13:00:00	2022-04-28 02:35:18.030891	2022-04-28 02:35:18.030891	50000		\N	\N	\N	\N
+27	Pengenalan dan Instalasi Material Tools di VPS & Google Cloud Platform	https://res.cloudinary.com/patal/image/upload/v1599061935/patal/events/118667361_124787975694917_972558709705820307_n.jpg_ymhaw7.jpg	2020-09-05 13:00:51	https://bit.ly/Patalv7	2020-09-05 14:00:51	2020-09-02 15:53:03.892821	2021-10-26 03:02:16.242908	0		\N	\N	\N	\N
+28	Bedah Website palembangdigital.org	https://res.cloudinary.com/patal/image/upload/v1637234214/patal/events/117153962_785037398968193_3521256295546679319_n_clknnw.jpg	2020-08-08 13:00:00	https://bit.ly/patalper3	2020-08-08 14:00:00	2021-11-18 11:19:33.175425	2021-11-18 11:19:33.175425	0		\N	\N	\N	\N
+29	How to Become a Full Stack Developer	https://res.cloudinary.com/patal/image/upload/v1637234464/patal/events/109551790_1419350031605209_5478316035810844805_n_vivfya.jpg	2020-07-25 13:00:00	https://bit.ly/PatalSTalks1	2020-07-25 14:00:00	2021-11-18 11:21:42.164971	2021-11-18 11:21:42.164971	0		\N	\N	\N	\N
+30	Ask Me Anything: Peluang Karir di Startup	https://res.cloudinary.com/patal/image/upload/v1599659318/patal/events/Feed_Patal_2-1_znhr1e.png	2020-09-10 13:00:49	https://bit.ly/tele-join-patal	2020-09-10 15:00:00	2020-09-09 13:49:05.947555	2021-10-26 03:02:16.242908	0		\N	\N	\N	\N
+31	AMA Special Edition: Social Media Management	https://res.cloudinary.com/patal/image/upload/v1600327027/patal/events/3-17_gailbw.jpg	2020-09-18 13:00:02	https://www.instagram.com/palembang_digital	2020-09-17 14:00:02	2020-09-17 07:17:20.118984	2021-10-26 03:02:16.242908	0		\N	\N	\N	\N
+32	How to Make Your First Open-Source Contributions	https://res.cloudinary.com/patal/image/upload/v1600327167/patal/events/1-19_aiofss.jpg	2020-09-19 13:00:39	https://bit.ly/PatalSTalks3	2020-09-19 14:00:39	2020-09-17 07:19:31.581381	2021-10-26 03:02:16.242908	0		\N	\N	\N	\N
+33	Sharing Session: Path-finding Journey on UX Field	https://res.cloudinary.com/patal/image/upload/v1600784780/patal/events/4-15_llekiv.jpg	2020-09-26 13:00:29	https://bit.ly/patalshare3-1	2020-09-26 14:00:00	2020-09-22 14:26:38.280047	2021-10-26 03:02:16.242908	0		\N	\N	\N	\N
+34	Ask Me Anything: Membangun Produk Teknologi	https://res.cloudinary.com/patal/image/upload/v1600907313/patal/events/PC_23092020_195520_02_dwffgy.png	2020-09-24 13:00:00	https://www.instagram.com/palembang_digital	2020-09-24 14:00:00	2020-09-24 00:28:55.354822	2021-10-26 03:02:16.242908	0		\N	\N	\N	\N
+35	Workshop 8.1: Menggunakan Service Gratis di Cloud Untuk Publish Project IT	https://res.cloudinary.com/patal/image/upload/v1602081626/patal/events/IMG-20201007-WA0126_yw6r36.jpg	2020-10-10 13:00:45	https://bit.ly/patalv81	2020-10-10 14:00:45	2020-10-07 14:40:41.074572	2021-10-26 03:02:16.242908	0		\N	\N	\N	\N
+36	Workshop 8.2: Belajar Membuat Websiter Menggunakan Framework CodeIgniter	https://res.cloudinary.com/patal/image/upload/v1602837561/patal/events/8-9_xxotol.jpg	2020-10-17 13:00:29	https://bit.ly/patalv82	2020-10-17 14:00:29	2020-10-16 08:39:33.469099	2021-10-26 03:02:16.242908	0		\N	\N	\N	\N
+37	Ask Me Anything: Peran Digital Untuk Layanan Kesehatan Mental	https://res.cloudinary.com/patal/image/upload/v1603288562/patal/events/Rumah_Harmonis_mkd5du.png	2020-10-22 13:00:25	https://www.instagram.com/palembang_digital	2020-10-22 14:00:25	2020-10-21 13:56:20.988832	2021-10-26 03:02:16.242908	0		\N	\N	\N	\N
+38	Workshop 8.3: Belajar Membuat Aplikasi Mobile dengan Flutter	https://res.cloudinary.com/patal/image/upload/v1603408430/patal/events/9_ek7hzb.jpg	2020-10-24 13:00:43	https://bit.ly/Patalv83	2020-10-24 14:15:43	2020-10-22 23:14:16.735008	2021-10-26 03:02:16.242908	0		\N	\N	\N	\N
+39	Sharing Session: Ekosistem Wordpress Global dan Indonesia, dan Masa Depan Wordpress	https://res.cloudinary.com/patal/image/upload/v1604652728/patal/events/13_gloikq.jpg	2020-11-07 13:00:22	https://bit.ly/patalshare4-1	2020-11-07 14:00:00	2020-11-06 08:52:20.796619	2021-10-26 03:02:16.242908	0		\N	\N	\N	\N
+40	Workshop 9.0 : Pengenalan Dasar dari SQL	https://res.cloudinary.com/patal/image/upload/v1605180788/patal/events/14_wwnhih.jpg	2020-11-13 13:00:28	https://bit.ly/patalv9	2020-11-13 14:00:28	2020-11-12 11:33:21.251368	2021-10-26 03:02:16.242908	0		\N	\N	\N	\N
+41	Workshop 9.1 : Pengenalan Framework Laravel	https://res.cloudinary.com/patal/image/upload/v1605790999/patal/events/IMG-20201118-WA0152_rrlkxt.jpg	2020-11-20 13:00:31	https://bit.ly/patalv9-1	2020-11-20 14:00:31	2020-11-19 13:03:39.83641	2021-10-26 03:02:16.242908	0		\N	\N	\N	\N
+42	Sriwijaya Digital Festival	https://res.cloudinary.com/patal/image/upload/v1606364972/patal/events/Instagram_Post_-_1_ol6hxx.png	2020-11-28 03:00:50	https://bit.ly/RegistrasiSDF20	2020-11-29 09:00:50	2020-11-26 04:29:42.177796	2021-10-26 03:02:16.242908	0		\N	\N	\N	\N
+43	K-Drama Startup vs. Real Startup: Kupas Tuntas Realita Startup	https://res.cloudinary.com/patal/image/upload/v1607559856/patal/events/Sharing_Session_5.0_dpke11.png	2020-12-11 13:00:38	https://bit.ly/patalshare5	2020-12-11 14:00:38	2020-12-10 00:24:32.71375	2021-10-26 03:02:16.242908	0		\N	\N	\N	\N
+44	Design Thinking	https://res.cloudinary.com/patal/image/upload/v1612882886/patal/events/143284085_132417858723570_2252826437397028254_n.jpg_hyndne.jpg	2021-02-05 13:00:45	https://bit.ly/gabungpatal	2021-02-05 14:00:45	2021-02-09 15:02:11.760876	2021-10-26 03:02:16.242908	0		\N	\N	\N	\N
+45	Content Writing for Social Media	https://res.cloudinary.com/patal/image/upload/v1612887565/patal/events/146818019_461243615260464_1135295702929821374_n.jpg_yivcpo.jpg	2021-02-10 13:00:36	https://www.instagram.com/p/CLB41w5MZCd/	2021-02-10 14:00:36	2021-02-09 16:19:29.061095	2021-10-26 03:02:16.242908	0		\N	\N	\N	\N
+46	Membuat Prototype Aplikasi dengan Figma	https://res.cloudinary.com/patal/image/upload/v1614081868/patal/events/IMG-20210220-WA0004_o0xosh.jpg	2021-02-26 12:00:10	https://bit.ly/gabungpatal	2021-02-26 14:00:10	2021-02-23 12:05:08.614806	2021-10-26 03:02:16.242908	0		\N	\N	\N	\N
+47	Tips diterima magang / kerja di startup	https://res.cloudinary.com/patal/image/upload/v1630246683/patal/events/5533CB92-CFB4-42C6-A568-ECF2F5DD0209_pimbtg.jpg	2021-08-13 12:00:00	https://bit.ly/daftarpatal	2021-08-13 13:00:00	2021-08-29 14:21:18.210725	2021-10-26 03:02:16.242908	0		\N	\N	\N	\N
+48	Melihat Peluang Karir Talenta Digital di Era Sekarang	https://res.cloudinary.com/patal/image/upload/v1632108360/patal/events/photo6215097709635939619_xgyc5p.jpg	2021-09-24 12:00:26	https://bit.ly/patalshare90	2021-09-24 13:00:39	2021-09-20 03:26:05.308765	2021-10-26 03:02:16.242908	0		\N	\N	\N	\N
+49	Bedah Buku: The Lean Startup	https://res.cloudinary.com/patal/image/upload/v1631761931/patal/events/WhatsApp_Image_2021-09-16_at_10.10.51_lhww4u.jpg	2021-09-17 03:11:34	https://bit.ly/ssf-bs01	2021-09-17 13:00:34	2021-09-16 03:12:30.183167	2021-10-26 03:02:16.242908	0		\N	\N	\N	\N
+50	Buat Aplikasi Tanpa Coding	https://res.cloudinary.com/patal/image/upload/v1612882764/patal/events/137274567_899393153932941_8647522701520606064_n.jpg_ducp8r.jpg	2021-01-22 13:00:51	https://bit.ly/gabungpatal	2021-01-22 14:00:00	2021-02-09 15:00:46.226652	2021-10-26 03:02:16.242908	0		\N	\N	\N	\N
+51	Game Developer Palembang Reborn	https://res.cloudinary.com/patal/image/upload/v1634013354/patal/events/WhatsApp_Image_2021-10-10_at_16.56.18_jxziyi.jpg	2021-10-16 03:00:00	https://bit.ly/gdpreb	2021-10-16 05:00:00	2021-10-12 04:36:06.39259	2021-10-26 03:02:16.242908	0		\N	\N	\N	\N
+52	Step by Step Membuat Aplikasi Menggunakan Wordpress	https://res.cloudinary.com/patal/image/upload/v1634822225/patal/events/tommy_wordpress_hnnumg.jpg	2021-10-22 11:30:37	https://bit.ly/patalwordpress	2021-10-22 14:00:00	2021-10-21 13:17:09.947232	2021-10-26 03:02:16.242908	35000		\N	\N	\N	\N
+53	Pengenalan Teknologi dan Digitalisasi pada Kartu Prakerja	https://res.cloudinary.com/patal/image/upload/v1621402116/patal/events/patal_sharing_session_6-1_dhgndt.jpg	2021-05-21 12:00:00	https://bit.ly/patalshare6-1	2021-05-21 13:30:00	2021-05-19 05:30:12.333082	2021-10-26 03:02:16.242908	0		\N	\N	\N	\N
+54	Bikin Caption Yang Ngundang Action	https://res.cloudinary.com/patal/image/upload/v1623093215/patal/events/gojek_x_kolplm_fwdg8n.jpg	2021-06-12 07:00:13	https://www.instagram.com/p/CP0cpv-H6cU/	2021-06-12 11:00:00	2021-06-07 19:13:49.054905	2021-10-26 03:02:16.242908	0		\N	\N	\N	\N
+55	Pengantar Layanan Cloud Computing di AWS	https://res.cloudinary.com/patal/image/upload/v1623119589/patal/events/photo_2021-06-08_09.32.56_eainnm.jpg	2021-06-18 12:00:03	https://bit.ly/AWSPatal1	2021-06-18 13:00:00	2021-06-08 02:33:12.166961	2021-10-26 03:02:16.242908	0		\N	\N	\N	\N
+56	MLOps: Managing ML Infrastructure at Scale	https://res.cloudinary.com/patal/image/upload/v1623757219/patal/events/MLOps-Managing_ML_Infrastructure_at_Scale_cq65wm.jpg	2021-06-18 13:00:57	https://www.instagram.com/p/CP-ymm6MYVd/	2021-06-18 14:00:00	2021-06-15 11:41:19.413922	2021-10-26 03:02:16.242908	0		\N	\N	\N	\N
+57	Build Scalable MVP at AWS	https://res.cloudinary.com/patal/image/upload/v1625110454/patal/events/207167119_534169291052548_7298800340153603413_n.jpg_r0vwox.jpg	2021-07-02 12:00:15	https://bit.ly/AWSPatal2	2021-07-02 13:00:24	2021-07-01 03:34:21.979184	2021-10-26 03:02:16.242908	0		\N	\N	\N	\N
+58	Menghadapi Technical Interview	https://res.cloudinary.com/patal/image/upload/v1630246971/patal/events/47153314-37D9-4340-8813-604B015700E4_tgsqvv.jpg	2021-09-04 14:22:28	https://bit.ly/daftarpatalspesial20	2021-09-04 14:00:00	2021-08-29 14:22:54.650893	2021-10-26 03:02:16.242908	0		\N	\N	\N	\N
+59	Culture of Innovation at AWS	https://res.cloudinary.com/patal/image/upload/v1627065003/patal/events/221385899_242465497709404_7405220988652013581_n.jpg_fzxci1.jpg	2021-08-06 12:00:33	https://bit.ly/AWSPatal3	2021-08-06 13:00:00	2021-07-23 18:30:10.218099	2021-10-26 03:02:16.242908	0		\N	\N	\N	\N
+60	Roadshow 1000 Startup	https://res.cloudinary.com/patal/image/upload/v1657883862/patal/events/E61BBDA2-E0C3-43AC-82A1-19B35BCF61B9_cmec0m.jpg	2022-07-22 11:16:37	https://1000startupdigital.id/roadshow/	2022-07-22 11:16:55	2022-07-15 11:19:38.60731	2022-07-15 11:19:38.60731	0		\N	\N	\N	\N
+61	Introduction to Generative AI and Its Implementation	https://res.cloudinary.com/patal/image/upload/v1705924717/patal/events/WhatsApp_Image_2024-01-21_at_10.53.05_suc6ve.jpg	2024-01-25 12:00:55	https://www.meetup.com/palembang-digital/events/298687301/	2024-01-25 13:30:00	2024-01-22 11:58:44.264439	2024-01-22 11:58:44.264439	0		\N	\N	\N	\N
+62	Bahasa Pemrograman Favorit Startups Indonesia	https://res.cloudinary.com/patal/image/upload/v1706025170/patal/events/158411239_114352837375556_4245498300960089527_n_ksbyz3.jpg	2021-03-12 13:00:07	https://bit.ly/gabungpatal	2021-03-12 14:00:16	2024-01-23 15:52:59.477381	2024-01-23 15:52:59.477381	0		\N	\N	\N	\N
+63	Founders Live Palembang: 99 Second Pitch Battle	https://res.cloudinary.com/patal/image/upload/v1706025814/patal/events/292458106_1520142985069218_7024122925260601023_n_xajfsa.jpg	2022-07-13 11:00:07	https://bit.ly/FLPlgInperson	2022-07-13 11:00:00	2024-01-23 16:03:58.955756	2024-01-23 16:03:58.955756	0		\N	\N	\N	\N
+64	Roadshow Getakan Nasional 1000 Startup Digital	https://res.cloudinary.com/patal/image/upload/v1706025952/patal/events/293104368_1103654713831686_4114166262343987174_n_hu1tbj.jpg	2022-07-22 08:00:14	https://1000startupdigital.id/roadshow/	2022-07-22 10:00:00	2024-01-23 16:05:55.327046	2024-01-23 16:05:55.327046	0		\N	\N	\N	\N
+65	How to Scale AWS Services	https://res.cloudinary.com/patal/image/upload/v1706026074/patal/events/295346118_749203242985007_3224800163788102269_n_kw6iyf.jpg	2022-07-29 12:00:21	https://bit.ly/AWSPatal-04	2022-07-29 13:00:00	2024-01-23 16:07:58.137628	2024-01-23 16:07:58.137628	0		\N	\N	\N	\N
+66	Tech Meetup: How companies use Git and GitHub to build software	https://res.cloudinary.com/patal/image/upload/v1702036483/patal/events/Patal_Tech_Meetup_Git_and_Github_-_Dec_23_gdjys6.png	2023-12-14 12:00:44	https://www.meetup.com/palembang-digital/events/297827928	2023-12-14 13:30:53	2023-12-08 11:58:27.054017	2023-12-08 11:58:27.054017	0		\N	\N	\N	\N
+67	Budaya Kerja Remote di Perusahaan Startup Teknologi	https://res.cloudinary.com/patal/image/upload/v1706027057/patal/events/288853796_1041405906498141_7834458815448911764_n_lw3poj.jpg	2022-06-24 12:00:44	https://www.youtube.com/@PalembangDigital	2022-06-24 13:00:00	2024-01-23 16:24:20.684087	2024-01-23 16:24:20.684087	0		\N	\N	\N	\N
+68	Peluang Karir UI/UX Design	https://res.cloudinary.com/patal/image/upload/v1706027161/patal/events/286551457_800231734194597_5971523394126651139_n_p26e6q.jpg	2022-06-11 03:00:30	https://bit.ly/CareerTalkMDP2022	2022-06-11 05:00:00	2024-01-23 16:26:04.631675	2024-01-23 16:26:04.631675	0		\N	\N	\N	\N
+69	Kenalan dengan Ekosistem Blockchain	https://res.cloudinary.com/patal/image/upload/v1706027279/patal/events/329279369_749812116524956_8662911016385929451_n_xobw6i.jpg	2023-04-08 08:00:23	https://bit.ly/SBC-M1	2023-04-08 10:00:00	2024-01-23 16:28:02.488157	2024-01-23 16:28:02.488157	0		\N	\N	\N	\N
+70	Kerja Dimanapun, Pendapatan Global	https://res.cloudinary.com/patal/image/upload/v1706027386/patal/events/334675096_1209950643215405_4259758253231437478_n_mxfudm.jpg	2023-03-18 07:00:08	https://bit.ly/patalremote	2023-03-18 08:30:00	2024-01-23 16:29:50.915129	2024-01-23 16:29:50.915129	0		\N	\N	\N	\N
+71	The Untold Story of Game Designer	https://res.cloudinary.com/patal/image/upload/v1706027467/patal/events/334584825_908105373725459_5760204635492620137_n_e0iihh.jpg	2023-03-18 12:00:29	https://s.id/GDPTalk3	2023-03-18 13:00:00	2024-01-23 16:31:10.174742	2024-01-23 16:31:10.174742	0		\N	\N	\N	\N
+72	Jurus Jitu Programmer Kekinian	https://res.cloudinary.com/patal/image/upload/v1706027556/patal/events/334237562_1872213239801723_7073620615065084590_n_zig7wi.jpg	2023-03-24 03:00:00	https://palembangdigital.org/	2023-03-24 05:00:00	2024-01-23 16:32:40.535616	2024-01-23 16:32:40.535616	0		\N	\N	\N	\N
+73	Nak jadi software engineer? Pacak nian!	https://res.cloudinary.com/patal/image/upload/v1706027650/patal/events/328866949_144179555175160_1739598981624465824_n_e20gc4.jpg	2023-02-11 07:00:30	https://bit.ly/Alterra-Academy-x-Palembang-Digital	2023-02-11 09:00:00	2024-01-23 16:34:12.222892	2024-01-23 16:34:12.222892	0		\N	\N	\N	\N
+74	Fundamental Digital Marketing	https://res.cloudinary.com/patal/image/upload/v1706027717/patal/events/325267436_6148433481856473_2732521377277745593_n_xvzust.jpg	2023-01-28 07:00:49	https://palembangdigital.org/	2023-01-28 09:00:00	2024-01-23 16:35:21.008952	2024-01-23 16:35:21.008952	0		\N	\N	\N	\N
+75	Global Game Jam Palembang 2023	https://res.cloudinary.com/patal/image/upload/v1706027791/patal/events/324379251_213817464381878_6795019721476678959_n_hk60yj.jpg	2023-01-03 03:00:51	https://s.id/GGJP2023	2023-01-05 11:00:02	2024-01-23 16:36:34.862308	2024-01-23 16:36:34.862308	0		\N	\N	\N	\N
+76	Sriwijaya Digital Conference 2022	https://res.cloudinary.com/patal/image/upload/v1706027912/patal/events/316493540_3352414335029860_3201738555440799981_n_uytrqd.jpg	2022-12-10 02:00:57	https://bit.ly/Daftar-SDC2022	2022-12-10 10:00:00	2024-01-23 16:38:36.018335	2024-01-23 16:38:36.018335	0		\N	\N	\N	\N
+77	Community is the Future of Business	https://res.cloudinary.com/patal/image/upload/v1706027991/patal/events/310479793_191792266594993_7661274751642202790_n_dmsead.jpg	2022-10-03 11:45:19	http://bit.ly/webinarc3	2022-10-03 14:00:00	2024-01-23 16:39:53.556337	2024-01-23 16:39:53.556337	0		\N	\N	\N	\N
+78	Global Game Jam Palembang 2024	https://res.cloudinary.com/patal/image/upload/v1706028189/patal/events/420310312_1317164128947620_2614059283560376441_n_kbeosq.jpg	2024-01-26 10:00:05	https://s.id/GGJP24	2024-01-28 07:00:34	2024-01-23 16:43:11.827367	2024-01-23 16:43:11.827367	0		\N	\N	\N	\N
+79	Securing Your Innovation: Navigating Cyber Challenges in Start-Up Ventures	https://res.cloudinary.com/patal/image/upload/v1706028314/patal/events/419554916_1348437215805363_8013294555195511623_n_idgpkp.jpg	2024-01-20 02:00:40	https://bit.ly/SecureYourStartUp	2024-01-20 05:00:00	2024-01-23 16:45:29.583835	2024-01-23 16:45:29.583835	0		\N	\N	\N	\N
+80	9th NextDev Roadshow: Palembang	https://res.cloudinary.com/patal/image/upload/v1706028431/patal/events/403936180_881667496685075_8463862813259932959_n_lwwzcw.jpg	2023-11-29 02:00:40	https://s.id/9thnextdevplmbg	2023-11-29 06:00:00	2024-01-23 16:47:17.882799	2024-01-23 16:47:17.882799	0		\N	\N	\N	\N
+81	Sriwijaya Digital Conference 2023	https://res.cloudinary.com/patal/image/upload/v1706028586/patal/events/400759204_1278385866185175_6187627701110405577_n_jqx0gm.jpg	2023-11-19 06:00:16	https://bit.ly/Regsdc2023	2023-11-19 10:00:00	2024-01-23 16:49:51.817532	2024-01-23 16:49:51.817532	0		\N	\N	\N	\N
+82	Buat Aplikasi Mobile Tanpa Coding	https://res.cloudinary.com/patal/image/upload/v1706028668/patal/events/399746279_1298101471069166_7144772474954741550_n_sjqgs4.jpg	2023-11-17 08:00:36	https://bit.ly/workshopsdc23	2023-11-17 09:30:00	2024-01-23 16:51:12.060886	2024-01-23 16:51:12.060886	0		\N	\N	\N	\N
+83	Get to Know and Elevate Yourself with GDSC Unsri	https://res.cloudinary.com/patal/image/upload/v1706028815/patal/events/387269563_345224011189640_124060522691574670_n_wmrso2.jpg	2023-10-13 12:30:45	bit.ly/InfoSesGDSCUNSRI23	2023-10-13 14:00:00	2024-01-23 16:53:38.212835	2024-01-23 16:53:38.212835	0		\N	\N	\N	\N
+84	#Hack4ID	https://res.cloudinary.com/patal/image/upload/v1706029081/patal/events/382606328_287312094050692_1583359974020345316_n_gu6lii.jpg	2023-09-29 03:00:14	1000startupdigital.id/hack4id	2023-09-30 10:00:25	2024-01-23 16:58:10.54321	2024-01-23 16:58:10.54321	0		\N	\N	\N	\N
+85	Manajemen Tim di Startup Unicorn & Perusahaan Teknologi Internasional	https://res.cloudinary.com/patal/image/upload/v1706029169/patal/events/382326402_1515779295905865_1694547313861233004_n_hogazf.jpg	2023-09-27 12:00:58	s.id/kbph4	2023-09-27 14:00:00	2024-01-23 16:59:35.052629	2024-01-23 16:59:35.052629	0		\N	\N	\N	\N
+86	Thriving Women in Tech: Breaking the Glass Ceiling	https://res.cloudinary.com/patal/image/upload/v1706029278/patal/events/379257260_1357192968551859_217977280263190367_n.heic_mxtjiy.jpg	2023-09-21 11:30:40	https://bit.ly/GetEmpoweredWebinar	2023-09-21 13:30:00	2024-01-23 17:01:21.288864	2024-01-23 17:01:21.288864	0		\N	\N	\N	\N
+87	#1000StartupDigital Roadshow	https://res.cloudinary.com/patal/image/upload/v1706029339/patal/events/379530782_298096382832910_4778362107526688588_n.heic_gfls7k.jpg	2023-09-20 07:00:55	https://1000startupdigital.id/roadshow	2023-09-20 10:00:00	2024-01-23 17:02:22.632836	2024-01-23 17:02:22.632836	0		\N	\N	\N	\N
+88	IT Festival 2023: Be a Digital Creator to Acquire Privileges	https://res.cloudinary.com/patal/image/upload/v1706029437/patal/events/375626189_776760817557356_2221236784950725978_n.heic_fdtmje.jpg	2023-09-19 06:00:11	https://itfestivalpolsri.com	2023-09-19 14:00:00	2024-01-23 17:04:10.818353	2024-01-23 17:04:10.818353	40000		\N	\N	\N	\N
+89	Teknologi Digital sebagai Solusi Penuntasan Kemiskinan dan Pengangguran di Sumatera	https://res.cloudinary.com/patal/image/upload/v1706029597/patal/events/374281236_1496581194425734_4369482469067758775_n.heic_azwwus.jpg	2023-09-03 12:00:06	bit.ly/regwebfordigipalembang	2023-09-03 13:30:00	2024-01-23 17:06:41.549301	2024-01-23 17:06:41.549301	0		\N	\N	\N	\N
+90	Google Cloud Goes to Palembang	https://res.cloudinary.com/patal/image/upload/v1706029660/patal/events/366136131_598113899159074_2898089782198385666_n.heic_w2tbfx.jpg	2023-09-01 06:30:08	https://tinyurl.com/GCPGoesToPalembang	2023-09-01 12:30:00	2024-01-23 17:07:48.44671	2024-01-23 17:07:48.44671	0		\N	\N	\N	\N
+91	Cracking the Code: Mastering HR & Tech Interviews	https://res.cloudinary.com/patal/image/upload/v1706029764/patal/events/365764229_17991861131173907_7634664774861342614_n.jpg_u53kzv.jpg	2023-08-10 11:30:52	bit.ly/CareerReadinessWebinar-Compar	2023-08-10 13:00:00	2024-01-23 17:09:29.343727	2024-01-23 17:09:29.343727	0		\N	\N	\N	\N
+92	Realizing Youth as Agent of Change Who Have Great Education and Skills	https://res.cloudinary.com/patal/image/upload/v1706029874/patal/events/365683664_17991790211173907_3646883619604096492_n.jpg_tfykeb.jpg	2023-08-13 01:00:41	https://bit.ly/SeminarFSF2023	2023-08-13 05:00:00	2024-01-23 17:11:18.226919	2024-01-23 17:11:18.226919	25000		\N	\N	\N	\N
+93	Crafting Your Personal Brand: Unleashing Your Potential	https://res.cloudinary.com/patal/image/upload/v1706029989/patal/events/362801274_6532185223510082_2365582812330517633_n.heic_njzu6v.jpg	2023-08-19 17:00:27	bit.ly/PublicCareerReadiness	2023-07-27 13:00:34	2024-01-23 17:13:56.991736	2024-01-23 17:13:56.991736	0		\N	\N	\N	\N
+94	#1000StartupDigital Roadshow	https://res.cloudinary.com/patal/image/upload/v1706030104/patal/events/362345241_1318535542404458_5044797350935734951_n.heic_cuqcls.jpg	2023-07-31 07:00:38	https://1000startupdigital.id/roadshow	2023-07-31 10:00:00	2024-01-23 17:15:06.977955	2024-01-23 17:15:06.977955	0		\N	\N	\N	\N
+95	UMKM Lokal Menuju Global	https://res.cloudinary.com/patal/image/upload/v1706030161/patal/events/361696298_291801143318423_2560068795690536668_n.heic_yztx94.jpg	2023-08-03 08:00:34	https://bit.ly/DSCCityRoadshowPLGS14	2023-08-03 11:00:00	2024-01-23 17:16:04.610777	2024-01-23 17:16:04.610777	0		\N	\N	\N	\N
+96	#Hack4ID	https://res.cloudinary.com/patal/image/upload/v1706030224/patal/events/359482734_216268244712302_944350470036561872_n.heic_g2gt2h.jpg	2023-07-15 03:00:27	https://www.instagram.com/p/CuinOwXyfM9/	2023-07-16 10:00:39	2024-01-23 17:17:06.434853	2024-01-23 17:17:06.434853	0		\N	\N	\N	\N
+97	The Essential Role of Real Life Experiences for Tech Talent	https://res.cloudinary.com/patal/image/upload/v1706030283/patal/events/350402598_211308165152588_3037686297867555707_n.heic_lgtzaz.jpg	2023-06-05 08:00:39	bit.ly/Webinar-Sosialisasi-GG	2023-06-05 10:00:00	2024-01-23 17:18:06.843178	2024-01-23 17:18:06.843178	0		\N	\N	\N	\N
+98	#1000StartupDigital Roadshow	https://res.cloudinary.com/patal/image/upload/v1706030510/patal/events/346461871_518664350314605_108467491217509363_n.heic_ze7qlu.jpg	2023-05-27 08:00:36	https://1000startupdigital.id/roadshow	2023-05-27 11:00:00	2024-01-23 17:29:03.649036	2024-01-23 17:29:03.649036	0		\N	\N	\N	\N
+99	Mengenalkan Teknologi Digital di Kota Palembang dalam Satu Wadah Komunitas	https://res.cloudinary.com/patal/image/upload/v1706031158/patal/events/419013089_698232685628827_259106827726553236_n.heic_nipuwz.jpg	2024-01-17 02:00:17	https://www.instagram.com/p/C2Kgdx3ygOE/	2024-01-17 03:00:00	2024-01-23 17:32:40.330805	2024-01-23 17:32:40.330805	0		\N	\N	\N	\N
+100	Bersaing dalam dunia yang penuh digitalisasi	https://res.cloudinary.com/patal/image/upload/v1706028970/patal/events/386081911_18312115636110983_1491492031994093401_n_czfht4.jpg	2023-10-07 07:00:36	https://palembangdigital.org/	2023-10-07 08:00:00	2024-01-23 16:56:12.650948	2024-01-23 16:56:12.650948	0		\N	\N	\N	\N
+101	𝗣𝗲𝘀𝘁𝗮 𝗪𝗶𝗿𝗮𝘂𝘀𝗮𝗵𝗮 𝗣𝗮𝗹𝗲𝗺𝗯𝗮𝗻𝗴 𝟮𝟬𝟮𝟮	https://res.cloudinary.com/patal/image/upload/v1706031511/patal/events/314480184_1192622784655794_3340191130535651921_n.jpg_sciacx.jpg	2022-11-12 03:00:52	https://www.instagram.com/p/CkvSEoGyFv4/	2022-11-13 11:00:02	2024-01-23 17:38:37.8139	2024-01-23 17:38:37.8139	99000		\N	\N	\N	\N
+102	Ignition by Gerakan Nasional 1000 Startup	https://res.cloudinary.com/patal/image/upload/v1706031587/patal/events/301405333_458975992812325_5588794253995336350_n.jpg_kno6ya.jpg	2022-08-27 03:00:11	https://www.instagram.com/p/Chs_gzVPs4v	2022-08-27 10:00:00	2024-01-23 17:39:50.742103	2024-01-23 17:39:50.742103	0		\N	\N	\N	\N
+103	Industry 101: The Most Wanted Competencies	https://res.cloudinary.com/patal/image/upload/v1706031677/patal/events/309013342_163851019572294_1463422086898170018_n.jpg_esasio.jpg	2022-09-29 07:00:32	https://nakama.id/event/dnagoestocampus2	2022-09-29 09:30:00	2024-01-23 17:41:22.323171	2024-01-23 17:41:22.323171	0		\N	\N	\N	\N
+104	Startup Talk: Peluang Startup Lokal ke Panggung Nasional dan Duni	https://res.cloudinary.com/patal/image/upload/v1706031750/patal/events/297367358_560790212394600_8537849069418998812_n.jpg_vaeb04.jpg	2022-08-14 11:00:51	bit.ly/ssfgath	2022-08-14 15:00:00	2024-01-23 17:42:33.224489	2024-01-23 17:42:33.224489	0		\N	\N	\N	\N
+105	Meetup: Build websites without coding using Framer and WordPress	https://res.cloudinary.com/patal/image/upload/v1708435626/patal/events/8_ysn0k6.jpg	2024-02-24 02:00:19	https://www.meetup.com/palembang-digital/events/299230713/	2024-02-24 04:30:27	2024-02-20 13:27:38.216576	2024-02-20 13:27:38.216576	0		\N	\N	\N	\N
+107	Igniting Creative Thinking in Technology	https://res.cloudinary.com/patal/image/upload/v1720282468/patal/events/441730333_776162787915385_8937263877630180923_n.jpg_kdsbky.jpg	2024-05-14 12:00:01	https://bit.ly/ILxPatal2024	2024-05-14 13:00:00	2024-07-06 16:22:04.989732	2024-07-06 16:22:04.989732	0		\N	\N	\N	\N
+108	Introduction to Prompt Engineering	https://res.cloudinary.com/patal/image/upload/v1720282530/patal/events/447936133_3628822754113230_7105305711949550510_n.jpg_uthjda.jpg	2024-06-12 12:00:12	https://s.id/patal-prompt-eng	2024-06-12 13:00:00	2024-07-06 16:22:05.050563	2024-07-06 16:22:05.050563	0		\N	\N	\N	\N
+112	NgabuburIT bersama Palembang Digital	https://res.cloudinary.com/patal/image/upload/v1720282198/patal/events/433100180_18390706333075267_9197907769260677817_n.jpg_nry5qt.jpg	2024-03-20 09:00:31	https://www.instagram.com/palembang_digital	2024-03-20 10:00:00	2024-07-14 11:43:21.507816	2024-07-14 11:43:21.507816	0	\N	\N	\N	\N	\N
+110	CELOTECH: Serangan Siber pada PDNS	https://res.cloudinary.com/patal/image/upload/v1720282622/patal/events/449495861_778284347797967_116205062928858861_n.jpg_rq3azt.jpg	2024-07-02 13:00:19	https://s.id/celotech-01	2024-07-02 14:30:00	2024-07-06 16:22:05.172719	2024-07-06 16:22:05.172719	0		\N	\N	\N	\N
+111	Buka Bersama & Communities Gathering	https://res.cloudinary.com/patal/image/upload/v1720282282/patal/events/433430885_18017886464173907_2142368710912307444_n.jpg_vetusd.jpg	2024-03-23 08:30:58	https://s.id/bukber-patal-2024	2024-03-23 12:00:00	2024-07-14 11:42:16.059412	2024-07-14 11:42:16.059412	0	\N	\N	\N	\N	\N
+106	Hackathon Konyol	https://res.cloudinary.com/patal/image/upload/v1720282399/patal/events/439179448_442437241485093_1113530863338397694_n.jpg_ramj1q.jpg	2024-05-04 02:00:53	https://hackathonkonyol.com/	2024-05-04 11:00:00	2024-07-06 16:22:04.902347	2024-07-06 16:22:04.902347	0		\N	\N	\N	\N
+109	Sriwijaya Digital Startup	https://res.cloudinary.com/patal/image/upload/v1720282587/patal/events/448807689_770788025217201_739560030648349447_n.jpg_vjvfhx.jpg	2024-06-20 02:00:06	https://www.sriwijayadigitalstartup.com/	2024-06-22 11:00:14	2024-07-06 16:22:05.120501	2024-07-06 16:22:05.120501	0	Selama 3 hari, kamu akan mendapatkan pelatihan digital startup secara intensif. Tidak hanya teori, kamu juga akan mempraktekkan langsung ilmu yang kamu dapatkan dengan membangun MVP startup kamu.	100	Hotel Salatin Palembang	https://maps.app.goo.gl/TJyUpqu5YKkaeXTt8	offline
+113	Test 123	https://res.cloudinary.com/patal/image/upload/v1720282622/patal/events/449495861_778284347797967_116205062928858861_n.jpg_rq3azt.jpg	2025-01-01 00:00:00	https://palembangdigital.org	2025-01-01 01:00:00	2024-07-16 10:47:50.724097	2024-07-16 10:47:50.724097	0	For testing purpose. For testing purpose. For testing purpose. For testing purpose. For testing purpose. For testing purpose. For testing purpose. For testing purpose. For testing purpose. For testing purpose.	\N	\N	\N	\N
+\.
+
+
+--
+-- Data for Name: events_hosts_organizations; Type: TABLE DATA; Schema: public; Owner: patal-bot
+--
+
+COPY public.events_hosts_organizations (event_id, organization_id) FROM stdin;
+109	82
+106	84
+\.
+
+
+--
+-- Data for Name: events_hosts_users; Type: TABLE DATA; Schema: public; Owner: patal-bot
+--
+
+COPY public.events_hosts_users (event_id, user_id) FROM stdin;
+\.
+
+
+--
+-- Data for Name: events_speakers; Type: TABLE DATA; Schema: public; Owner: patal-bot
+--
+
+COPY public.events_speakers (event_id, user_id) FROM stdin;
+109	8628d57b-b60b-402e-bd22-e147df4131a0
+110	ced6fdf0-e34b-41ee-a622-43392e115bc9
+110	31d20aaf-84f6-40ef-8da0-fe55ed3869b7
+110	11d621f5-6605-4cca-a538-2d7900d735aa
+110	f129ea02-24ea-4518-bd3e-eea39f39953a
+113	ced6fdf0-e34b-41ee-a622-43392e115bc9
+113	31d20aaf-84f6-40ef-8da0-fe55ed3869b7
+113	11d621f5-6605-4cca-a538-2d7900d735aa
+113	f129ea02-24ea-4518-bd3e-eea39f39953a
+109	ced6fdf0-e34b-41ee-a622-43392e115bc9
+111	374ffe39-c99d-405b-9188-6c9153f1bf32
+\.
+
+
+--
+-- Data for Name: events_videos; Type: TABLE DATA; Schema: public; Owner: patal-bot
+--
+
+COPY public.events_videos (event_id, video_id) FROM stdin;
+109	74
+109	21
+109	81
+109	55
+109	23
+109	45
+109	27
+109	25
+109	28
+109	65
+109	59
+109	66
+109	79
+109	35
+109	57
+109	63
+\.
+
+
+--
+-- Data for Name: organizations; Type: TABLE DATA; Schema: public; Owner: patal-bot
+--
+
+COPY public.organizations (id, name, image, slug, organization_type, email, phone_number, website, short_bio, long_bio, created_at, updated_at) FROM stdin;
+1	Ampera Labs	https://res.cloudinary.com/patal/image/upload/v1634564513/patal/events/F26B36A3-AA35-4C51-942A-2F934B9B4FA5_ickrbw.png	ampera-labs	startup	\N	\N	\N	\N	\N	2024-07-21 13:15:17.648152	2024-07-21 13:15:17.648152
+2	SewaMifi	https://res.cloudinary.com/patal/image/upload/v1634642249/patal/events/cropped-2_vnqrny.png	SewaMifi	startup	\N	\N	\N	\N	\N	2024-07-21 13:15:17.648152	2024-07-21 13:15:17.648152
+3	Andalas Global Teknologi	https://res.cloudinary.com/patal/image/upload/v1606410370/patal/events/AGT_Andalas_Global_Teknologi_bzc3mb.png	agt	startup	\N	\N	\N	\N	\N	2024-07-21 13:15:17.648152	2024-07-21 13:15:17.648152
+4	Cyborg IT Center	https://res.cloudinary.com/patal/image/upload/v1606410561/patal/events/Cyborg_IT_Center_logo_hitam_a6qbm2.png	cyborg-it-center	startup	\N	\N	\N	\N	\N	2024-07-21 13:15:17.648152	2024-07-21 13:15:17.648152
+5	Sriwijaya Host	https://res.cloudinary.com/patal/image/upload/v1606411262/patal/events/sriwijaya-host_sfhxkl.png	sriwijaya-host	startup	\N	\N	\N	\N	\N	2024-07-21 13:15:17.648152	2024-07-21 13:15:17.648152
+6	Telur Emas	https://res.cloudinary.com/patal/image/upload/v1606449996/patal/events/Telur_Emas_setxou.jpg	telur-emas	startup	\N	\N	\N	\N	\N	2024-07-21 13:15:17.648152	2024-07-21 13:15:17.648152
+7	Synapse Academy	https://res.cloudinary.com/patal/image/upload/v1606450108/patal/events/Synapse_Academy_uub21t.png	synapse-academy	startup	\N	\N	\N	\N	\N	2024-07-21 13:15:17.648152	2024-07-21 13:15:17.648152
+8	Rapat	https://res.cloudinary.com/patal/image/upload/v1606450209/patal/events/Rapat_p3daqd.jpg	rapat	startup	\N	\N	\N	\N	\N	2024-07-21 13:15:17.648152	2024-07-21 13:15:17.648152
+9	Digital Creative	https://res.cloudinary.com/patal/image/upload/v1606450388/patal/events/Digital_Creative_rqm3j8.jpg	digital-creative	startup	\N	\N	\N	\N	\N	2024-07-21 13:15:17.648152	2024-07-21 13:15:17.648152
+10	Qualitiva	https://res.cloudinary.com/patal/image/upload/v1606450581/patal/events/logo_qualitiva_hires_o9zv1i.webp	qualitiva	startup	\N	\N	\N	\N	\N	2024-07-21 13:15:17.648152	2024-07-21 13:15:17.648152
+11	Adelia & CO	https://res.cloudinary.com/patal/image/upload/v1606451972/patal/events/Untitled_design_gazfbt.png	adelia-co	startup	\N	\N	\N	\N	\N	2024-07-21 13:15:17.648152	2024-07-21 13:15:17.648152
+12	Siberat	https://res.cloudinary.com/patal/image/upload/v1606452071/patal/events/Untitled_design_1_fuxi9c.png	siberat	startup	\N	\N	\N	\N	\N	2024-07-21 13:15:17.648152	2024-07-21 13:15:17.648152
+13	LOKO IT SOLUTION	https://res.cloudinary.com/patal/image/upload/v1606452137/patal/events/Untitled_design_2_q5vvru.png	loko-it	startup	\N	\N	\N	\N	\N	2024-07-21 13:15:17.648152	2024-07-21 13:15:17.648152
+14	Smart Integrated System	https://res.cloudinary.com/patal/image/upload/v1606452287/patal/events/Untitled_design_3_aqhyha.png	smart-integrated-system	startup	\N	\N	\N	\N	\N	2024-07-21 13:15:17.648152	2024-07-21 13:15:17.648152
+15	Payo Print	https://res.cloudinary.com/patal/image/upload/v1606475088/patal/events/WhatsApp_Image_2020-11-27_at_18.01.34_1_vldtgb.jpg	payo-print	startup	\N	\N	\N	\N	\N	2024-07-21 13:15:17.648152	2024-07-21 13:15:17.648152
+16	Ralali	https://res.cloudinary.com/patal/image/upload/v1606475160/patal/events/WhatsApp_Image_2020-11-27_at_4.20.58_PM_-_Hendra_Setyadi_P_k8tfeu.jpg	ralali	startup	\N	\N	\N	\N	\N	2024-07-21 13:15:17.648152	2024-07-21 13:15:17.648152
+17	Say Hi	https://res.cloudinary.com/patal/image/upload/v1606750102/patal/events/PHOTO-2020-11-30-22-27-00_p4le4n.jpg	say-hi	startup	\N	\N	\N	\N	\N	2024-07-21 13:15:17.648152	2024-07-21 13:15:17.648152
+18	Maulagi	https://res.cloudinary.com/patal/image/upload/v1619797178/patal/events/714C1171-FE8A-4B37-ABD3-733E9A6445AA_wbnby0.png	maulagi	startup	\N	\N	\N	\N	\N	2024-07-21 13:15:17.648152	2024-07-21 13:15:17.648152
+19	Belajariah	https://res.cloudinary.com/patal/image/upload/v1619797344/patal/events/7B512FC5-1441-4EE2-87C4-ACE36831CD3A_wim3gl.jpg	belajariah	startup	\N	\N	\N	\N	\N	2024-07-21 13:15:17.648152	2024-07-21 13:15:17.648152
+20	Pinjem	https://res.cloudinary.com/patal/image/upload/v1619797550/patal/events/5E356054-628F-49A0-AD1B-CCD245182751_q9yhjs.png	pinjem	startup	\N	\N	\N	\N	\N	2024-07-21 13:15:17.648152	2024-07-21 13:15:17.648152
+21	Classico	https://res.cloudinary.com/patal/image/upload/v1619797981/patal/events/D423B77F-1D84-46CE-BECD-1A85E38F41A1_fwbk4o.png	classico	startup	\N	\N	\N	\N	\N	2024-07-21 13:15:17.648152	2024-07-21 13:15:17.648152
+22	diBajolbae	https://res.cloudinary.com/patal/image/upload/v1619798271/patal/events/CF6AE870-C276-4B00-8B63-8131F7F18011_emv6oj.png	dibajolbae	startup	\N	\N	\N	\N	\N	2024-07-21 13:15:17.648152	2024-07-21 13:15:17.648152
+23	Elmu.id	https://res.cloudinary.com/patal/image/upload/v1619798707/patal/events/0E72ADF0-7BD3-4589-9F7D-D705C427AC5A_w87upt.png	elmu-id	startup	\N	\N	\N	\N	\N	2024-07-21 13:15:17.648152	2024-07-21 13:15:17.648152
+24	Pergihaji.id	https://res.cloudinary.com/patal/image/upload/v1619834941/patal/events/3BA3E383-A446-4347-BCD4-D0BA84FAEB35_mwrbrb.png	pergihaji-id	startup	\N	\N	\N	\N	\N	2024-07-21 13:15:17.648152	2024-07-21 13:15:17.648152
+25	Newbie Coding	https://res.cloudinary.com/patal/image/upload/v1620506472/patal/events/E3CCBEAB-81D0-49BB-B96E-DD6284230C54_wgdf7k.png	newbie-coding	startup	\N	\N	\N	\N	\N	2024-07-21 13:15:17.648152	2024-07-21 13:15:17.648152
+26	Desaku Muara Enim	https://res.cloudinary.com/patal/image/upload/v1621592599/patal/events/72B90566-2123-45DF-A0DA-082A07C20733_jurluc.jpg	desaku-muara-enim	startup	\N	\N	\N	\N	\N	2024-07-21 13:15:17.648152	2024-07-21 13:15:17.648152
+27	Intech Corp	https://res.cloudinary.com/patal/image/upload/v1621592950/patal/events/182D5D09-D8F7-4519-B612-61E3CD5B5AD5_t0naei.png	intech-corp	startup	\N	\N	\N	\N	\N	2024-07-21 13:15:17.648152	2024-07-21 13:15:17.648152
+28	Tambo	https://res.cloudinary.com/patal/image/upload/v1622954686/patal/events/9B40A087-1CA2-4FAC-9873-72EB14E4C695_gnkadw.png	tambo	startup	\N	\N	\N	\N	\N	2024-07-21 13:15:17.648152	2024-07-21 13:15:17.648152
+29	Flazs	https://res.cloudinary.com/patal/image/upload/v1622955127/patal/events/780BE36B-EA75-4ACA-ACE9-93B05B44E0C2_e4tabe.jpg	flazs	startup	\N	\N	\N	\N	\N	2024-07-21 13:15:17.648152	2024-07-21 13:15:17.648152
+30	Lingkaran.id	https://res.cloudinary.com/patal/image/upload/v1622955144/patal/events/21B96871-071D-4AA6-BE2D-5B1659EC9E34_ocvmtj.jpg	lingkaran-id	startup	\N	\N	\N	\N	\N	2024-07-21 13:15:17.648152	2024-07-21 13:15:17.648152
+31	Dezainla.com	https://res.cloudinary.com/patal/image/upload/v1627023032/patal/events/8D17CCA9-0D35-4115-9775-A2F2550AADAB_j9kdkl.png	dezainla-com	startup	\N	\N	\N	\N	\N	2024-07-21 13:15:17.648152	2024-07-21 13:15:17.648152
+32	Belijek	https://res.cloudinary.com/patal/image/upload/v1634642044/patal/events/download_3_rjrcjg.png	belijek	startup	\N	\N	\N	\N	\N	2024-07-21 13:15:17.648152	2024-07-21 13:15:17.648152
+33	Belido	https://res.cloudinary.com/patal/image/upload/v1634642087/patal/events/images_dizjri.png	belido	startup	\N	\N	\N	\N	\N	2024-07-21 13:15:17.648152	2024-07-21 13:15:17.648152
+34	My Office Coworking Space	https://res.cloudinary.com/patal/image/upload/v1606450242/patal/events/My_Office_Coworking_Space_hni4jq.jpg	my-office	startup	\N	\N	\N	\N	\N	2024-07-21 13:15:17.648152	2024-07-21 13:15:17.648152
+35	LOKAL	https://res.cloudinary.com/patal/image/upload/v1606450290/patal/events/LOKAL_lml0xl.jpg	lokal	startup	\N	\N	\N	\N	\N	2024-07-21 13:15:17.648152	2024-07-21 13:15:17.648152
+36	Hostingan ID	https://res.cloudinary.com/patal/image/upload/v1606450328/patal/events/HOSTINGANID_zzyepf.jpg	hostingan-id	startup	\N	\N	\N	\N	\N	2024-07-21 13:15:17.648152	2024-07-21 13:15:17.648152
+37	Digital Labs	https://res.cloudinary.com/patal/image/upload/v1606450351/patal/events/DigitaLabs_cgprce.png	digital-labs	startup	\N	\N	\N	\N	\N	2024-07-21 13:15:17.648152	2024-07-21 13:15:17.648152
+38	Si Jon. Instant	https://res.cloudinary.com/patal/image/upload/v1627027455/patal/events/67A07434-E96C-4BA2-99BB-2F802DAEA166_b0qp9k.png	si-jon-instant	startup	\N	\N	\N	\N	\N	2024-07-21 13:15:17.648152	2024-07-21 13:15:17.648152
+39	scafol	https://res.cloudinary.com/patal/image/upload/v1627755448/patal/events/3FE546E1-CEAD-477A-B219-A9A10A0E822B_nwcvxr.png	scafol	startup	\N	\N	\N	\N	\N	2024-07-21 13:15:17.648152	2024-07-21 13:15:17.648152
+40	Oncak	https://res.cloudinary.com/patal/image/upload/v1627755522/patal/events/EC1DB098-F339-4C00-BCF9-069E92387379_g4b7hs.png	oncak	startup	\N	\N	\N	\N	\N	2024-07-21 13:15:17.648152	2024-07-21 13:15:17.648152
+41	ZeroWaste Palembang	https://res.cloudinary.com/patal/image/upload/v1627755579/patal/events/4F12CD1A-4B9C-4EB1-AA82-AECC4C4D4593_rimxxb.jpg	zerowaste-palembang	startup	\N	\N	\N	\N	\N	2024-07-21 13:15:17.648152	2024-07-21 13:15:17.648152
+42	Urus Nikah	https://res.cloudinary.com/patal/image/upload/v1627755729/patal/events/22821D12-07CD-4500-AF7E-A550A004D8C1_ummdlv.png	urus-nikah	startup	\N	\N	\N	\N	\N	2024-07-21 13:15:17.648152	2024-07-21 13:15:17.648152
+43	AKR	https://res.cloudinary.com/patal/image/upload/v1627755889/patal/events/8F1CBBB5-09AA-4ECA-B939-E0C0206C99D6_yalhtu.png	akr	startup	\N	\N	\N	\N	\N	2024-07-21 13:15:17.648152	2024-07-21 13:15:17.648152
+44	phylot	https://res.cloudinary.com/patal/image/upload/v1627901922/patal/events/A8563A89-3614-47FC-BFEF-4A1E1A34D3D5_qu8oey.jpg	phylot	startup	\N	\N	\N	\N	\N	2024-07-21 13:15:17.648152	2024-07-21 13:15:17.648152
+45	Tridi	https://res.cloudinary.com/patal/image/upload/v1663650012/patal/events/tridi_logo_b_vax4xu.png		startup	\N	\N	\N	\N	\N	2024-07-21 13:15:17.648152	2024-07-21 13:15:17.648152
+46	Palembang Digital	/logo-black-bg.png	patal	community	\N	\N	\N	\N	\N	2024-07-21 13:23:51.065721	2024-07-21 13:23:51.065721
+47	AIRLab Unsri	https://res.cloudinary.com/patal/image/upload/v1606408738/patal/events/airlab_unsri_icue4s.png	airlab-unsri	research lab	\N	\N	\N	\N	\N	2024-07-21 13:23:51.065721	2024-07-21 13:23:51.065721
+48	Deep Tech Foundation	https://res.cloudinary.com/patal/image/upload/v1606410596/patal/events/Deep_Tech_Logotype-06_lvue34.png	deep-tech	community	\N	\N	\N	\N	\N	2024-07-21 13:23:51.065721	2024-07-21 13:23:51.065721
+49	APTIKOM	https://res.cloudinary.com/patal/image/upload/v1606411290/patal/events/APTIKOM_gqsr2d.jpg	aptikom	community	\N	\N	\N	\N	\N	2024-07-21 13:23:51.065721	2024-07-21 13:23:51.065721
+50	Permikomnas	https://res.cloudinary.com/patal/image/upload/v1606452510/patal/events/PERMIKOMNAS_f6thyw.png	permikomnas	community	\N	\N	\N	\N	\N	2024-07-21 13:23:51.065721	2024-07-21 13:23:51.065721
+51	YOT Palembang	https://res.cloudinary.com/patal/image/upload/v1606452545/patal/events/YOT_Palembang_ulv5f6.png	yot-palembang	community	\N	\N	\N	\N	\N	2024-07-21 13:23:51.065721	2024-07-21 13:23:51.065721
+52	Indo Starter	https://res.cloudinary.com/patal/image/upload/v1606452579/patal/events/Indostarter_arvxzi.jpg	indo-starter	community	\N	\N	\N	\N	\N	2024-07-21 13:23:51.065721	2024-07-21 13:23:51.065721
+53	UKM IKM Nusantara	https://res.cloudinary.com/patal/image/upload/v1606452607/patal/events/UKM_IKM_Nusantara_zn9n04.jpg	ukm-ikm-nusantara	community	\N	\N	\N	\N	\N	2024-07-21 13:23:51.065721	2024-07-21 13:23:51.065721
+54	HMJ POLSRI	https://res.cloudinary.com/patal/image/upload/v1606452639/patal/events/HMJ_MI_Polsri_esxnur.jpg	hmj-polsri	student community	\N	\N	\N	\N	\N	2024-07-21 13:23:51.065721	2024-07-21 13:23:51.065721
+55	HMIF UNSRI	https://res.cloudinary.com/patal/image/upload/v1606452662/patal/events/hmifUnsri_logo_teoepo.png	hmif-unsri	student community	\N	\N	\N	\N	\N	2024-07-21 13:23:51.065721	2024-07-21 13:23:51.065721
+56	HMIF UIGM	https://res.cloudinary.com/patal/image/upload/v1606452681/patal/events/HMIF_UIGM_Palembang_mcgmir.png	hmif-uigm	student community	\N	\N	\N	\N	\N	2024-07-21 13:23:51.065721	2024-07-21 13:23:51.065721
+57	HMI UIGM	https://res.cloudinary.com/patal/image/upload/v1606452703/patal/events/hmi_uigm_rxhuny.jpg	hmi-uigm	student community	\N	\N	\N	\N	\N	2024-07-21 13:23:51.065721	2024-07-21 13:23:51.065721
+58	HIMTIK BIDAR	https://res.cloudinary.com/patal/image/upload/v1606452721/patal/events/himtik_bidar_sger6q.jpg	himtik-bidar	student community	\N	\N	\N	\N	\N	2024-07-21 13:23:51.065721	2024-07-21 13:23:51.065721
+59	HIMSIF BIDAR	https://res.cloudinary.com/patal/image/upload/v1606452738/patal/events/himsif_bidar_jujflv.jpg	himsif-bidar	student community	\N	\N	\N	\N	\N	2024-07-21 13:23:51.065721	2024-07-21 13:23:51.065721
+60	HIMSI UIN RADEN FATAH	https://res.cloudinary.com/patal/image/upload/v1606452766/patal/events/HIMSI_UIN_RF_rilu2z.png	himsi-uin	student community	\N	\N	\N	\N	\N	2024-07-21 13:23:51.065721	2024-07-21 13:23:51.065721
+61	HIMSI UIGM	https://res.cloudinary.com/patal/image/upload/v1606452886/patal/events/himsi_uigm_frpdpq.jpg	himsi-uigm	student community	\N	\N	\N	\N	\N	2024-07-21 13:23:51.065721	2024-07-21 13:23:51.065721
+62	HIMSI PALCOMTECH	https://res.cloudinary.com/patal/image/upload/v1606452906/patal/events/HIMSI_Palcomtech_im4vvs.png	himsi-palcomtech	student community	\N	\N	\N	\N	\N	2024-07-21 13:23:51.065721	2024-07-21 13:23:51.065721
+63	HIMPUNAN TEKNIK KOMPUTER	https://res.cloudinary.com/patal/image/upload/v1606452926/patal/events/Himpunan_Teknik_Komputer_fv1pjk.png	himpunan-teknik-komputer	student community	\N	\N	\N	\N	\N	2024-07-21 13:23:51.065721	2024-07-21 13:23:51.065721
+64	HIMPI BINA INSAN LUBUK LINGGAU	https://res.cloudinary.com/patal/image/upload/v1606452951/patal/events/himpi_bina_insan_lubuk_linggau_shm6bw.jpg	himpi-bina-insan	student community	\N	\N	\N	\N	\N	2024-07-21 13:23:51.065721	2024-07-21 13:23:51.065721
+65	HIMIF PALCOMTECH	https://res.cloudinary.com/patal/image/upload/v1606452972/patal/events/HIMIF_Palcomtech_sbplmi.jpg	himif-placomtech	student community	\N	\N	\N	\N	\N	2024-07-21 13:23:51.065721	2024-07-21 13:23:51.065721
+66	HIMASTER UIGM	https://res.cloudinary.com/patal/image/upload/v1606452988/patal/events/himaster_uigm_cyyhk8.jpg	himaster-uigm	student community	\N	\N	\N	\N	\N	2024-07-21 13:23:51.065721	2024-07-21 13:23:51.065721
+67	Design Class Palembang	https://res.cloudinary.com/patal/image/upload/v1606453007/patal/events/Design_Class_Palembang_lx08mf.jpg	dcp	community	\N	\N	\N	\N	\N	2024-07-21 13:23:51.065721	2024-07-21 13:23:51.065721
+68	Bina Darma Cyber Army	https://res.cloudinary.com/patal/image/upload/v1606453026/patal/events/Bina_Darma_Cyber_Army_o7zw5l.jpg	bidarcyberarmy	student community	\N	\N	\N	\N	\N	2024-07-21 13:23:51.065721	2024-07-21 13:23:51.065721
+69	AISEC UNSRI	https://res.cloudinary.com/patal/image/upload/v1606453100/patal/events/Untitled_design_4_dfnkly.png	aisec-unsri	student community	\N	\N	\N	\N	\N	2024-07-21 13:23:51.065721	2024-07-21 13:23:51.065721
+70	1000 Startup Digital	https://res.cloudinary.com/patal/image/upload/v1606453155/patal/events/Untitled_design_5_d3oxvo.png	1000-startup	community	\N	\N	\N	\N	\N	2024-07-21 13:23:51.065721	2024-07-21 13:23:51.065721
+71	FASCO UNSRI	https://res.cloudinary.com/patal/image/upload/v1606453178/patal/events/Untitled_design_6_oeiqgq.png	fasco-unsri	student community	\N	\N	\N	\N	\N	2024-07-21 13:23:51.065721	2024-07-21 13:23:51.065721
+72	Google Developer Student Club	https://res.cloudinary.com/patal/image/upload/v1606453403/patal/events/Untitled_design_7_sjrbva.png	gdsc	student community	\N	\N	\N	\N	\N	2024-07-21 13:23:51.065721	2024-07-21 13:23:51.065721
+73	SCSI UIN	https://res.cloudinary.com/patal/image/upload/v1606453415/patal/events/kolab-05_myrnbs.png	scsi-uin	student community	\N	\N	\N	\N	\N	2024-07-21 13:23:51.065721	2024-07-21 13:23:51.065721
+74	FORTRAN	https://res.cloudinary.com/patal/image/upload/v1606453432/patal/events/kolab-01_fuauqp.png	fortran	community	\N	\N	\N	\N	\N	2024-07-21 13:23:51.065721	2024-07-21 13:23:51.065721
+75	Sumsel Startup Founders	https://res.cloudinary.com/patal/image/upload/v1635619765/patal/events/Logo-transparent_lchv7x.png	ssf	community	\N	\N	\N	\N	\N	2024-07-21 13:23:51.065721	2024-07-21 13:23:51.065721
+76	Game Developer Palembang	https://res.cloudinary.com/patal/image/upload/v1635619803/patal/events/Logo_Game_Developer_Palembang_yds37x.png	gdp	community	\N	\N	\N	\N	\N	2024-07-21 13:23:51.065721	2024-07-21 13:23:51.065721
+77	Jet Brains	https://res.cloudinary.com/patal/image/upload/v1649864336/patal/events/47044516-820F-4A86-ACFA-AA227BDE0E06_ecu6ax.jpg	jetbrains	company	\N	\N	\N	\N	\N	2024-07-21 13:23:51.065721	2024-07-21 13:23:51.065721
+78	Founders Live	https://res.cloudinary.com/patal/image/upload/v1649864372/patal/events/5E6A6B06-BA6B-46F4-8A10-EB7D0E27D45C_es4vaj.jpg	founders-live	community	\N	\N	\N	\N	\N	2024-07-21 13:23:51.065721	2024-07-21 13:23:51.065721
+79	AWS Services	https://res.cloudinary.com/patal/image/upload/v1649864417/patal/events/A3024C2E-4206-4610-ADED-357DE4D33A11_tudpuz.jpg	aws	company	\N	\N	\N	\N	\N	2024-07-21 13:23:51.065721	2024-07-21 13:23:51.065721
+82	Dispora Prov. Sumsel	https://res.cloudinary.com/patal/image/upload/v1721734960/patal-v2/events/tlnz1nz3xg6kugtuhpgi.png	dispora-sumsel	government	\N	\N	\N	Dinas Pemuda dan Olahraga Provinsi Sumatera Selatan	\N	2024-07-23 11:42:56.651446	2024-07-23 11:42:56.651446
+83	Diskominfo Prov. Sumsel	https://res.cloudinary.com/patal/image/upload/v1721735048/patal-v2/events/uqua8ncuxgospiceabgw.jpg	diskominfo-sumsel	government	\N	\N	\N	Dinas Komunikasi dan Informatika Provinsi Sumatera Selatan	\N	2024-07-23 11:45:10.916491	2024-07-23 11:45:10.916491
+84	Institut Teknologi & Bisnis PalComTech	https://res.cloudinary.com/patal/image/upload/v1721807950/patal-v2/events/keefmoch3jwsr59nwywo.png	palcomtech	university	\N	\N	https://palcomtech.ac.id/	Institut Teknologi & Bisnis PalComTech	\N	2024-07-24 07:59:46.821404	2024-07-24 07:59:46.821404
+\.
+
+
+--
+-- Data for Name: sessions; Type: TABLE DATA; Schema: public; Owner: patal-bot
+--
+
+COPY public.sessions ("sessionToken", "userId", expires) FROM stdin;
+869df3d4-051a-424a-8670-a37550617f53	ced6fdf0-e34b-41ee-a622-43392e115bc9	2024-08-24 13:18:52.598
+6dcb53b6-fe3d-4b77-9c0e-528b57c34341	51bc3e65-679b-42b2-9eb0-d23cc4f02452	2024-08-25 11:13:29.411
+5027178e-2f31-4cd8-92ff-9e4584debf06	11d621f5-6605-4cca-a538-2d7900d735aa	2024-08-15 16:16:53.282
+050ecfd9-34d5-4565-8309-ec05bfb2fcad	d76c5a86-847d-40ce-a1c4-3ca242b62a09	2024-08-15 16:19:48.672
+5ab52c2d-3bcb-47ad-8f7e-42565b250c34	f129ea02-24ea-4518-bd3e-eea39f39953a	2024-08-16 02:13:52.093
+9b195d53-5fc3-433f-96f3-456fa905471d	8628d57b-b60b-402e-bd22-e147df4131a0	2024-08-16 03:20:06.458
+a752bd79-ad36-4fe1-8a81-657052536ccc	8628d57b-b60b-402e-bd22-e147df4131a0	2024-08-16 03:20:09.315
+a3d4a0f0-97a5-4f0f-b577-a03018117c90	8628d57b-b60b-402e-bd22-e147df4131a0	2024-08-16 03:20:09.72
+38001074-ba31-46b7-af73-67cde4416aa3	56b913b8-6c52-4361-af3c-c45c7d0ccfb3	2024-08-16 03:41:53.22
+dbd6ad1a-b315-48ea-8c8a-acb8099363d0	672df9cf-6931-4bb9-977a-97785da3f0e3	2024-08-18 12:43:35.269
+95851ef2-99f7-4998-a865-8b0028802564	31d20aaf-84f6-40ef-8da0-fe55ed3869b7	2024-08-18 16:26:56.767
+3dc379a3-ef35-4536-9fec-b4b0a51ad9b7	8639237e-933f-4e73-bf31-77014a267d98	2024-08-20 12:25:09.194
+9a1901f7-151d-4eae-a44a-e70a7b18a849	374ffe39-c99d-405b-9188-6c9153f1bf32	2024-08-21 09:03:21.533
+692b52d4-3852-43c2-9ff4-ce631da94a5b	55420c92-c54b-45b4-a219-f81a8f4d7594	2024-08-21 09:07:51.881
+7a61b0b9-fcfd-4b9e-84a1-5280fa176e94	8d7092fd-f650-4441-b66d-a1a2a6d3e9dc	2024-08-21 09:57:22.261
+cfaa6883-084e-48c1-9384-18818dc5579a	191c9b5c-2e9b-429d-9c4b-bfed354585bd	2024-08-21 10:10:15.037
+63a34f08-e16d-4483-8888-0255cb3ebdb3	71b5d744-9cd0-4078-9c6c-0e03631778fa	2024-08-21 15:07:30.252
+2e9e22e3-17b7-4990-9aee-2bd2e24ecb7a	d8de7bb2-caf6-4d52-8236-c9e9b6dc15f4	2024-08-22 12:23:20.735
+b5d2d7b5-9e7d-4c0f-a7d1-40c7ea180245	ced6fdf0-e34b-41ee-a622-43392e115bc9	2024-08-22 12:28:03.399
+36e21cda-71ac-4ee0-a8f2-98196f1076f2	0f01b12c-efc0-4a67-8b8b-87e35f8f1e1f	2024-08-23 05:44:16.911
+813c8e59-6515-4a32-a7a1-b0a5493ab3a2	ced6fdf0-e34b-41ee-a622-43392e115bc9	2024-08-24 11:42:03.824
+\.
+
+
+--
+-- Data for Name: users; Type: TABLE DATA; Schema: public; Owner: patal-bot
+--
+
+COPY public.users (id, name, email, "emailVerified", image, user_role, username, onboarded, phone_number, occupation, institution, bio) FROM stdin;
+56b913b8-6c52-4361-af3c-c45c7d0ccfb3	Roli Bernanda	acappemenang@gmail.com	\N	https://lh3.googleusercontent.com/a/ACg8ocJaURlWfTK8rloSb0QfB2FTnMgNV6wDThruqT18ECP9z2hPLlgs=s96-c	member	rolibernanda	f	\N	\N	\N	\N
+31d20aaf-84f6-40ef-8da0-fe55ed3869b7	Joneten Saputra	joneten91@gmail.com	\N	https://lh3.googleusercontent.com/a/ACg8ocKpA2kCxOraUh5brI_HKYzJX1l87kuEmaCJcQ89bgXCDO1lBuYl=s96-c	member	jonetensaputra	f	\N	\N	\N	\N
+f129ea02-24ea-4518-bd3e-eea39f39953a	Sofian Hadiwijaya	me.sofian.hadiwijaya@gmail.com	\N	https://lh3.googleusercontent.com/a/ACg8ocLrJvY2APQTq6UvdLkuXr-avkjLHTgPfZJRIzr33dnDT4IOAKA=s96-c	member	sofianhw	f	\N	\N	\N	\N
+11d621f5-6605-4cca-a538-2d7900d735aa	Muhammad Fakhri Rizqullah	fakhririzqullah168@gmail.com	\N	https://lh3.googleusercontent.com/a/ACg8ocLqhHJiypUPx_jmgeAJZcv5QMhk0RefVMkBoS8tzR1f_F-VYVMM=s96-c	member	mfakhrizqullah_	f	\N	\N	\N	\N
+8628d57b-b60b-402e-bd22-e147df4131a0	Mely Arisandi	arisandi.network@gmail.com	\N	https://lh3.googleusercontent.com/a/ACg8ocLiMTp-9VprKijyW_6XO8x0-RVgYlBJqyS9x2oez3eTLv7u0Sk=s96-c	member	dwirhiesamely	f	\N	\N	\N	\N
+8639237e-933f-4e73-bf31-77014a267d98	Nisrina Febriyanti	febriyantinisrina@gmail.com	\N	https://lh3.googleusercontent.com/a/ACg8ocKjiHO2Qg-8StVzE9x8iP02r_82WnNJLHqN6IsFcI8CFuRxioArOA=s96-c	member	nisrinafri	f	\N	\N	\N	\N
+71b5d744-9cd0-4078-9c6c-0e03631778fa	Palembang Digital	palembangdigital01@gmail.com	\N	https://lh3.googleusercontent.com/a/ACg8ocK0vhTre_t6gi_2-u7cIAh1O_G-YktxHBa8d4PcXXWilO_lbKA=s96-c	member	palembang_digital	f	\N	\N	\N	\N
+d76c5a86-847d-40ce-a1c4-3ca242b62a09	Trissa Wulanda	trissawulanda92@gmail.com	\N	https://lh3.googleusercontent.com/a/ACg8ocJKwBwweMDLG8RpptlaJu3TOWqsEyn70aPWJqZ-NH_ke3hmypZ4Dg=s96-c	member	trissawulanda	f	\N	\N	\N	\N
+672df9cf-6931-4bb9-977a-97785da3f0e3	Faisal Morensya	faisalmorensya@gmail.com	\N	https://lh3.googleusercontent.com/a/ACg8ocIbozObgoaH93OGAuQ4VAh2BBx7TZZRe7LdDfvzjWx0lNQn7vQl=s96-c	member	morensya	f	\N	\N	\N	\N
+55420c92-c54b-45b4-a219-f81a8f4d7594	Ayunda Millati Azka	ayundamillatiazka@gmail.com	\N	https://lh3.googleusercontent.com/a/ACg8ocKgizexjPByzqiWDa7vNRHFWAJf1UQvhYiAG5CYgQNuPpCTv4d0=s96-c	member	mortalabundance	f	\N	\N	\N	\N
+ced6fdf0-e34b-41ee-a622-43392e115bc9	Arief Rahmansyah	ariefrahmansyah23@gmail.com	\N	https://lh3.googleusercontent.com/a/ACg8ocIDHOlp1LO1dB6NTkqK0eeEBnHTRyETdVAzS_8V3LoUDjHyGj3EnA=s96-c	administrator	ariefrahmansyah	f	08980900120	Engineer	Palembang Digital	Proud dad of Aurora de Luna
+374ffe39-c99d-405b-9188-6c9153f1bf32	Nadia Laras	nadialarascinl@gmail.com	\N	https://lh3.googleusercontent.com/a/ACg8ocKJzdZUGhU4A6AOaNfP0Zci5QwBoIr_jFCD4EDPV0SoRU4R5iB0=s96-c	member	nadialaraz	f	089531718950	Student	Universitas Sriwijaya 	\N
+8d7092fd-f650-4441-b66d-a1a2a6d3e9dc	Huriya Afifa	huriyaafifa@gmail.com	\N	https://lh3.googleusercontent.com/a/ACg8ocKwBGN629Wing9mgLzvJ2QEU-cLY48iUqc19kTw2BcvTvWHnIGo=s96-c	member	02fiii_	f	0895399106452	Student	Politeknik Negeri Sriwijaya	\N
+191c9b5c-2e9b-429d-9c4b-bfed354585bd	Muhammad Farrel Al-Wafi Frizzy	m.farrel2222@gmail.com	\N	https://lh3.googleusercontent.com/a/ACg8ocIuXijrO97Lwjamhxv7VuPY7EwzELQo1pZ7bf_1-scAmqM7oDIz=s96-c	member	frizzy	f	08117441165	Student	Universitas Sriwijaya	Gud
+51bc3e65-679b-42b2-9eb0-d23cc4f02452	Muhammad Fadll	fadeljourney@gmail.com	\N	https://lh3.googleusercontent.com/a/ACg8ocL2r2Jimrw_nzrFbWZ8o435zhy__Cy7KxVzYifTrJejh00dlPnkdQ=s96-c	member	fadelun	f	081271269864	mahasiswa	STDI imam syafi'i	Pria
+d8de7bb2-caf6-4d52-8236-c9e9b6dc15f4	Irpansyah	062140720450@student.polsri.ac.id	\N	https://lh3.googleusercontent.com/a/ACg8ocKOh-_dKawzEM0DmWjgF6bwdsQ1ffdyjqURN4d_oh8MEI9YwQ=s96-c	member	irpansyah17	f	082281488763	Mahasiswa	Politeknik Negeri Sriwijaya	Antusias Teknologi, AI dan Mulai
+0f01b12c-efc0-4a67-8b8b-87e35f8f1e1f	Rifqi Riadhy	rifqiriadhy2633@gmail.com	\N	\N	member	Patal_Rifqi	f	089639993684	SOE Employee	PT Pupuk Sriwidjaja Palembang	Moslem. Life long learner
+\.
+
+
+--
+-- Data for Name: verificationTokens; Type: TABLE DATA; Schema: public; Owner: patal-bot
+--
+
+COPY public."verificationTokens" (identifier, token, expires) FROM stdin;
+\.
+
+
+--
+-- Data for Name: videos; Type: TABLE DATA; Schema: public; Owner: patal-bot
+--
+
+COPY public.videos (id, title, video_url, created_at, updated_at, description, thumbnails, video_type, published_at) FROM stdin;
+1	Latar Belakang Terbentuknya Komunitas Palembang Digital	https://www.youtube.com/watch?v=cERCB3rc318	2024-07-16 05:55:58.654119	2024-07-16 05:55:58.654119	didalam video ini dijelaskan 2 point alasam terbentuknya komunitas palembang digital. Untuk lengkapnya yuk ditonton sampai ...	"{\\"default\\":{\\"url\\":\\"https://i.ytimg.com/vi/cERCB3rc318/default.jpg\\",\\"width\\":120,\\"height\\":90},\\"medium\\":{\\"url\\":\\"https://i.ytimg.com/vi/cERCB3rc318/mqdefault.jpg\\",\\"width\\":320,\\"height\\":180},\\"high\\":{\\"url\\":\\"https://i.ytimg.com/vi/cERCB3rc318/hqdefault.jpg\\",\\"width\\":480,\\"height\\":360}}"	youtube	2021-06-01 11:54:12
+2	Tim 5 - Hackathon Konyol 2024	https://www.youtube.com/watch?v=usSj0m_Pmw4	2024-07-16 05:55:58.654119	2024-07-16 05:55:58.654119	Tim 5: Lutfia Pianisma Liberta Recorded and produced by M. Farrel Al-Wafi Frizzy Tonton semua video presentasi Hackathon ...	"{\\"default\\":{\\"url\\":\\"https://i.ytimg.com/vi/usSj0m_Pmw4/default.jpg\\",\\"width\\":120,\\"height\\":90},\\"medium\\":{\\"url\\":\\"https://i.ytimg.com/vi/usSj0m_Pmw4/mqdefault.jpg\\",\\"width\\":320,\\"height\\":180},\\"high\\":{\\"url\\":\\"https://i.ytimg.com/vi/usSj0m_Pmw4/hqdefault.jpg\\",\\"width\\":480,\\"height\\":360}}"	youtube	2024-05-11 04:05:57
+3	Pesan untuk para founders yang sedang membangun startup..	https://www.youtube.com/watch?v=rEg9LV2a700	2024-07-16 05:55:58.654119	2024-07-16 05:55:58.654119		"{\\"default\\":{\\"url\\":\\"https://i.ytimg.com/vi/rEg9LV2a700/default.jpg\\",\\"width\\":120,\\"height\\":90},\\"medium\\":{\\"url\\":\\"https://i.ytimg.com/vi/rEg9LV2a700/mqdefault.jpg\\",\\"width\\":320,\\"height\\":180},\\"high\\":{\\"url\\":\\"https://i.ytimg.com/vi/rEg9LV2a700/hqdefault.jpg\\",\\"width\\":480,\\"height\\":360}}"	youtube	2023-02-06 06:16:59
+4	Cerita Pejuang Keluarga : Pak Jumatan &amp; Ibu Gadis #bantusumsel	https://www.youtube.com/watch?v=6qKGgqqyh1s	2024-07-16 05:55:58.654119	2024-07-16 05:55:58.654119	Pejuang Keluarga kali ini berada salah satu kabupaten diluar palembang , tepatnya di sungai pinang kabupaten banyuasin ...	"{\\"default\\":{\\"url\\":\\"https://i.ytimg.com/vi/6qKGgqqyh1s/default.jpg\\",\\"width\\":120,\\"height\\":90},\\"medium\\":{\\"url\\":\\"https://i.ytimg.com/vi/6qKGgqqyh1s/mqdefault.jpg\\",\\"width\\":320,\\"height\\":180},\\"high\\":{\\"url\\":\\"https://i.ytimg.com/vi/6qKGgqqyh1s/hqdefault.jpg\\",\\"width\\":480,\\"height\\":360}}"	youtube	2021-08-16 16:42:18
+5	Introduction to Generative AI	https://www.youtube.com/watch?v=0dSNH_R_7Pk	2024-07-16 05:55:58.654119	2024-07-16 05:55:58.654119	Introduction to Generative Aritificial Intelligence Speaker: Sofian Hadiwijaya.	"{\\"default\\":{\\"url\\":\\"https://i.ytimg.com/vi/0dSNH_R_7Pk/default.jpg\\",\\"width\\":120,\\"height\\":90},\\"medium\\":{\\"url\\":\\"https://i.ytimg.com/vi/0dSNH_R_7Pk/mqdefault.jpg\\",\\"width\\":320,\\"height\\":180},\\"high\\":{\\"url\\":\\"https://i.ytimg.com/vi/0dSNH_R_7Pk/hqdefault.jpg\\",\\"width\\":480,\\"height\\":360}}"	youtube	2024-01-27 11:06:05
+6	Tim 10 - Hackathon Konyol 2024	https://www.youtube.com/watch?v=pY1kodqSVlg	2024-07-16 05:55:58.654119	2024-07-16 05:55:58.654119	Tim 10: Anna Siti Fellyca Recorded and produced by M. Farrel Al-Wafi Frizzy Tonton semua video presentasi Hackathon Konyol ...	"{\\"default\\":{\\"url\\":\\"https://i.ytimg.com/vi/pY1kodqSVlg/default.jpg\\",\\"width\\":120,\\"height\\":90},\\"medium\\":{\\"url\\":\\"https://i.ytimg.com/vi/pY1kodqSVlg/mqdefault.jpg\\",\\"width\\":320,\\"height\\":180},\\"high\\":{\\"url\\":\\"https://i.ytimg.com/vi/pY1kodqSVlg/hqdefault.jpg\\",\\"width\\":480,\\"height\\":360}}"	youtube	2024-05-11 04:15:27
+7	Microsoft Dev//Verse 2022 - Hari 1: Membangun Dunia Digital dengan Teknologi Immersive	https://www.youtube.com/watch?v=sUaV3jSBaOo	2024-07-16 05:55:58.654119	2024-07-16 05:55:58.654119	Dev//Verse adalah acara Microsoft Indonesia dengan semangat untuk memberdayakan setiap Developer serta ekosistemnya di ...	"{\\"default\\":{\\"url\\":\\"https://i.ytimg.com/vi/sUaV3jSBaOo/default.jpg\\",\\"width\\":120,\\"height\\":90},\\"medium\\":{\\"url\\":\\"https://i.ytimg.com/vi/sUaV3jSBaOo/mqdefault.jpg\\",\\"width\\":320,\\"height\\":180},\\"high\\":{\\"url\\":\\"https://i.ytimg.com/vi/sUaV3jSBaOo/hqdefault.jpg\\",\\"width\\":480,\\"height\\":360}}"	youtube	2022-03-22 15:08:10
+8	Tim 7 - Hackathon Konyol 2024	https://www.youtube.com/watch?v=uKP43x1WmTI	2024-07-16 05:55:58.654119	2024-07-16 05:55:58.654119	Tim 7: Dyea Anandha Yessi Recorded and produced by M. Farrel Al-Wafi Frizzy Tonton semua video presentasi Hackathon ...	"{\\"default\\":{\\"url\\":\\"https://i.ytimg.com/vi/uKP43x1WmTI/default.jpg\\",\\"width\\":120,\\"height\\":90},\\"medium\\":{\\"url\\":\\"https://i.ytimg.com/vi/uKP43x1WmTI/mqdefault.jpg\\",\\"width\\":320,\\"height\\":180},\\"high\\":{\\"url\\":\\"https://i.ytimg.com/vi/uKP43x1WmTI/hqdefault.jpg\\",\\"width\\":480,\\"height\\":360}}"	youtube	2024-05-11 04:09:08
+9	Tim 17 - Hackathon Konyol 2024	https://www.youtube.com/watch?v=UMFkYZQueF4	2024-07-16 05:55:58.654119	2024-07-16 05:55:58.654119	Tim 17: M. Ridho Ahmad Naufal Rafif Recorded and produced by M. Farrel Al-Wafi Frizzy Tonton semua video presentasi ...	"{\\"default\\":{\\"url\\":\\"https://i.ytimg.com/vi/UMFkYZQueF4/default.jpg\\",\\"width\\":120,\\"height\\":90},\\"medium\\":{\\"url\\":\\"https://i.ytimg.com/vi/UMFkYZQueF4/mqdefault.jpg\\",\\"width\\":320,\\"height\\":180},\\"high\\":{\\"url\\":\\"https://i.ytimg.com/vi/UMFkYZQueF4/hqdefault.jpg\\",\\"width\\":480,\\"height\\":360}}"	youtube	2024-05-11 04:27:23
+10	Microsoft Dev//Verse 2022 - Hari 2: Masyarakat Digital yang Berlandaskan Sustainability	https://www.youtube.com/watch?v=C4weOpU8kXc	2024-07-16 05:55:58.654119	2024-07-16 05:55:58.654119	Dev//Verse adalah acara Microsoft Indonesia dengan semangat untuk memberdayakan setiap Developer serta ekosistemnya di ...	"{\\"default\\":{\\"url\\":\\"https://i.ytimg.com/vi/C4weOpU8kXc/default.jpg\\",\\"width\\":120,\\"height\\":90},\\"medium\\":{\\"url\\":\\"https://i.ytimg.com/vi/C4weOpU8kXc/mqdefault.jpg\\",\\"width\\":320,\\"height\\":180},\\"high\\":{\\"url\\":\\"https://i.ytimg.com/vi/C4weOpU8kXc/hqdefault.jpg\\",\\"width\\":480,\\"height\\":360}}"	youtube	2022-03-23 14:45:25
+11	Pengenalan Framework Laravel | Workshop 9.1	https://www.youtube.com/watch?v=Q2PuuqhnnvA	2024-07-16 05:55:58.654119	2024-07-16 05:55:58.654119	Pengenalan Framework Laravel by Palembang Digital.	"{\\"default\\":{\\"url\\":\\"https://i.ytimg.com/vi/Q2PuuqhnnvA/default.jpg\\",\\"width\\":120,\\"height\\":90},\\"medium\\":{\\"url\\":\\"https://i.ytimg.com/vi/Q2PuuqhnnvA/mqdefault.jpg\\",\\"width\\":320,\\"height\\":180},\\"high\\":{\\"url\\":\\"https://i.ytimg.com/vi/Q2PuuqhnnvA/hqdefault.jpg\\",\\"width\\":480,\\"height\\":360}}"	youtube	2020-11-21 02:06:45
+12	Tim 12 - Hackathon Konyol 2024	https://www.youtube.com/watch?v=Li0CUA2pgaY	2024-07-16 05:55:58.654119	2024-07-16 05:55:58.654119	Tim 12: Husein Anggun Recorded and produced by M. Farrel Al-Wafi Frizzy Tonton semua video presentasi Hackathon Konyol ...	"{\\"default\\":{\\"url\\":\\"https://i.ytimg.com/vi/Li0CUA2pgaY/default.jpg\\",\\"width\\":120,\\"height\\":90},\\"medium\\":{\\"url\\":\\"https://i.ytimg.com/vi/Li0CUA2pgaY/mqdefault.jpg\\",\\"width\\":320,\\"height\\":180},\\"high\\":{\\"url\\":\\"https://i.ytimg.com/vi/Li0CUA2pgaY/hqdefault.jpg\\",\\"width\\":480,\\"height\\":360}}"	youtube	2024-05-11 04:18:19
+13	Pengenalan GRAPHDB (Workshop 5.1) Palembang Digital Bersama Muhamad Zaki	https://www.youtube.com/watch?v=YfSO71l-iJw	2024-07-16 05:55:58.654119	2024-07-16 05:55:58.654119	Berikut Workshop Palembang Digital 5.1 Bareng Muhammad Zaki Al-Afrani yang saat ini merupakan Technical Architect ...	"{\\"default\\":{\\"url\\":\\"https://i.ytimg.com/vi/YfSO71l-iJw/default.jpg\\",\\"width\\":120,\\"height\\":90},\\"medium\\":{\\"url\\":\\"https://i.ytimg.com/vi/YfSO71l-iJw/mqdefault.jpg\\",\\"width\\":320,\\"height\\":180},\\"high\\":{\\"url\\":\\"https://i.ytimg.com/vi/YfSO71l-iJw/hqdefault.jpg\\",\\"width\\":480,\\"height\\":360}}"	youtube	2020-06-21 13:41:43
+14	Tim 11 - Hackathon Konyol 2024	https://www.youtube.com/watch?v=85Am6SmsMuk	2024-07-16 05:55:58.654119	2024-07-16 05:55:58.654119	Tim 11: Annisa Tasya Nurur Recorded and produced by M. Farrel Al-Wafi Frizzy Tonton semua video presentasi Hackathon ...	"{\\"default\\":{\\"url\\":\\"https://i.ytimg.com/vi/85Am6SmsMuk/default.jpg\\",\\"width\\":120,\\"height\\":90},\\"medium\\":{\\"url\\":\\"https://i.ytimg.com/vi/85Am6SmsMuk/mqdefault.jpg\\",\\"width\\":320,\\"height\\":180},\\"high\\":{\\"url\\":\\"https://i.ytimg.com/vi/85Am6SmsMuk/hqdefault.jpg\\",\\"width\\":480,\\"height\\":360}}"	youtube	2024-05-11 04:15:41
+15	Basic app development and deployment with AWS bersama Roylisto (Workshop 3.0 Palembang Digital)	https://www.youtube.com/watch?v=ii75nd8C-UU	2024-07-16 05:55:58.654119	2024-07-16 05:55:58.654119	Bagaimana cara mendevelopment dan mendeploy apps dengan AWS.. Roylisto Putra merupakan Software engineer di finAccel ...	"{\\"default\\":{\\"url\\":\\"https://i.ytimg.com/vi/ii75nd8C-UU/default.jpg\\",\\"width\\":120,\\"height\\":90},\\"medium\\":{\\"url\\":\\"https://i.ytimg.com/vi/ii75nd8C-UU/mqdefault.jpg\\",\\"width\\":320,\\"height\\":180},\\"high\\":{\\"url\\":\\"https://i.ytimg.com/vi/ii75nd8C-UU/hqdefault.jpg\\",\\"width\\":480,\\"height\\":360}}"	youtube	2020-05-16 13:20:47
+16	Tim 1 - Hackathon Konyol 2024	https://www.youtube.com/watch?v=V1299qU5VMc	2024-07-16 05:55:58.654119	2024-07-16 05:55:58.654119	Tim 1: Rini Hafiz Nadia Recorded and produced by M. Farrel Al-Wafi Frizzy Tonton semua video presentasi Hackathon Konyol ...	"{\\"default\\":{\\"url\\":\\"https://i.ytimg.com/vi/V1299qU5VMc/default.jpg\\",\\"width\\":120,\\"height\\":90},\\"medium\\":{\\"url\\":\\"https://i.ytimg.com/vi/V1299qU5VMc/mqdefault.jpg\\",\\"width\\":320,\\"height\\":180},\\"high\\":{\\"url\\":\\"https://i.ytimg.com/vi/V1299qU5VMc/hqdefault.jpg\\",\\"width\\":480,\\"height\\":360}}"	youtube	2024-05-11 03:55:25
+17	Tim 6 - Hackathon Konyol 2024	https://www.youtube.com/watch?v=hxhFNXhESxk	2024-07-16 05:55:58.654119	2024-07-16 05:55:58.654119	Tim 6: Clensi Vannya Along Recorded and produced by M. Farrel Al-Wafi Frizzy Tonton semua video presentasi Hackathon ...	"{\\"default\\":{\\"url\\":\\"https://i.ytimg.com/vi/hxhFNXhESxk/default.jpg\\",\\"width\\":120,\\"height\\":90},\\"medium\\":{\\"url\\":\\"https://i.ytimg.com/vi/hxhFNXhESxk/mqdefault.jpg\\",\\"width\\":320,\\"height\\":180},\\"high\\":{\\"url\\":\\"https://i.ytimg.com/vi/hxhFNXhESxk/hqdefault.jpg\\",\\"width\\":480,\\"height\\":360}}"	youtube	2024-05-11 04:07:38
+18	Workshop 5.2 Model Machine Learning - Arief Rahmansyah Machine Learning Engineer Gojek Singapore	https://www.youtube.com/watch?v=9655cwpml2I	2024-07-16 05:55:58.654119	2024-07-16 05:55:58.654119	Ini merupakan Workshop Model Machine Learning yang diadakan oleh palembangdigital. kali ini narasumbernya adalah Arief ...	"{\\"default\\":{\\"url\\":\\"https://i.ytimg.com/vi/9655cwpml2I/default.jpg\\",\\"width\\":120,\\"height\\":90},\\"medium\\":{\\"url\\":\\"https://i.ytimg.com/vi/9655cwpml2I/mqdefault.jpg\\",\\"width\\":320,\\"height\\":180},\\"high\\":{\\"url\\":\\"https://i.ytimg.com/vi/9655cwpml2I/hqdefault.jpg\\",\\"width\\":480,\\"height\\":360}}"	youtube	2020-07-13 07:12:02
+19	Microsoft Dev//Verse 2022 - Hari 3: Meningkatkan Velocity dari Para Developer secara Menyeluruh	https://www.youtube.com/watch?v=yM-EXQimd1g	2024-07-16 05:55:58.654119	2024-07-16 05:55:58.654119	Dev//Verse adalah acara Microsoft Indonesia dengan semangat untuk memberdayakan setiap Developer serta ekosistemnya di ...	"{\\"default\\":{\\"url\\":\\"https://i.ytimg.com/vi/yM-EXQimd1g/default.jpg\\",\\"width\\":120,\\"height\\":90},\\"medium\\":{\\"url\\":\\"https://i.ytimg.com/vi/yM-EXQimd1g/mqdefault.jpg\\",\\"width\\":320,\\"height\\":180},\\"high\\":{\\"url\\":\\"https://i.ytimg.com/vi/yM-EXQimd1g/hqdefault.jpg\\",\\"width\\":480,\\"height\\":360}}"	youtube	2022-03-24 14:22:50
+20	Tim 2 - Hackathon Konyol 2024	https://www.youtube.com/watch?v=PzSS8f2xMeM	2024-07-16 05:55:58.654119	2024-07-16 05:55:58.654119	Tim 2: Juliansa Alfin Afdhal Recorded and produced by M. Farrel Al-Wafi Frizzy Tonton semua video presentasi Hackathon ...	"{\\"default\\":{\\"url\\":\\"https://i.ytimg.com/vi/PzSS8f2xMeM/default.jpg\\",\\"width\\":120,\\"height\\":90},\\"medium\\":{\\"url\\":\\"https://i.ytimg.com/vi/PzSS8f2xMeM/mqdefault.jpg\\",\\"width\\":320,\\"height\\":180},\\"high\\":{\\"url\\":\\"https://i.ytimg.com/vi/PzSS8f2xMeM/hqdefault.jpg\\",\\"width\\":480,\\"height\\":360}}"	youtube	2024-05-11 03:58:47
+21	Aplikasi Borcele By Iwak Belido Team - Sriwijaya Digital Startup Palembang 2024	https://www.youtube.com/watch?v=VCJPaNbkcjw	2024-07-16 05:55:58.654119	2024-07-16 05:55:58.654119	Tim 16: Iwak Belido Team Recorded and produced by Irpansyah ( https://www.instagram.com/mpai_belajo/ ) Tonton semua video ...	"{\\"default\\":{\\"url\\":\\"https://i.ytimg.com/vi/VCJPaNbkcjw/default.jpg\\",\\"width\\":120,\\"height\\":90},\\"medium\\":{\\"url\\":\\"https://i.ytimg.com/vi/VCJPaNbkcjw/mqdefault.jpg\\",\\"width\\":320,\\"height\\":180},\\"high\\":{\\"url\\":\\"https://i.ytimg.com/vi/VCJPaNbkcjw/hqdefault.jpg\\",\\"width\\":480,\\"height\\":360}}"	youtube	2024-06-23 01:14:06
+22	Nil, If - Elixir	https://www.youtube.com/watch?v=XnOeinyjcxw	2024-07-16 05:55:58.654119	2024-07-16 05:55:58.654119	https://exercism.org/tracks/elixir/concepts/nil https://exercism.org/tracks/elixir/concepts/if Tonton semua video tentang Elixir di: ...	"{\\"default\\":{\\"url\\":\\"https://i.ytimg.com/vi/XnOeinyjcxw/default.jpg\\",\\"width\\":120,\\"height\\":90},\\"medium\\":{\\"url\\":\\"https://i.ytimg.com/vi/XnOeinyjcxw/mqdefault.jpg\\",\\"width\\":320,\\"height\\":180},\\"high\\":{\\"url\\":\\"https://i.ytimg.com/vi/XnOeinyjcxw/hqdefault.jpg\\",\\"width\\":480,\\"height\\":360}}"	youtube	2024-03-16 10:06:32
+23	Aplikasi SkillMatch By Julid Team - Sriwijaya Digital Startup 2024	https://www.youtube.com/watch?v=PNgEMn-RItM	2024-07-16 05:55:58.654119	2024-07-16 05:55:58.654119	Tim 14: Julid Team Recorded and produced by Irpansyah ( https://www.instagram.com/mpai_belajo/ ) Tonton semua video ...	"{\\"default\\":{\\"url\\":\\"https://i.ytimg.com/vi/PNgEMn-RItM/default.jpg\\",\\"width\\":120,\\"height\\":90},\\"medium\\":{\\"url\\":\\"https://i.ytimg.com/vi/PNgEMn-RItM/mqdefault.jpg\\",\\"width\\":320,\\"height\\":180},\\"high\\":{\\"url\\":\\"https://i.ytimg.com/vi/PNgEMn-RItM/hqdefault.jpg\\",\\"width\\":480,\\"height\\":360}}"	youtube	2024-06-23 01:06:27
+24	Sharing Session :Pengenalan Penggunaan Teknologi &amp; Proses Digitalisasi Program Kartu Prakerja	https://www.youtube.com/watch?v=y1pJ59ZC7TQ	2024-07-16 05:55:58.654119	2024-07-16 05:55:58.654119	Pengenalan Penggunaan Teknologi & Proses Digitalisasi Program Kartu Prakerja bersama hengki sihombing selaku direktur ...	"{\\"default\\":{\\"url\\":\\"https://i.ytimg.com/vi/y1pJ59ZC7TQ/default.jpg\\",\\"width\\":120,\\"height\\":90},\\"medium\\":{\\"url\\":\\"https://i.ytimg.com/vi/y1pJ59ZC7TQ/mqdefault.jpg\\",\\"width\\":320,\\"height\\":180},\\"high\\":{\\"url\\":\\"https://i.ytimg.com/vi/y1pJ59ZC7TQ/hqdefault.jpg\\",\\"width\\":480,\\"height\\":360}}"	youtube	2021-05-27 07:53:37
+25	Aplikasi Asisten Camu By Keluarga Cemara Team - Sriwijaya Digital Startup 2024	https://www.youtube.com/watch?v=POfn5t4QcVo	2024-07-16 05:55:58.654119	2024-07-16 05:55:58.654119	Tim 02: Keluarga Cemara Recorded and produced by Irpansyah Tonton semua video presentasi Sriwijaya Digital Startup 2024 di: ...	"{\\"default\\":{\\"url\\":\\"https://i.ytimg.com/vi/POfn5t4QcVo/default.jpg\\",\\"width\\":120,\\"height\\":90},\\"medium\\":{\\"url\\":\\"https://i.ytimg.com/vi/POfn5t4QcVo/mqdefault.jpg\\",\\"width\\":320,\\"height\\":180},\\"high\\":{\\"url\\":\\"https://i.ytimg.com/vi/POfn5t4QcVo/hqdefault.jpg\\",\\"width\\":480,\\"height\\":360}}"	youtube	2024-06-22 23:35:43
+26	IO (Input/Output) - Elixir	https://www.youtube.com/watch?v=Kuv1godkq2g	2024-07-16 05:55:58.654119	2024-07-16 05:55:58.654119	https://exercism.org/tracks/elixir/concepts/io Tonton semua video tentang Elixir di: ...	"{\\"default\\":{\\"url\\":\\"https://i.ytimg.com/vi/Kuv1godkq2g/default.jpg\\",\\"width\\":120,\\"height\\":90},\\"medium\\":{\\"url\\":\\"https://i.ytimg.com/vi/Kuv1godkq2g/mqdefault.jpg\\",\\"width\\":320,\\"height\\":180},\\"high\\":{\\"url\\":\\"https://i.ytimg.com/vi/Kuv1godkq2g/hqdefault.jpg\\",\\"width\\":480,\\"height\\":360}}"	youtube	2024-03-16 03:47:48
+27	Aplikasi DisaBisa by Star Team - Sriwijaya Digital Startup 2024	https://www.youtube.com/watch?v=sFOcPo2ug2o	2024-07-16 05:55:58.654119	2024-07-16 05:55:58.654119	Tim 01: Star Team Recorded and produced by Irpansyah Tonton semua video presentasi Sriwijaya Digital Startup 2024 di: ...	"{\\"default\\":{\\"url\\":\\"https://i.ytimg.com/vi/sFOcPo2ug2o/default.jpg\\",\\"width\\":120,\\"height\\":90},\\"medium\\":{\\"url\\":\\"https://i.ytimg.com/vi/sFOcPo2ug2o/mqdefault.jpg\\",\\"width\\":320,\\"height\\":180},\\"high\\":{\\"url\\":\\"https://i.ytimg.com/vi/sFOcPo2ug2o/hqdefault.jpg\\",\\"width\\":480,\\"height\\":360}}"	youtube	2024-06-22 23:27:32
+28	Aplikasi Gofejob By Bravo Team - Sriwijaya Digital Startup 2024	https://www.youtube.com/watch?v=anU5mmZtYIw	2024-07-16 05:55:58.654119	2024-07-16 05:55:58.654119	Tim 04: Bravo Team Recorded and produced by Irpansyah Tonton semua video presentasi Sriwijaya Digital Startup 2024 di: ...	"{\\"default\\":{\\"url\\":\\"https://i.ytimg.com/vi/anU5mmZtYIw/default.jpg\\",\\"width\\":120,\\"height\\":90},\\"medium\\":{\\"url\\":\\"https://i.ytimg.com/vi/anU5mmZtYIw/mqdefault.jpg\\",\\"width\\":320,\\"height\\":180},\\"high\\":{\\"url\\":\\"https://i.ytimg.com/vi/anU5mmZtYIw/hqdefault.jpg\\",\\"width\\":480,\\"height\\":360}}"	youtube	2024-06-23 00:12:57
+29	Karir Software Engineer (Sharing Session Bareng Faisal Morensya &amp; Rezi Apriliansyah)	https://www.youtube.com/watch?v=zOABu3FcHRY	2024-07-16 05:55:58.654119	2024-07-16 05:55:58.654119	yuk cari tau bagaimana jejak karir software engineer didalam negeri dan luar negeri.	"{\\"default\\":{\\"url\\":\\"https://i.ytimg.com/vi/zOABu3FcHRY/default.jpg\\",\\"width\\":120,\\"height\\":90},\\"medium\\":{\\"url\\":\\"https://i.ytimg.com/vi/zOABu3FcHRY/mqdefault.jpg\\",\\"width\\":320,\\"height\\":180},\\"high\\":{\\"url\\":\\"https://i.ytimg.com/vi/zOABu3FcHRY/hqdefault.jpg\\",\\"width\\":480,\\"height\\":360}}"	youtube	2020-08-25 08:27:18
+30	Distribusi Tahap 1 Bantuan Kepada Warga Terdampak Covid19 - Bantusumsel	https://www.youtube.com/watch?v=XePENI7Rqns	2024-07-16 05:55:58.654119	2024-07-16 05:55:58.654119	Hari ini Tim Bantu sumsel telah mendistribusikan beberapa bantuan dari data yang masuk di bantu.sumsel.co.. Tercatat ada 11 ...	"{\\"default\\":{\\"url\\":\\"https://i.ytimg.com/vi/XePENI7Rqns/default.jpg\\",\\"width\\":120,\\"height\\":90},\\"medium\\":{\\"url\\":\\"https://i.ytimg.com/vi/XePENI7Rqns/mqdefault.jpg\\",\\"width\\":320,\\"height\\":180},\\"high\\":{\\"url\\":\\"https://i.ytimg.com/vi/XePENI7Rqns/hqdefault.jpg\\",\\"width\\":480,\\"height\\":360}}"	youtube	2021-07-31 01:45:34
+31	Sharing Session-Path Finding Journey on UX Field with Risti Ulfha (UX Researcher At Warung Pintar)	https://www.youtube.com/watch?v=F6KTeSUe9yo	2024-07-16 05:55:58.654119	2024-07-16 05:55:58.654119	yuk kita belajar bagaimana sih cara membuat dan memilih filed pertanyaa yang cocok untuk sebuah project ataupun aplikasi.	"{\\"default\\":{\\"url\\":\\"https://i.ytimg.com/vi/F6KTeSUe9yo/default.jpg\\",\\"width\\":120,\\"height\\":90},\\"medium\\":{\\"url\\":\\"https://i.ytimg.com/vi/F6KTeSUe9yo/mqdefault.jpg\\",\\"width\\":320,\\"height\\":180},\\"high\\":{\\"url\\":\\"https://i.ytimg.com/vi/F6KTeSUe9yo/hqdefault.jpg\\",\\"width\\":480,\\"height\\":360}}"	youtube	2020-11-11 07:57:37
+32	Sriwijaya Digital Conference 2022 : BUMN Digital Transformation	https://www.youtube.com/watch?v=CF6V8asb7jY	2024-07-16 05:55:58.654119	2024-07-16 05:55:58.654119		"{\\"default\\":{\\"url\\":\\"https://i.ytimg.com/vi/CF6V8asb7jY/default.jpg\\",\\"width\\":120,\\"height\\":90},\\"medium\\":{\\"url\\":\\"https://i.ytimg.com/vi/CF6V8asb7jY/mqdefault.jpg\\",\\"width\\":320,\\"height\\":180},\\"high\\":{\\"url\\":\\"https://i.ytimg.com/vi/CF6V8asb7jY/hqdefault.jpg\\",\\"width\\":480,\\"height\\":360}}"	youtube	2022-12-10 11:03:19
+33	Cerita Para Pejuang Keluarga (Nenek Iyah &amp; Nenek Sunayah) #bantusumsel	https://www.youtube.com/watch?v=IAzY88u9WvE	2024-07-16 05:55:58.654119	2024-07-16 05:55:58.654119	6 Agustus 2021 Tim bantu sumsel berkunjung ke beberapa lokasi untuk mendistribusikan bantuan, dan bertemu dengan para ...	"{\\"default\\":{\\"url\\":\\"https://i.ytimg.com/vi/IAzY88u9WvE/default.jpg\\",\\"width\\":120,\\"height\\":90},\\"medium\\":{\\"url\\":\\"https://i.ytimg.com/vi/IAzY88u9WvE/mqdefault.jpg\\",\\"width\\":320,\\"height\\":180},\\"high\\":{\\"url\\":\\"https://i.ytimg.com/vi/IAzY88u9WvE/hqdefault.jpg\\",\\"width\\":480,\\"height\\":360}}"	youtube	2021-08-08 13:54:24
+34	Palembang Digital Sharing Session 1.0 Bersama Rizka Febrian (Product Deisgn &amp; UI Deisgn)	https://www.youtube.com/watch?v=jwgitPlxnPE	2024-07-16 05:55:58.654119	2024-07-16 05:55:58.654119	Sharing Session palembang digital 1.0 menghadirkan Rizka Febrian merupakan lead Product Design di tiket.com dan juga ...	"{\\"default\\":{\\"url\\":\\"https://i.ytimg.com/vi/jwgitPlxnPE/default.jpg\\",\\"width\\":120,\\"height\\":90},\\"medium\\":{\\"url\\":\\"https://i.ytimg.com/vi/jwgitPlxnPE/mqdefault.jpg\\",\\"width\\":320,\\"height\\":180},\\"high\\":{\\"url\\":\\"https://i.ytimg.com/vi/jwgitPlxnPE/hqdefault.jpg\\",\\"width\\":480,\\"height\\":360}}"	youtube	2020-06-15 05:48:47
+35	Aplikasi Mulai Lagi By Naruto 77 Team - Sriwijaya Digital Startup 2024	https://www.youtube.com/watch?v=Db0FseJpSrU	2024-07-16 05:55:58.654119	2024-07-16 05:55:58.654119	Tim 07: Naruto 77 Team Recorded and produced by Irpansyah ( https://www.instagram.com/mpai_belajo/ ) Tonton semua video ...	"{\\"default\\":{\\"url\\":\\"https://i.ytimg.com/vi/Db0FseJpSrU/default.jpg\\",\\"width\\":120,\\"height\\":90},\\"medium\\":{\\"url\\":\\"https://i.ytimg.com/vi/Db0FseJpSrU/mqdefault.jpg\\",\\"width\\":320,\\"height\\":180},\\"high\\":{\\"url\\":\\"https://i.ytimg.com/vi/Db0FseJpSrU/hqdefault.jpg\\",\\"width\\":480,\\"height\\":360}}"	youtube	2024-06-23 00:36:04
+36	Tim 14 - Hackathon Konyol 2024	https://www.youtube.com/watch?v=sqSfSg34P28	2024-07-16 05:55:58.654119	2024-07-16 05:55:58.654119	Tim 14: Rafsan Abdul Aziz Sania Recorded and produced by M. Farrel Al-Wafi Frizzy Tonton semua video presentasi Hackathon ...	"{\\"default\\":{\\"url\\":\\"https://i.ytimg.com/vi/sqSfSg34P28/default.jpg\\",\\"width\\":120,\\"height\\":90},\\"medium\\":{\\"url\\":\\"https://i.ytimg.com/vi/sqSfSg34P28/mqdefault.jpg\\",\\"width\\":320,\\"height\\":180},\\"high\\":{\\"url\\":\\"https://i.ytimg.com/vi/sqSfSg34P28/hqdefault.jpg\\",\\"width\\":480,\\"height\\":360}}"	youtube	2024-05-11 04:20:05
+37	Sharing Session 5.0 - K Drama Startup VS Real Startup	https://www.youtube.com/watch?v=m-C5CP426oY	2024-07-16 05:55:58.654119	2024-07-16 05:55:58.654119	Kupas Tuntas Realita Startup.	"{\\"default\\":{\\"url\\":\\"https://i.ytimg.com/vi/m-C5CP426oY/default.jpg\\",\\"width\\":120,\\"height\\":90},\\"medium\\":{\\"url\\":\\"https://i.ytimg.com/vi/m-C5CP426oY/mqdefault.jpg\\",\\"width\\":320,\\"height\\":180},\\"high\\":{\\"url\\":\\"https://i.ytimg.com/vi/m-C5CP426oY/hqdefault.jpg\\",\\"width\\":480,\\"height\\":360}}"	youtube	2020-12-11 14:27:01
+38	Sriwijaya Digital Conference 2021 : Panel Startup Session(Investasi Dunia Startup)	https://www.youtube.com/watch?v=YRg7aXJs1do	2024-07-16 05:55:58.654119	2024-07-16 05:55:58.654119	Digital Sriwijaya Menjangkau Nusantara :Tema ini memiliki Arti Mengenalkan semua para Talenta Digital dan juga produk digital ...	"{\\"default\\":{\\"url\\":\\"https://i.ytimg.com/vi/YRg7aXJs1do/default.jpg\\",\\"width\\":120,\\"height\\":90},\\"medium\\":{\\"url\\":\\"https://i.ytimg.com/vi/YRg7aXJs1do/mqdefault.jpg\\",\\"width\\":320,\\"height\\":180},\\"high\\":{\\"url\\":\\"https://i.ytimg.com/vi/YRg7aXJs1do/hqdefault.jpg\\",\\"width\\":480,\\"height\\":360}}"	youtube	2021-11-27 03:50:27
+39	Microsoft Dev//Verse 2022 - Hari 4: Masa Depan Talenta Digital Indonesia	https://www.youtube.com/watch?v=gbNL2PSV1mw	2024-07-16 05:55:58.654119	2024-07-16 05:55:58.654119	Dev//Verse adalah acara Microsoft Indonesia dengan semangat untuk memberdayakan setiap Developer serta ekosistemnya di ...	"{\\"default\\":{\\"url\\":\\"https://i.ytimg.com/vi/gbNL2PSV1mw/default.jpg\\",\\"width\\":120,\\"height\\":90},\\"medium\\":{\\"url\\":\\"https://i.ytimg.com/vi/gbNL2PSV1mw/mqdefault.jpg\\",\\"width\\":320,\\"height\\":180},\\"high\\":{\\"url\\":\\"https://i.ytimg.com/vi/gbNL2PSV1mw/hqdefault.jpg\\",\\"width\\":480,\\"height\\":360}}"	youtube	2022-03-25 09:21:47
+40	Tim 3 - Hackathon Konyol 2024	https://www.youtube.com/watch?v=WtDzt-NHjns	2024-07-16 05:55:58.654119	2024-07-16 05:55:58.654119	Tim 3: Dewa Affandi Iman Recorded and produced by M. Farrel Al-Wafi Frizzy Tonton semua video presentasi Hackathon Konyol ...	"{\\"default\\":{\\"url\\":\\"https://i.ytimg.com/vi/WtDzt-NHjns/default.jpg\\",\\"width\\":120,\\"height\\":90},\\"medium\\":{\\"url\\":\\"https://i.ytimg.com/vi/WtDzt-NHjns/mqdefault.jpg\\",\\"width\\":320,\\"height\\":180},\\"high\\":{\\"url\\":\\"https://i.ytimg.com/vi/WtDzt-NHjns/hqdefault.jpg\\",\\"width\\":480,\\"height\\":360}}"	youtube	2024-05-11 04:01:49
+41	Errors, Try, Rescue	https://www.youtube.com/watch?v=eal3qSMj91M	2024-07-16 05:55:58.654119	2024-07-16 05:55:58.654119	https://exercism.org/tracks/elixir/concepts/errors https://exercism.org/tracks/elixir/concepts/try-rescue Tonton semua video tentang ...	"{\\"default\\":{\\"url\\":\\"https://i.ytimg.com/vi/eal3qSMj91M/default.jpg\\",\\"width\\":120,\\"height\\":90},\\"medium\\":{\\"url\\":\\"https://i.ytimg.com/vi/eal3qSMj91M/mqdefault.jpg\\",\\"width\\":320,\\"height\\":180},\\"high\\":{\\"url\\":\\"https://i.ytimg.com/vi/eal3qSMj91M/hqdefault.jpg\\",\\"width\\":480,\\"height\\":360}}"	youtube	2024-04-08 10:35:24
+42	Tim 4 - Hackathon Konyol 2024	https://www.youtube.com/watch?v=e4WdRsXo84E	2024-07-16 05:55:58.654119	2024-07-16 05:55:58.654119	Tim 4: Efan Wahyu Zidane Recorded and produced by M. Farrel Al-Wafi Frizzy Tonton semua video presentasi Hackathon Konyol ...	"{\\"default\\":{\\"url\\":\\"https://i.ytimg.com/vi/e4WdRsXo84E/default.jpg\\",\\"width\\":120,\\"height\\":90},\\"medium\\":{\\"url\\":\\"https://i.ytimg.com/vi/e4WdRsXo84E/mqdefault.jpg\\",\\"width\\":320,\\"height\\":180},\\"high\\":{\\"url\\":\\"https://i.ytimg.com/vi/e4WdRsXo84E/hqdefault.jpg\\",\\"width\\":480,\\"height\\":360}}"	youtube	2024-05-11 04:03:32
+43	SATU FESTIVAL MICROSOFT	https://www.youtube.com/watch?v=HrqluLjOom4	2024-07-16 05:55:58.654119	2024-07-16 05:55:58.654119	Sebagai Upaya kolektif untuk menghadirkan Digital Imperative bagi Indonesia, Microsoft berkerjasama dengan PT Pos Indonesia ...	"{\\"default\\":{\\"url\\":\\"https://i.ytimg.com/vi/HrqluLjOom4/default.jpg\\",\\"width\\":120,\\"height\\":90},\\"medium\\":{\\"url\\":\\"https://i.ytimg.com/vi/HrqluLjOom4/mqdefault.jpg\\",\\"width\\":320,\\"height\\":180},\\"high\\":{\\"url\\":\\"https://i.ytimg.com/vi/HrqluLjOom4/hqdefault.jpg\\",\\"width\\":480,\\"height\\":360}}"	youtube	2022-11-10 08:23:35
+44	Pembukaan Sriwijaya Digital Conference 2021 &amp; Panel Inspiring Session	https://www.youtube.com/watch?v=iBg5NDfGVh4	2024-07-16 05:55:58.654119	2024-07-16 05:55:58.654119	Sriwijaya Digital Conference 2021 Mengangkat Tema Digital Srwijaya Menjangkau Nusantara : Tema ini memiliki Arti ...	"{\\"default\\":{\\"url\\":\\"https://i.ytimg.com/vi/iBg5NDfGVh4/default.jpg\\",\\"width\\":120,\\"height\\":90},\\"medium\\":{\\"url\\":\\"https://i.ytimg.com/vi/iBg5NDfGVh4/mqdefault.jpg\\",\\"width\\":320,\\"height\\":180},\\"high\\":{\\"url\\":\\"https://i.ytimg.com/vi/iBg5NDfGVh4/hqdefault.jpg\\",\\"width\\":480,\\"height\\":360}}"	youtube	2021-11-26 09:14:28
+45	Aplikasi Kitacamdey By Huru Hara Team   Sriwijaya Digital Startup 2024	https://www.youtube.com/watch?v=MQuwEGKBBCA	2024-07-16 05:55:58.654119	2024-07-16 05:55:58.654119	Tim 11: Huru Hara Team Recorded and produced by Irpansyah ( https://www.instagram.com/mpai_belajo/ ) Tonton semua video ...	"{\\"default\\":{\\"url\\":\\"https://i.ytimg.com/vi/MQuwEGKBBCA/default.jpg\\",\\"width\\":120,\\"height\\":90},\\"medium\\":{\\"url\\":\\"https://i.ytimg.com/vi/MQuwEGKBBCA/mqdefault.jpg\\",\\"width\\":320,\\"height\\":180},\\"high\\":{\\"url\\":\\"https://i.ytimg.com/vi/MQuwEGKBBCA/hqdefault.jpg\\",\\"width\\":480,\\"height\\":360}}"	youtube	2024-06-23 01:05:57
+46	Tim 8 - Hackathon Konyol 2024	https://www.youtube.com/watch?v=CVquYej9OeQ	2024-07-16 05:55:58.654119	2024-07-16 05:55:58.654119	Tim 8: Thalia Atrasina Maydina Recorded and produced by M. Farrel Al-Wafi Frizzy Tonton semua video presentasi Hackathon ...	"{\\"default\\":{\\"url\\":\\"https://i.ytimg.com/vi/CVquYej9OeQ/default.jpg\\",\\"width\\":120,\\"height\\":90},\\"medium\\":{\\"url\\":\\"https://i.ytimg.com/vi/CVquYej9OeQ/mqdefault.jpg\\",\\"width\\":320,\\"height\\":180},\\"high\\":{\\"url\\":\\"https://i.ytimg.com/vi/CVquYej9OeQ/hqdefault.jpg\\",\\"width\\":480,\\"height\\":360}}"	youtube	2024-05-11 04:11:24
+47	Founders Live Indonesia X Palembang Digital : &quot;Road to Founders Live Pitch&quot;	https://www.youtube.com/watch?v=lyVVSAPunU8	2024-07-16 05:55:58.654119	2024-07-16 05:55:58.654119	Founders Live Indonesia X Palembang Digital Yuk merapat di Kupas tuntas cara ikutan Founders Live! Dari cara daftar, cara ...	"{\\"default\\":{\\"url\\":\\"https://i.ytimg.com/vi/lyVVSAPunU8/default.jpg\\",\\"width\\":120,\\"height\\":90},\\"medium\\":{\\"url\\":\\"https://i.ytimg.com/vi/lyVVSAPunU8/mqdefault.jpg\\",\\"width\\":320,\\"height\\":180},\\"high\\":{\\"url\\":\\"https://i.ytimg.com/vi/lyVVSAPunU8/hqdefault.jpg\\",\\"width\\":480,\\"height\\":360}}"	youtube	2021-06-04 10:30:06
+48	Sriwijaya Digital Conference 2021 : Manajemen Session	https://www.youtube.com/watch?v=bxm6Ygn1oMc	2024-07-16 05:55:58.654119	2024-07-16 05:55:58.654119	Digital Sriwijaya Menjangkau Nusantara :Tema ini memiliki Arti Mengenalkan semua para Talenta Digital dan juga produk digital ...	"{\\"default\\":{\\"url\\":\\"https://i.ytimg.com/vi/bxm6Ygn1oMc/default.jpg\\",\\"width\\":120,\\"height\\":90},\\"medium\\":{\\"url\\":\\"https://i.ytimg.com/vi/bxm6Ygn1oMc/mqdefault.jpg\\",\\"width\\":320,\\"height\\":180},\\"high\\":{\\"url\\":\\"https://i.ytimg.com/vi/bxm6Ygn1oMc/hqdefault.jpg\\",\\"width\\":480,\\"height\\":360}}"	youtube	2021-11-27 05:41:16
+49	Tips Agar Diterima Magang / Kerja di Perusahaan Rintisan (aldisti amsas - Tani Hub)	https://www.youtube.com/watch?v=isorEeZtSrU	2024-07-16 05:55:58.654119	2024-07-16 05:55:58.654119	Berikut ini adalah pemaparan tentang bagaimana tips & trik agar diterima magang / kerja di perusahaan rintisan bersama Aldistsi ...	"{\\"default\\":{\\"url\\":\\"https://i.ytimg.com/vi/isorEeZtSrU/default.jpg\\",\\"width\\":120,\\"height\\":90},\\"medium\\":{\\"url\\":\\"https://i.ytimg.com/vi/isorEeZtSrU/mqdefault.jpg\\",\\"width\\":320,\\"height\\":180},\\"high\\":{\\"url\\":\\"https://i.ytimg.com/vi/isorEeZtSrU/hqdefault.jpg\\",\\"width\\":480,\\"height\\":360}}"	youtube	2021-08-18 07:53:18
+50	Patal Sharing Session 4.1  Peluang Wordpress Dimasa Depan	https://www.youtube.com/watch?v=UDSwbzAA6bk	2024-07-16 05:55:58.654119	2024-07-16 05:55:58.654119	Halo sobat patal kali ini kita akan melihat seperti apa sih peluang wordpress dimasa depan baik dari sisi pengembang/developer ...	"{\\"default\\":{\\"url\\":\\"https://i.ytimg.com/vi/UDSwbzAA6bk/default.jpg\\",\\"width\\":120,\\"height\\":90},\\"medium\\":{\\"url\\":\\"https://i.ytimg.com/vi/UDSwbzAA6bk/mqdefault.jpg\\",\\"width\\":320,\\"height\\":180},\\"high\\":{\\"url\\":\\"https://i.ytimg.com/vi/UDSwbzAA6bk/hqdefault.jpg\\",\\"width\\":480,\\"height\\":360}}"	youtube	2020-11-09 06:16:07
+51	Tim 19 - Hackathon Konyol 2024	https://www.youtube.com/watch?v=n4hevmInuTA	2024-07-16 05:55:58.654119	2024-07-16 05:55:58.654119	Tim 19: Fakhri Recorded and produced by M. Farrel Al-Wafi Frizzy Tonton semua video presentasi Hackathon Konyol 2024 di: ...	"{\\"default\\":{\\"url\\":\\"https://i.ytimg.com/vi/n4hevmInuTA/default.jpg\\",\\"width\\":120,\\"height\\":90},\\"medium\\":{\\"url\\":\\"https://i.ytimg.com/vi/n4hevmInuTA/mqdefault.jpg\\",\\"width\\":320,\\"height\\":180},\\"high\\":{\\"url\\":\\"https://i.ytimg.com/vi/n4hevmInuTA/hqdefault.jpg\\",\\"width\\":480,\\"height\\":360}}"	youtube	2024-05-11 04:27:51
+52	Palembang Digital #JalanTerus	https://www.youtube.com/watch?v=rWWa9wTGFgc	2024-07-16 05:55:58.654119	2024-07-16 05:55:58.654119	Komunitas Palembang Digital akan terus bertumbuh, berkembang dan berproses jauh lebih baik kedepannya. Terus dukung ...	"{\\"default\\":{\\"url\\":\\"https://i.ytimg.com/vi/rWWa9wTGFgc/default.jpg\\",\\"width\\":120,\\"height\\":90},\\"medium\\":{\\"url\\":\\"https://i.ytimg.com/vi/rWWa9wTGFgc/mqdefault.jpg\\",\\"width\\":320,\\"height\\":180},\\"high\\":{\\"url\\":\\"https://i.ytimg.com/vi/rWWa9wTGFgc/hqdefault.jpg\\",\\"width\\":480,\\"height\\":360}}"	youtube	2024-01-27 10:59:04
+53	Tim 18 - Hackathon Konyol 2024	https://www.youtube.com/watch?v=ccC9JBje3JU	2024-07-16 05:55:58.654119	2024-07-16 05:55:58.654119	Tim 18: Hidayat Pemas Bunga Recorded and produced by M. Farrel Al-Wafi Frizzy Tonton semua video presentasi Hackathon ...	"{\\"default\\":{\\"url\\":\\"https://i.ytimg.com/vi/ccC9JBje3JU/default.jpg\\",\\"width\\":120,\\"height\\":90},\\"medium\\":{\\"url\\":\\"https://i.ytimg.com/vi/ccC9JBje3JU/mqdefault.jpg\\",\\"width\\":320,\\"height\\":180},\\"high\\":{\\"url\\":\\"https://i.ytimg.com/vi/ccC9JBje3JU/hqdefault.jpg\\",\\"width\\":480,\\"height\\":360}}"	youtube	2024-05-11 04:27:39
+54	Tim 13 - Hackathon Konyol 2024	https://www.youtube.com/watch?v=posPYsObGC4	2024-07-16 05:55:58.654119	2024-07-16 05:55:58.654119	Tim 13: Nisa Septi Recorded and produced by M. Farrel Al-Wafi Frizzy Tonton semua video presentasi Hackathon Konyol 2024 di: ...	"{\\"default\\":{\\"url\\":\\"https://i.ytimg.com/vi/posPYsObGC4/default.jpg\\",\\"width\\":120,\\"height\\":90},\\"medium\\":{\\"url\\":\\"https://i.ytimg.com/vi/posPYsObGC4/mqdefault.jpg\\",\\"width\\":320,\\"height\\":180},\\"high\\":{\\"url\\":\\"https://i.ytimg.com/vi/posPYsObGC4/hqdefault.jpg\\",\\"width\\":480,\\"height\\":360}}"	youtube	2024-05-11 04:19:38
+55	Aplikasi Bootnesia By Asomasyo Team - Sriwijaya Digital Startup 2024	https://www.youtube.com/watch?v=ol0vjjNByE4	2024-07-16 05:55:58.654119	2024-07-16 05:55:58.654119	Tim 15: Asomasyo Team Recorded and produced by Irpansyah ( https://www.instagram.com/mpai_belajo/ ) Tonton semua video ...	"{\\"default\\":{\\"url\\":\\"https://i.ytimg.com/vi/ol0vjjNByE4/default.jpg\\",\\"width\\":120,\\"height\\":90},\\"medium\\":{\\"url\\":\\"https://i.ytimg.com/vi/ol0vjjNByE4/mqdefault.jpg\\",\\"width\\":320,\\"height\\":180},\\"high\\":{\\"url\\":\\"https://i.ytimg.com/vi/ol0vjjNByE4/hqdefault.jpg\\",\\"width\\":480,\\"height\\":360}}"	youtube	2024-06-23 01:10:08
+56	Sriwijaya Digital Conference 2022 : Career in information Technology	https://www.youtube.com/watch?v=T4LOPT0_2cA	2024-07-16 05:55:58.654119	2024-07-16 05:55:58.654119		"{\\"default\\":{\\"url\\":\\"https://i.ytimg.com/vi/T4LOPT0_2cA/default.jpg\\",\\"width\\":120,\\"height\\":90},\\"medium\\":{\\"url\\":\\"https://i.ytimg.com/vi/T4LOPT0_2cA/mqdefault.jpg\\",\\"width\\":320,\\"height\\":180},\\"high\\":{\\"url\\":\\"https://i.ytimg.com/vi/T4LOPT0_2cA/hqdefault.jpg\\",\\"width\\":480,\\"height\\":360}}"	youtube	2022-12-10 08:36:21
+57	Aplikasi OBAI (Obesitas AI) By Kepiting Alaska Balado Team - Sriwijaya Digital Startup 2024	https://www.youtube.com/watch?v=CQeOmzM4jMc	2024-07-16 05:55:58.654119	2024-07-16 05:55:58.654119	Tim 05: Kepiting Alaska Balado Team Recorded and produced by Irpansyah Tonton semua video presentasi Sriwijaya Digital ...	"{\\"default\\":{\\"url\\":\\"https://i.ytimg.com/vi/CQeOmzM4jMc/default.jpg\\",\\"width\\":120,\\"height\\":90},\\"medium\\":{\\"url\\":\\"https://i.ytimg.com/vi/CQeOmzM4jMc/mqdefault.jpg\\",\\"width\\":320,\\"height\\":180},\\"high\\":{\\"url\\":\\"https://i.ytimg.com/vi/CQeOmzM4jMc/hqdefault.jpg\\",\\"width\\":480,\\"height\\":360}}"	youtube	2024-06-23 00:15:09
+58	Sriwijaya Digital Conference 2021 : Founder Session	https://www.youtube.com/watch?v=KOKXohjZXSQ	2024-07-16 05:55:58.654119	2024-07-16 05:55:58.654119	Digital Sriwijaya Menjangkau Nusantara :Tema ini memiliki Arti Mengenalkan semua para Talenta Digital dan juga produk digital ...	"{\\"default\\":{\\"url\\":\\"https://i.ytimg.com/vi/KOKXohjZXSQ/default.jpg\\",\\"width\\":120,\\"height\\":90},\\"medium\\":{\\"url\\":\\"https://i.ytimg.com/vi/KOKXohjZXSQ/mqdefault.jpg\\",\\"width\\":320,\\"height\\":180},\\"high\\":{\\"url\\":\\"https://i.ytimg.com/vi/KOKXohjZXSQ/hqdefault.jpg\\",\\"width\\":480,\\"height\\":360}}"	youtube	2021-11-27 09:20:02
+59	Aplikasi P&#39;Kerja By Ration Team - Sriwijaya Digital Startup 2024	https://www.youtube.com/watch?v=xOx3Ee5XXig	2024-07-16 05:55:58.654119	2024-07-16 05:55:58.654119	Tim 08: Ration Team Recorded and produced by Irpansyah ( https://www.instagram.com/mpai_belajo/ ) Tonton semua video ...	"{\\"default\\":{\\"url\\":\\"https://i.ytimg.com/vi/xOx3Ee5XXig/default.jpg\\",\\"width\\":120,\\"height\\":90},\\"medium\\":{\\"url\\":\\"https://i.ytimg.com/vi/xOx3Ee5XXig/mqdefault.jpg\\",\\"width\\":320,\\"height\\":180},\\"high\\":{\\"url\\":\\"https://i.ytimg.com/vi/xOx3Ee5XXig/hqdefault.jpg\\",\\"width\\":480,\\"height\\":360}}"	youtube	2024-06-23 00:37:08
+60	Elixir Basics	https://www.youtube.com/watch?v=2ccKBDUInmg	2024-07-16 05:55:58.654119	2024-07-16 05:55:58.654119	The basics of Elixir programming language. --- Dasar-dasar bahasa pemrograman Elixir.	"{\\"default\\":{\\"url\\":\\"https://i.ytimg.com/vi/2ccKBDUInmg/default.jpg\\",\\"width\\":120,\\"height\\":90},\\"medium\\":{\\"url\\":\\"https://i.ytimg.com/vi/2ccKBDUInmg/mqdefault.jpg\\",\\"width\\":320,\\"height\\":180},\\"high\\":{\\"url\\":\\"https://i.ytimg.com/vi/2ccKBDUInmg/hqdefault.jpg\\",\\"width\\":480,\\"height\\":360}}"	youtube	2024-03-11 12:06:44
+61	PATAL PERFORM&#39;S 2.0 (UNJUK KARYA ANGGOTA PALEMBANG DIGITAL	https://www.youtube.com/watch?v=ynLtSdXh03E	2024-07-16 05:55:58.654119	2024-07-16 05:55:58.654119	Kali ini ada 3 project karya hasil dari anak-anak palembang digital. 1. MOU GO by Achmad ichsan (aplikasi Ojek Online Lokal ...	"{\\"default\\":{\\"url\\":\\"https://i.ytimg.com/vi/ynLtSdXh03E/default.jpg\\",\\"width\\":120,\\"height\\":90},\\"medium\\":{\\"url\\":\\"https://i.ytimg.com/vi/ynLtSdXh03E/mqdefault.jpg\\",\\"width\\":320,\\"height\\":180},\\"high\\":{\\"url\\":\\"https://i.ytimg.com/vi/ynLtSdXh03E/hqdefault.jpg\\",\\"width\\":480,\\"height\\":360}}"	youtube	2020-07-01 05:48:53
+62	Tim 15 - Hackathon Konyol 2024	https://www.youtube.com/watch?v=baFW3eta2O8	2024-07-16 05:55:58.654119	2024-07-16 05:55:58.654119	Tim 15: Kharisma Elan Recorded and produced by M. Farrel Al-Wafi Frizzy Tonton semua video presentasi Hackathon Konyol ...	"{\\"default\\":{\\"url\\":\\"https://i.ytimg.com/vi/baFW3eta2O8/default.jpg\\",\\"width\\":120,\\"height\\":90},\\"medium\\":{\\"url\\":\\"https://i.ytimg.com/vi/baFW3eta2O8/mqdefault.jpg\\",\\"width\\":320,\\"height\\":180},\\"high\\":{\\"url\\":\\"https://i.ytimg.com/vi/baFW3eta2O8/hqdefault.jpg\\",\\"width\\":480,\\"height\\":360}}"	youtube	2024-05-11 04:21:43
+63	Aplikasi GoUpdate.Tech By Macan Lindungan Team - Sriwijaya Digital Startup 2024	https://www.youtube.com/watch?v=rzlVcORKHVE	2024-07-16 05:55:58.654119	2024-07-16 05:55:58.654119	Tim 03: Macan Lindungan Team Recorded and produced by Irpansyah Tonton semua video presentasi Sriwijaya Digital Startup ...	"{\\"default\\":{\\"url\\":\\"https://i.ytimg.com/vi/rzlVcORKHVE/default.jpg\\",\\"width\\":120,\\"height\\":90},\\"medium\\":{\\"url\\":\\"https://i.ytimg.com/vi/rzlVcORKHVE/mqdefault.jpg\\",\\"width\\":320,\\"height\\":180},\\"high\\":{\\"url\\":\\"https://i.ytimg.com/vi/rzlVcORKHVE/hqdefault.jpg\\",\\"width\\":480,\\"height\\":360}}"	youtube	2024-06-23 00:07:52
+64	Hello Elixir &amp; Exercism 👋	https://www.youtube.com/watch?v=um8QcJXoSdo	2024-07-16 05:55:58.654119	2024-07-16 05:55:58.654119	Start learning Elixir on Exercism by coding a Hello, World program. --- Mulai belajar Elixir di Exercism dengan membuat program ...	"{\\"default\\":{\\"url\\":\\"https://i.ytimg.com/vi/um8QcJXoSdo/default.jpg\\",\\"width\\":120,\\"height\\":90},\\"medium\\":{\\"url\\":\\"https://i.ytimg.com/vi/um8QcJXoSdo/mqdefault.jpg\\",\\"width\\":320,\\"height\\":180},\\"high\\":{\\"url\\":\\"https://i.ytimg.com/vi/um8QcJXoSdo/hqdefault.jpg\\",\\"width\\":480,\\"height\\":360}}"	youtube	2024-03-10 16:33:51
+65	Aplikasi CalmMind By Hexa Team - Sriwijaya Digital Startup 2024	https://www.youtube.com/watch?v=grhSJaMtTEo	2024-07-16 05:55:58.654119	2024-07-16 05:55:58.654119	Tim 06: HexaTeam Recorded and produced by Irpansyah ( https://www.instagram.com/mpai_belajo/ ) Tonton semua video ...	"{\\"default\\":{\\"url\\":\\"https://i.ytimg.com/vi/grhSJaMtTEo/default.jpg\\",\\"width\\":120,\\"height\\":90},\\"medium\\":{\\"url\\":\\"https://i.ytimg.com/vi/grhSJaMtTEo/mqdefault.jpg\\",\\"width\\":320,\\"height\\":180},\\"high\\":{\\"url\\":\\"https://i.ytimg.com/vi/grhSJaMtTEo/hqdefault.jpg\\",\\"width\\":480,\\"height\\":360}}"	youtube	2024-06-23 00:30:13
+66	Aplikasi Ruang Tenang By Tantrum Team - Sriwijaya Digital Startup 2024	https://www.youtube.com/watch?v=h_RK1toG-WQ	2024-07-16 05:55:58.654119	2024-07-16 05:55:58.654119	Tim 10: Tantrum Team Recorded and produced by Irpansyah ( https://www.instagram.com/mpai_belajo/ ) Tonton semua video ...	"{\\"default\\":{\\"url\\":\\"https://i.ytimg.com/vi/h_RK1toG-WQ/default.jpg\\",\\"width\\":120,\\"height\\":90},\\"medium\\":{\\"url\\":\\"https://i.ytimg.com/vi/h_RK1toG-WQ/mqdefault.jpg\\",\\"width\\":320,\\"height\\":180},\\"high\\":{\\"url\\":\\"https://i.ytimg.com/vi/h_RK1toG-WQ/hqdefault.jpg\\",\\"width\\":480,\\"height\\":360}}"	youtube	2024-06-23 01:04:50
+67	Tim 9 - Hackathon Konyol 2024	https://www.youtube.com/watch?v=-1TwvHv2DMY	2024-07-16 05:55:58.654119	2024-07-16 05:55:58.654119	Tim 9: Akbar Adityah Faiz Recorded and produced by M. Farrel Al-Wafi Frizzy Tonton semua video presentasi Hackathon Konyol ...	"{\\"default\\":{\\"url\\":\\"https://i.ytimg.com/vi/-1TwvHv2DMY/default.jpg\\",\\"width\\":120,\\"height\\":90},\\"medium\\":{\\"url\\":\\"https://i.ytimg.com/vi/-1TwvHv2DMY/mqdefault.jpg\\",\\"width\\":320,\\"height\\":180},\\"high\\":{\\"url\\":\\"https://i.ytimg.com/vi/-1TwvHv2DMY/hqdefault.jpg\\",\\"width\\":480,\\"height\\":360}}"	youtube	2024-05-11 04:12:34
+68	Sharing Session 5.1 -Fenomena Membangun Startup di Daerah	https://www.youtube.com/watch?v=PzFlbYhtYkw	2024-07-16 05:55:58.654119	2024-07-16 05:55:58.654119	Jatuh Bangun Startup Daerah.	"{\\"default\\":{\\"url\\":\\"https://i.ytimg.com/vi/PzFlbYhtYkw/default.jpg\\",\\"width\\":120,\\"height\\":90},\\"medium\\":{\\"url\\":\\"https://i.ytimg.com/vi/PzFlbYhtYkw/mqdefault.jpg\\",\\"width\\":320,\\"height\\":180},\\"high\\":{\\"url\\":\\"https://i.ytimg.com/vi/PzFlbYhtYkw/hqdefault.jpg\\",\\"width\\":480,\\"height\\":360}}"	youtube	2020-12-18 14:06:37
+69	Sriiwjaya Digital Conference 2021 : Panel Women Session	https://www.youtube.com/watch?v=q5dFJErSObA	2024-07-16 05:55:58.654119	2024-07-16 05:55:58.654119	Digital Sriwijaya Menjangkau Nusantara :Tema ini memiliki Arti Mengenalkan semua para Talenta Digital dan juga produk digital ...	"{\\"default\\":{\\"url\\":\\"https://i.ytimg.com/vi/q5dFJErSObA/default.jpg\\",\\"width\\":120,\\"height\\":90},\\"medium\\":{\\"url\\":\\"https://i.ytimg.com/vi/q5dFJErSObA/mqdefault.jpg\\",\\"width\\":320,\\"height\\":180},\\"high\\":{\\"url\\":\\"https://i.ytimg.com/vi/q5dFJErSObA/hqdefault.jpg\\",\\"width\\":480,\\"height\\":360}}"	youtube	2021-11-26 14:07:56
+70	Workshop Product Development Bareng Anton Rifco ( VP product at Warung Pintar)	https://www.youtube.com/watch?v=MEVic5zRNSk	2024-07-16 05:55:58.654119	2024-07-16 05:55:58.654119	yuk cari tahu bagaimana cari tau bagaimana belajar menjadi product development.	"{\\"default\\":{\\"url\\":\\"https://i.ytimg.com/vi/MEVic5zRNSk/default.jpg\\",\\"width\\":120,\\"height\\":90},\\"medium\\":{\\"url\\":\\"https://i.ytimg.com/vi/MEVic5zRNSk/mqdefault.jpg\\",\\"width\\":320,\\"height\\":180},\\"high\\":{\\"url\\":\\"https://i.ytimg.com/vi/MEVic5zRNSk/hqdefault.jpg\\",\\"width\\":480,\\"height\\":360}}"	youtube	2020-08-25 08:34:15
+71	Dasar &amp; Implementasi Penggunaan GIT bersama Revan Muhammad Dafa (Workshop Palembang Digital 4.0)	https://www.youtube.com/watch?v=prgeXB1d85E	2024-07-16 05:55:58.654119	2024-07-16 05:55:58.654119	Belajar Dasar dan Implementasi Penggunaan GIT Revan Muhammad Dafa merupakan 1. Researcher at AIRLab (Artificial ...	"{\\"default\\":{\\"url\\":\\"https://i.ytimg.com/vi/prgeXB1d85E/default.jpg\\",\\"width\\":120,\\"height\\":90},\\"medium\\":{\\"url\\":\\"https://i.ytimg.com/vi/prgeXB1d85E/mqdefault.jpg\\",\\"width\\":320,\\"height\\":180},\\"high\\":{\\"url\\":\\"https://i.ytimg.com/vi/prgeXB1d85E/hqdefault.jpg\\",\\"width\\":480,\\"height\\":360}}"	youtube	2020-05-30 13:48:18
+72	Tim 16 - Hackathon Konyol 2024	https://www.youtube.com/watch?v=KyYjnw1AjaE	2024-07-16 05:55:58.654119	2024-07-16 05:55:58.654119	Tim 16: M. Islam Recorded and produced by M. Farrel Al-Wafi Frizzy Tonton semua video presentasi Hackathon Konyol 2024 di: ...	"{\\"default\\":{\\"url\\":\\"https://i.ytimg.com/vi/KyYjnw1AjaE/default.jpg\\",\\"width\\":120,\\"height\\":90},\\"medium\\":{\\"url\\":\\"https://i.ytimg.com/vi/KyYjnw1AjaE/mqdefault.jpg\\",\\"width\\":320,\\"height\\":180},\\"high\\":{\\"url\\":\\"https://i.ytimg.com/vi/KyYjnw1AjaE/hqdefault.jpg\\",\\"width\\":480,\\"height\\":360}}"	youtube	2024-05-11 04:27:11
+73	PATAL PERFORM&#39;S (UNJUK KARYA ANGGOTA PALEMBANG DIGITAL)	https://www.youtube.com/watch?v=FEGDL1QzyUA	2024-07-16 05:55:58.654119	2024-07-16 05:55:58.654119	Ada beberapa karya yang ditampilkan dalam patal performs 1.0 yaitu 1. Classic (By Malian ) 2. Crawler OLX (By Yoga) 3.	"{\\"default\\":{\\"url\\":\\"https://i.ytimg.com/vi/FEGDL1QzyUA/default.jpg\\",\\"width\\":120,\\"height\\":90},\\"medium\\":{\\"url\\":\\"https://i.ytimg.com/vi/FEGDL1QzyUA/mqdefault.jpg\\",\\"width\\":320,\\"height\\":180},\\"high\\":{\\"url\\":\\"https://i.ytimg.com/vi/FEGDL1QzyUA/hqdefault.jpg\\",\\"width\\":480,\\"height\\":360}}"	youtube	2020-06-09 09:21:02
+74	Aplikasi Ruang Tenang By Renang Team - Sriwijaya Digital Startup 2024	https://www.youtube.com/watch?v=80bB3HrOiIo	2024-07-16 05:55:58.654119	2024-07-16 05:55:58.654119	Tim 13: Renang Team Recorded and produced by Irpansyah ( https://www.instagram.com/mpai_belajo/ ) Tonton semua video ...	"{\\"default\\":{\\"url\\":\\"https://i.ytimg.com/vi/80bB3HrOiIo/default.jpg\\",\\"width\\":120,\\"height\\":90},\\"medium\\":{\\"url\\":\\"https://i.ytimg.com/vi/80bB3HrOiIo/mqdefault.jpg\\",\\"width\\":320,\\"height\\":180},\\"high\\":{\\"url\\":\\"https://i.ytimg.com/vi/80bB3HrOiIo/hqdefault.jpg\\",\\"width\\":480,\\"height\\":360}}"	youtube	2024-06-23 01:15:16
+75	Panel Kolaborasi untuk Talenta Digital Sumsel | Sriwijaya Digital Festival 2020	https://www.youtube.com/watch?v=5oLYYAJAcNM	2024-07-16 05:55:58.654119	2024-07-16 05:55:58.654119	Panel Kolaborasi untuk Talenta Digital Sumsel mengangkat topik "Bagaimana peran komunitas,perguruan tinggi dan lembaga ...	"{\\"default\\":{\\"url\\":\\"https://i.ytimg.com/vi/5oLYYAJAcNM/default.jpg\\",\\"width\\":120,\\"height\\":90},\\"medium\\":{\\"url\\":\\"https://i.ytimg.com/vi/5oLYYAJAcNM/mqdefault.jpg\\",\\"width\\":320,\\"height\\":180},\\"high\\":{\\"url\\":\\"https://i.ytimg.com/vi/5oLYYAJAcNM/hqdefault.jpg\\",\\"width\\":480,\\"height\\":360}}"	youtube	2020-11-29 05:24:02
+76	Panel Karir Software Engineer | Sriwijaya Digital Festival 2020	https://www.youtube.com/watch?v=X1xU8OXNLTE	2024-07-16 05:55:58.654119	2024-07-16 05:55:58.654119	Panel Career Software engineer mengangkat topik "Berbagi Perjalanan dan pengalaman dalam memulai karir sebagai software ...	"{\\"default\\":{\\"url\\":\\"https://i.ytimg.com/vi/X1xU8OXNLTE/default.jpg\\",\\"width\\":120,\\"height\\":90},\\"medium\\":{\\"url\\":\\"https://i.ytimg.com/vi/X1xU8OXNLTE/mqdefault.jpg\\",\\"width\\":320,\\"height\\":180},\\"high\\":{\\"url\\":\\"https://i.ytimg.com/vi/X1xU8OXNLTE/hqdefault.jpg\\",\\"width\\":480,\\"height\\":360}}"	youtube	2020-11-28 08:35:28
+77	Tips &amp; Trik Berkarier dibidang Teknologi Versi Adelia @ AVP Digital Stretegy BNI	https://www.youtube.com/watch?v=3cOpKZVL8wE	2024-07-16 05:55:58.654119	2024-07-16 05:55:58.654119		"{\\"default\\":{\\"url\\":\\"https://i.ytimg.com/vi/3cOpKZVL8wE/default.jpg\\",\\"width\\":120,\\"height\\":90},\\"medium\\":{\\"url\\":\\"https://i.ytimg.com/vi/3cOpKZVL8wE/mqdefault.jpg\\",\\"width\\":320,\\"height\\":180},\\"high\\":{\\"url\\":\\"https://i.ytimg.com/vi/3cOpKZVL8wE/hqdefault.jpg\\",\\"width\\":480,\\"height\\":360}}"	youtube	2023-02-04 16:59:32
+78	Melihat Budaya Kerja Remote di Perusahaan Startup Teknologi (Bersama Doni Rubiagatra)	https://www.youtube.com/watch?v=yAiFprYgNYM	2024-07-16 05:55:58.654119	2024-07-16 05:55:58.654119	Budaya kerja remote akhir" ini menjadi hal yang biasa bagi berbagai perusahaan , pandemi membuat hampir seluruh ...	"{\\"default\\":{\\"url\\":\\"https://i.ytimg.com/vi/yAiFprYgNYM/default.jpg\\",\\"width\\":120,\\"height\\":90},\\"medium\\":{\\"url\\":\\"https://i.ytimg.com/vi/yAiFprYgNYM/mqdefault.jpg\\",\\"width\\":320,\\"height\\":180},\\"high\\":{\\"url\\":\\"https://i.ytimg.com/vi/yAiFprYgNYM/hqdefault.jpg\\",\\"width\\":480,\\"height\\":360}}"	youtube	2022-06-24 13:14:03
+79	Aplikasi MindSync By Pake Nanya Team   Sriwijaya Digital Startup 2024	https://www.youtube.com/watch?v=LPVXwzSAXD0	2024-07-16 05:55:58.654119	2024-07-16 05:55:58.654119	Tim 09: Pake Nanya Team Recorded and produced by Irpansyah ( https://www.instagram.com/mpai_belajo/ ) Tonton semua video ...	"{\\"default\\":{\\"url\\":\\"https://i.ytimg.com/vi/LPVXwzSAXD0/default.jpg\\",\\"width\\":120,\\"height\\":90},\\"medium\\":{\\"url\\":\\"https://i.ytimg.com/vi/LPVXwzSAXD0/mqdefault.jpg\\",\\"width\\":320,\\"height\\":180},\\"high\\":{\\"url\\":\\"https://i.ytimg.com/vi/LPVXwzSAXD0/hqdefault.jpg\\",\\"width\\":480,\\"height\\":360}}"	youtube	2024-06-23 00:42:37
+80	Ucapan Anniversary 2 Tahun PATAL ,Dari Pemerintah , Akademisi , Community , Media &amp; Industri Ekspert	https://www.youtube.com/watch?v=Wl2OPGoI4_M	2024-07-16 05:55:58.654119	2024-07-16 05:55:58.654119	Berikut ini adalah ucapan ulang tahun yang ke 2 dari semua pihak yang mendukung palembang digital dan selalu support ...	"{\\"default\\":{\\"url\\":\\"https://i.ytimg.com/vi/Wl2OPGoI4_M/default.jpg\\",\\"width\\":120,\\"height\\":90},\\"medium\\":{\\"url\\":\\"https://i.ytimg.com/vi/Wl2OPGoI4_M/mqdefault.jpg\\",\\"width\\":320,\\"height\\":180},\\"high\\":{\\"url\\":\\"https://i.ytimg.com/vi/Wl2OPGoI4_M/hqdefault.jpg\\",\\"width\\":480,\\"height\\":360}}"	youtube	2022-04-26 07:29:45
+81	Aplikasi Sistem Ekonomi Lingkup Umat Palembang By Selu Bang Team - Sriwijaya Digital Startup 2024	https://www.youtube.com/watch?v=ziKql5KTZOY	2024-07-16 05:55:58.654119	2024-07-16 05:55:58.654119	Tim 12: Selu Bang Team Recorded and produced by Irpansyah ( https://www.instagram.com/mpai_belajo/ ) Tonton semua video ...	"{\\"default\\":{\\"url\\":\\"https://i.ytimg.com/vi/ziKql5KTZOY/default.jpg\\",\\"width\\":120,\\"height\\":90},\\"medium\\":{\\"url\\":\\"https://i.ytimg.com/vi/ziKql5KTZOY/mqdefault.jpg\\",\\"width\\":320,\\"height\\":180},\\"high\\":{\\"url\\":\\"https://i.ytimg.com/vi/ziKql5KTZOY/hqdefault.jpg\\",\\"width\\":480,\\"height\\":360}}"	youtube	2024-06-23 01:11:29
+82	Tim 20 - Hackathon Konyol 2024	https://www.youtube.com/watch?v=5cNZA-Lvgts	2024-07-16 05:55:58.654119	2024-07-16 05:55:58.654119	Tim 20: Benny Recorded and produced by M. Farrel Al-Wafi Frizzy Tonton semua video presentasi Hackathon Konyol 2024 di: ...	"{\\"default\\":{\\"url\\":\\"https://i.ytimg.com/vi/5cNZA-Lvgts/default.jpg\\",\\"width\\":120,\\"height\\":90},\\"medium\\":{\\"url\\":\\"https://i.ytimg.com/vi/5cNZA-Lvgts/mqdefault.jpg\\",\\"width\\":320,\\"height\\":180},\\"high\\":{\\"url\\":\\"https://i.ytimg.com/vi/5cNZA-Lvgts/hqdefault.jpg\\",\\"width\\":480,\\"height\\":360}}"	youtube	2024-05-11 04:28:22
+83	Sriwijaya Digital Conference 2022 : How to Build a Great Company in Digital Era	https://www.youtube.com/watch?v=cN_zDn1vZRM	2024-07-16 05:55:58.654119	2024-07-16 05:55:58.654119		"{\\"default\\":{\\"url\\":\\"https://i.ytimg.com/vi/cN_zDn1vZRM/default.jpg\\",\\"width\\":120,\\"height\\":90},\\"medium\\":{\\"url\\":\\"https://i.ytimg.com/vi/cN_zDn1vZRM/mqdefault.jpg\\",\\"width\\":320,\\"height\\":180},\\"high\\":{\\"url\\":\\"https://i.ytimg.com/vi/cN_zDn1vZRM/hqdefault.jpg\\",\\"width\\":480,\\"height\\":360}}"	youtube	2022-12-10 13:58:38
+84	Sharing Session 5.1 -Fenomena Membangun Startup di Daerah	https://www.youtube.com/watch?v=k6dJZIQ-D60	2024-07-16 05:55:58.654119	2024-07-16 05:55:58.654119	Jatuh Bangun Startup Daerah.	"{\\"default\\":{\\"url\\":\\"https://i.ytimg.com/vi/k6dJZIQ-D60/default.jpg\\",\\"width\\":120,\\"height\\":90},\\"medium\\":{\\"url\\":\\"https://i.ytimg.com/vi/k6dJZIQ-D60/mqdefault.jpg\\",\\"width\\":320,\\"height\\":180},\\"high\\":{\\"url\\":\\"https://i.ytimg.com/vi/k6dJZIQ-D60/hqdefault.jpg\\",\\"width\\":480,\\"height\\":360}}"	youtube	2022-04-29 11:28:57
+85	GenServer	https://www.youtube.com/watch?v=aUYYu6vbrq0	2024-07-16 05:55:58.654119	2024-07-16 05:55:58.654119	https://exercism.org/tracks/elixir/concepts/genserver Tonton semua video tentang Elixir di: ...	"{\\"default\\":{\\"url\\":\\"https://i.ytimg.com/vi/aUYYu6vbrq0/default.jpg\\",\\"width\\":120,\\"height\\":90},\\"medium\\":{\\"url\\":\\"https://i.ytimg.com/vi/aUYYu6vbrq0/mqdefault.jpg\\",\\"width\\":320,\\"height\\":180},\\"high\\":{\\"url\\":\\"https://i.ytimg.com/vi/aUYYu6vbrq0/hqdefault.jpg\\",\\"width\\":480,\\"height\\":360}}"	youtube	2024-04-09 07:21:55
+86	Pembukaan Sriwijaya Digital Conference &amp; Panel Social Media Impact in Digital Era	https://www.youtube.com/watch?v=dJK7fBA6Zfk	2024-07-16 05:55:58.654119	2024-07-16 05:55:58.654119		"{\\"default\\":{\\"url\\":\\"https://i.ytimg.com/vi/dJK7fBA6Zfk/default.jpg\\",\\"width\\":120,\\"height\\":90},\\"medium\\":{\\"url\\":\\"https://i.ytimg.com/vi/dJK7fBA6Zfk/mqdefault.jpg\\",\\"width\\":320,\\"height\\":180},\\"high\\":{\\"url\\":\\"https://i.ytimg.com/vi/dJK7fBA6Zfk/hqdefault.jpg\\",\\"width\\":480,\\"height\\":360}}"	youtube	2022-12-10 05:44:57
+87	Sriwijaya Digital Conference 2021 : Panel Leadership Session	https://www.youtube.com/watch?v=L0CBg6jJEno	2024-07-16 05:55:58.654119	2024-07-16 05:55:58.654119	Digital Sriwijaya Menjangkau Nusantara :Tema ini memiliki Arti Mengenalkan semua para Talenta Digital dan juga produk digital ...	"{\\"default\\":{\\"url\\":\\"https://i.ytimg.com/vi/L0CBg6jJEno/default.jpg\\",\\"width\\":120,\\"height\\":90},\\"medium\\":{\\"url\\":\\"https://i.ytimg.com/vi/L0CBg6jJEno/mqdefault.jpg\\",\\"width\\":320,\\"height\\":180},\\"high\\":{\\"url\\":\\"https://i.ytimg.com/vi/L0CBg6jJEno/hqdefault.jpg\\",\\"width\\":480,\\"height\\":360}}"	youtube	2021-11-26 11:16:27
+88	Pembukaan Sriwijaya Digital Festival &amp; Panel Digital Transformation	https://www.youtube.com/watch?v=dlTHCfZPZYw	2024-07-16 05:55:58.654119	2024-07-16 05:55:58.654119	Panel digital tranformation mengangakat topik "DIgital transformasi di bidang perbankan, produksi dan pemerintah" dengan ...	"{\\"default\\":{\\"url\\":\\"https://i.ytimg.com/vi/dlTHCfZPZYw/default.jpg\\",\\"width\\":120,\\"height\\":90},\\"medium\\":{\\"url\\":\\"https://i.ytimg.com/vi/dlTHCfZPZYw/mqdefault.jpg\\",\\"width\\":320,\\"height\\":180},\\"high\\":{\\"url\\":\\"https://i.ytimg.com/vi/dlTHCfZPZYw/hqdefault.jpg\\",\\"width\\":480,\\"height\\":360}}"	youtube	2020-11-28 17:57:15
+89	AWS Serverless behind coronapalembang.com Bersama Sofian Hadiwijaya (Workshop Palembang digital 2.0)	https://www.youtube.com/watch?v=HKj3k_9TT-E	2024-07-16 05:55:58.654119	2024-07-16 05:55:58.654119	Kupas tuntas bagaimana Infrastruktur IT Coronapalembang.com. sofian hadiwijaya merupakan CTO di warung Pintar..	"{\\"default\\":{\\"url\\":\\"https://i.ytimg.com/vi/HKj3k_9TT-E/default.jpg\\",\\"width\\":120,\\"height\\":90},\\"medium\\":{\\"url\\":\\"https://i.ytimg.com/vi/HKj3k_9TT-E/mqdefault.jpg\\",\\"width\\":320,\\"height\\":180},\\"high\\":{\\"url\\":\\"https://i.ytimg.com/vi/HKj3k_9TT-E/hqdefault.jpg\\",\\"width\\":480,\\"height\\":360}}"	youtube	2020-05-16 15:11:03
+90	Workshop Palembang Digital Pengenalan Dasar SQL Bersama M Rasyid Ridha(BI Analyst @ Gojek Indonesia)	https://www.youtube.com/watch?v=_moWY0Y_jaI	2024-07-16 05:55:58.654119	2024-07-16 05:55:58.654119	Hai Teman-Teman Palembang Digital Kali ini kita akan belajar bagaimana dasar konsep dari penggunaan SQL bersama M ...	"{\\"default\\":{\\"url\\":\\"https://i.ytimg.com/vi/_moWY0Y_jaI/default.jpg\\",\\"width\\":120,\\"height\\":90},\\"medium\\":{\\"url\\":\\"https://i.ytimg.com/vi/_moWY0Y_jaI/mqdefault.jpg\\",\\"width\\":320,\\"height\\":180},\\"high\\":{\\"url\\":\\"https://i.ytimg.com/vi/_moWY0Y_jaI/hqdefault.jpg\\",\\"width\\":480,\\"height\\":360}}"	youtube	2021-04-30 07:39:53
+91	Panel Ekosistem Startup Nasional | Sriwijaya Digital Festival 2020	https://www.youtube.com/watch?v=pAgttp38ass	2024-07-16 05:55:58.654119	2024-07-16 05:55:58.654119	Panel Ekosistem Startup Nasional mengangkat topik "Startup yang melirik kearifan lokal (Warung, Tambak Ikan & Nelayan)" ...	"{\\"default\\":{\\"url\\":\\"https://i.ytimg.com/vi/pAgttp38ass/default.jpg\\",\\"width\\":120,\\"height\\":90},\\"medium\\":{\\"url\\":\\"https://i.ytimg.com/vi/pAgttp38ass/mqdefault.jpg\\",\\"width\\":320,\\"height\\":180},\\"high\\":{\\"url\\":\\"https://i.ytimg.com/vi/pAgttp38ass/hqdefault.jpg\\",\\"width\\":480,\\"height\\":360}}"	youtube	2020-11-29 08:08:35
+92	Cerita Sukses Anak Palembang - Arief Rahmansyah (Machine Learning Engineer Gojek Singapore) | AMA #1	https://www.youtube.com/watch?v=wK9EdhTSCpU	2024-07-16 05:55:58.654119	2024-07-16 05:55:58.654119	Di program podcast perdana Palembang Digital ini, kita akan ngobrol bareng putra asli Palembang bernama Arief Rahmansyah ...	"{\\"default\\":{\\"url\\":\\"https://i.ytimg.com/vi/wK9EdhTSCpU/default.jpg\\",\\"width\\":120,\\"height\\":90},\\"medium\\":{\\"url\\":\\"https://i.ytimg.com/vi/wK9EdhTSCpU/mqdefault.jpg\\",\\"width\\":320,\\"height\\":180},\\"high\\":{\\"url\\":\\"https://i.ytimg.com/vi/wK9EdhTSCpU/hqdefault.jpg\\",\\"width\\":480,\\"height\\":360}}"	youtube	2020-12-03 12:00:15
+93	#Hack4ID Maret 2024 @ PalComTech Palembang	https://www.youtube.com/watch?v=9lj5oRp9h6I	2024-07-16 05:55:58.654119	2024-07-16 05:55:58.654119	Kali ini Gerakan Nasional 1000 Startup Digital #Hack4ID mengadakan kegiatan merumuskan Ide Solusi Digital hanya dalam ...	"{\\"default\\":{\\"url\\":\\"https://i.ytimg.com/vi/9lj5oRp9h6I/default.jpg\\",\\"width\\":120,\\"height\\":90},\\"medium\\":{\\"url\\":\\"https://i.ytimg.com/vi/9lj5oRp9h6I/mqdefault.jpg\\",\\"width\\":320,\\"height\\":180},\\"high\\":{\\"url\\":\\"https://i.ytimg.com/vi/9lj5oRp9h6I/hqdefault.jpg\\",\\"width\\":480,\\"height\\":360}}"	youtube	2024-03-14 09:19:52
+94	Mereka Dibalik Sriwijaya Digital Conference 2022	https://www.youtube.com/watch?v=lji6EFCvSU0	2024-07-16 05:55:58.654119	2024-07-16 05:55:58.654119	Sriwijaya digital conference telah berakhir, banyak moment yang mungkin berkesan buat semua tim & peserta... nah siapa saja ...	"{\\"default\\":{\\"url\\":\\"https://i.ytimg.com/vi/lji6EFCvSU0/default.jpg\\",\\"width\\":120,\\"height\\":90},\\"medium\\":{\\"url\\":\\"https://i.ytimg.com/vi/lji6EFCvSU0/mqdefault.jpg\\",\\"width\\":320,\\"height\\":180},\\"high\\":{\\"url\\":\\"https://i.ytimg.com/vi/lji6EFCvSU0/hqdefault.jpg\\",\\"width\\":480,\\"height\\":360}}"	youtube	2022-12-16 02:55:16
+191	Getting started with Elixir Programming using Visual Studio Code + Dev Containers	https://www.youtube.com/watch?v=I_zGwo2C1V4	2024-07-16 05:58:44.344727	2024-07-16 05:58:44.344727	This tutorial demonstrates how to start coding in Elixir programming language using Visual Studio Code and its Dev Containers ...	"{\\"default\\":{\\"url\\":\\"https://i.ytimg.com/vi/I_zGwo2C1V4/default.jpg\\",\\"width\\":120,\\"height\\":90},\\"medium\\":{\\"url\\":\\"https://i.ytimg.com/vi/I_zGwo2C1V4/mqdefault.jpg\\",\\"width\\":320,\\"height\\":180},\\"high\\":{\\"url\\":\\"https://i.ytimg.com/vi/I_zGwo2C1V4/hqdefault.jpg\\",\\"width\\":480,\\"height\\":360}}"	youtube	2024-03-10 07:33:47
+192	VLOG Hackathon Konyol 2024 - The first stupid hackahon in Indonesia	https://www.youtube.com/watch?v=1H36068RkFw	2024-07-16 05:58:44.344727	2024-07-16 05:58:44.344727	The first stupid hackahon in Indonesia for smart & fun people! http://stupidhackathon.id Video directed & produced by M. Fakhri ...	"{\\"default\\":{\\"url\\":\\"https://i.ytimg.com/vi/1H36068RkFw/default.jpg\\",\\"width\\":120,\\"height\\":90},\\"medium\\":{\\"url\\":\\"https://i.ytimg.com/vi/1H36068RkFw/mqdefault.jpg\\",\\"width\\":320,\\"height\\":180},\\"high\\":{\\"url\\":\\"https://i.ytimg.com/vi/1H36068RkFw/hqdefault.jpg\\",\\"width\\":480,\\"height\\":360}}"	youtube	2024-05-08 12:30:07
+\.
+
+
+--
+-- Data for Name: videos_speakers; Type: TABLE DATA; Schema: public; Owner: patal-bot
+--
+
+COPY public.videos_speakers (video_id, user_id) FROM stdin;
+\.
+
+
+--
+-- Name: __drizzle_migrations_id_seq; Type: SEQUENCE SET; Schema: drizzle; Owner: patal-bot
+--
+
+SELECT pg_catalog.setval('drizzle.__drizzle_migrations_id_seq', 25, true);
+
+
+--
+-- Name: events_id_seq; Type: SEQUENCE SET; Schema: public; Owner: patal-bot
+--
+
+SELECT pg_catalog.setval('public.events_id_seq', 113, true);
+
+
+--
+-- Name: organizations_id_seq; Type: SEQUENCE SET; Schema: public; Owner: patal-bot
+--
+
+SELECT pg_catalog.setval('public.organizations_id_seq', 84, true);
+
+
+--
+-- Name: videos_id_seq; Type: SEQUENCE SET; Schema: public; Owner: patal-bot
+--
+
+SELECT pg_catalog.setval('public.videos_id_seq', 865, true);
+
+
+--
+-- Name: __drizzle_migrations __drizzle_migrations_pkey; Type: CONSTRAINT; Schema: drizzle; Owner: patal-bot
+--
+
+ALTER TABLE ONLY drizzle.__drizzle_migrations
+    ADD CONSTRAINT __drizzle_migrations_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: accounts accounts_provider_providerAccountId_pk; Type: CONSTRAINT; Schema: public; Owner: patal-bot
+--
+
+ALTER TABLE ONLY public.accounts
+    ADD CONSTRAINT "accounts_provider_providerAccountId_pk" PRIMARY KEY (provider, "providerAccountId");
+
+
+--
+-- Name: authenticators authenticators_credentialID_unique; Type: CONSTRAINT; Schema: public; Owner: patal-bot
+--
+
+ALTER TABLE ONLY public.authenticators
+    ADD CONSTRAINT "authenticators_credentialID_unique" UNIQUE ("credentialID");
+
+
+--
+-- Name: authenticators authenticators_userId_credentialID_pk; Type: CONSTRAINT; Schema: public; Owner: patal-bot
+--
+
+ALTER TABLE ONLY public.authenticators
+    ADD CONSTRAINT "authenticators_userId_credentialID_pk" PRIMARY KEY ("userId", "credentialID");
+
+
+--
+-- Name: events_hosts_organizations events_hosts_organizations_event_id_organization_id_pk; Type: CONSTRAINT; Schema: public; Owner: patal-bot
+--
+
+ALTER TABLE ONLY public.events_hosts_organizations
+    ADD CONSTRAINT events_hosts_organizations_event_id_organization_id_pk PRIMARY KEY (event_id, organization_id);
+
+
+--
+-- Name: events_hosts_users events_hosts_users_event_id_user_id_pk; Type: CONSTRAINT; Schema: public; Owner: patal-bot
+--
+
+ALTER TABLE ONLY public.events_hosts_users
+    ADD CONSTRAINT events_hosts_users_event_id_user_id_pk PRIMARY KEY (event_id, user_id);
+
+
+--
+-- Name: events events_pkey; Type: CONSTRAINT; Schema: public; Owner: patal-bot
+--
+
+ALTER TABLE ONLY public.events
+    ADD CONSTRAINT events_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: events_speakers events_speakers_event_id_user_id_pk; Type: CONSTRAINT; Schema: public; Owner: patal-bot
+--
+
+ALTER TABLE ONLY public.events_speakers
+    ADD CONSTRAINT events_speakers_event_id_user_id_pk PRIMARY KEY (event_id, user_id);
+
+
+--
+-- Name: events_videos events_videos_event_id_video_id_pk; Type: CONSTRAINT; Schema: public; Owner: patal-bot
+--
+
+ALTER TABLE ONLY public.events_videos
+    ADD CONSTRAINT events_videos_event_id_video_id_pk PRIMARY KEY (event_id, video_id);
+
+
+--
+-- Name: organizations organizations_pkey; Type: CONSTRAINT; Schema: public; Owner: patal-bot
+--
+
+ALTER TABLE ONLY public.organizations
+    ADD CONSTRAINT organizations_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: organizations organizations_slug_unique; Type: CONSTRAINT; Schema: public; Owner: patal-bot
+--
+
+ALTER TABLE ONLY public.organizations
+    ADD CONSTRAINT organizations_slug_unique UNIQUE (slug);
+
+
+--
+-- Name: sessions sessions_pkey; Type: CONSTRAINT; Schema: public; Owner: patal-bot
+--
+
+ALTER TABLE ONLY public.sessions
+    ADD CONSTRAINT sessions_pkey PRIMARY KEY ("sessionToken");
+
+
+--
+-- Name: users users_pkey; Type: CONSTRAINT; Schema: public; Owner: patal-bot
+--
+
+ALTER TABLE ONLY public.users
+    ADD CONSTRAINT users_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: users users_username_unique; Type: CONSTRAINT; Schema: public; Owner: patal-bot
+--
+
+ALTER TABLE ONLY public.users
+    ADD CONSTRAINT users_username_unique UNIQUE (username);
+
+
+--
+-- Name: verificationTokens verificationTokens_identifier_token_pk; Type: CONSTRAINT; Schema: public; Owner: patal-bot
+--
+
+ALTER TABLE ONLY public."verificationTokens"
+    ADD CONSTRAINT "verificationTokens_identifier_token_pk" PRIMARY KEY (identifier, token);
+
+
+--
+-- Name: videos videos_pkey; Type: CONSTRAINT; Schema: public; Owner: patal-bot
+--
+
+ALTER TABLE ONLY public.videos
+    ADD CONSTRAINT videos_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: videos_speakers videos_speakers_video_id_user_id_pk; Type: CONSTRAINT; Schema: public; Owner: patal-bot
+--
+
+ALTER TABLE ONLY public.videos_speakers
+    ADD CONSTRAINT videos_speakers_video_id_user_id_pk PRIMARY KEY (video_id, user_id);
+
+
+--
+-- Name: videos videos_video_url_unique; Type: CONSTRAINT; Schema: public; Owner: patal-bot
+--
+
+ALTER TABLE ONLY public.videos
+    ADD CONSTRAINT videos_video_url_unique UNIQUE (video_url);
+
+
+--
+-- Name: accounts accounts_userId_users_id_fk; Type: FK CONSTRAINT; Schema: public; Owner: patal-bot
+--
+
+ALTER TABLE ONLY public.accounts
+    ADD CONSTRAINT "accounts_userId_users_id_fk" FOREIGN KEY ("userId") REFERENCES public.users(id) ON DELETE CASCADE;
+
+
+--
+-- Name: authenticators authenticators_userId_users_id_fk; Type: FK CONSTRAINT; Schema: public; Owner: patal-bot
+--
+
+ALTER TABLE ONLY public.authenticators
+    ADD CONSTRAINT "authenticators_userId_users_id_fk" FOREIGN KEY ("userId") REFERENCES public.users(id) ON DELETE CASCADE;
+
+
+--
+-- Name: events_hosts_organizations events_hosts_organizations_event_id_events_id_fk; Type: FK CONSTRAINT; Schema: public; Owner: patal-bot
+--
+
+ALTER TABLE ONLY public.events_hosts_organizations
+    ADD CONSTRAINT events_hosts_organizations_event_id_events_id_fk FOREIGN KEY (event_id) REFERENCES public.events(id) ON DELETE CASCADE;
+
+
+--
+-- Name: events_hosts_organizations events_hosts_organizations_organization_id_organizations_id_fk; Type: FK CONSTRAINT; Schema: public; Owner: patal-bot
+--
+
+ALTER TABLE ONLY public.events_hosts_organizations
+    ADD CONSTRAINT events_hosts_organizations_organization_id_organizations_id_fk FOREIGN KEY (organization_id) REFERENCES public.organizations(id) ON DELETE CASCADE;
+
+
+--
+-- Name: events_hosts_users events_hosts_users_event_id_events_id_fk; Type: FK CONSTRAINT; Schema: public; Owner: patal-bot
+--
+
+ALTER TABLE ONLY public.events_hosts_users
+    ADD CONSTRAINT events_hosts_users_event_id_events_id_fk FOREIGN KEY (event_id) REFERENCES public.events(id) ON DELETE CASCADE;
+
+
+--
+-- Name: events_hosts_users events_hosts_users_user_id_users_id_fk; Type: FK CONSTRAINT; Schema: public; Owner: patal-bot
+--
+
+ALTER TABLE ONLY public.events_hosts_users
+    ADD CONSTRAINT events_hosts_users_user_id_users_id_fk FOREIGN KEY (user_id) REFERENCES public.users(id) ON DELETE CASCADE;
+
+
+--
+-- Name: events_speakers events_speakers_event_id_events_id_fk; Type: FK CONSTRAINT; Schema: public; Owner: patal-bot
+--
+
+ALTER TABLE ONLY public.events_speakers
+    ADD CONSTRAINT events_speakers_event_id_events_id_fk FOREIGN KEY (event_id) REFERENCES public.events(id) ON DELETE CASCADE;
+
+
+--
+-- Name: events_speakers events_speakers_user_id_users_id_fk; Type: FK CONSTRAINT; Schema: public; Owner: patal-bot
+--
+
+ALTER TABLE ONLY public.events_speakers
+    ADD CONSTRAINT events_speakers_user_id_users_id_fk FOREIGN KEY (user_id) REFERENCES public.users(id) ON DELETE CASCADE;
+
+
+--
+-- Name: events_videos events_videos_event_id_events_id_fk; Type: FK CONSTRAINT; Schema: public; Owner: patal-bot
+--
+
+ALTER TABLE ONLY public.events_videos
+    ADD CONSTRAINT events_videos_event_id_events_id_fk FOREIGN KEY (event_id) REFERENCES public.events(id) ON DELETE CASCADE;
+
+
+--
+-- Name: events_videos events_videos_video_id_videos_id_fk; Type: FK CONSTRAINT; Schema: public; Owner: patal-bot
+--
+
+ALTER TABLE ONLY public.events_videos
+    ADD CONSTRAINT events_videos_video_id_videos_id_fk FOREIGN KEY (video_id) REFERENCES public.videos(id) ON DELETE CASCADE;
+
+
+--
+-- Name: sessions sessions_userId_users_id_fk; Type: FK CONSTRAINT; Schema: public; Owner: patal-bot
+--
+
+ALTER TABLE ONLY public.sessions
+    ADD CONSTRAINT "sessions_userId_users_id_fk" FOREIGN KEY ("userId") REFERENCES public.users(id) ON DELETE CASCADE;
+
+
+--
+-- Name: videos_speakers videos_speakers_user_id_users_id_fk; Type: FK CONSTRAINT; Schema: public; Owner: patal-bot
+--
+
+ALTER TABLE ONLY public.videos_speakers
+    ADD CONSTRAINT videos_speakers_user_id_users_id_fk FOREIGN KEY (user_id) REFERENCES public.users(id) ON DELETE CASCADE;
+
+
+--
+-- Name: videos_speakers videos_speakers_video_id_videos_id_fk; Type: FK CONSTRAINT; Schema: public; Owner: patal-bot
+--
+
+ALTER TABLE ONLY public.videos_speakers
+    ADD CONSTRAINT videos_speakers_video_id_videos_id_fk FOREIGN KEY (video_id) REFERENCES public.videos(id) ON DELETE CASCADE;
+
+
+--
+-- Name: DEFAULT PRIVILEGES FOR SEQUENCES; Type: DEFAULT ACL; Schema: public; Owner: cloud_admin
+--
+
+ALTER DEFAULT PRIVILEGES FOR ROLE cloud_admin IN SCHEMA public GRANT ALL ON SEQUENCES TO neon_superuser WITH GRANT OPTION;
+
+
+--
+-- Name: DEFAULT PRIVILEGES FOR TABLES; Type: DEFAULT ACL; Schema: public; Owner: cloud_admin
+--
+
+ALTER DEFAULT PRIVILEGES FOR ROLE cloud_admin IN SCHEMA public GRANT ALL ON TABLES TO neon_superuser WITH GRANT OPTION;
+
+
+--
+-- PostgreSQL database dump complete
+--
+
