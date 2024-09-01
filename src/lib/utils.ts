@@ -6,6 +6,12 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
+export function getDay(date: Date): string {
+  return DateTime.fromJSDate(date)
+    .setLocale("id")
+    .toLocaleString({ weekday: "long" });
+}
+
 export function getDate(date: Date): string {
   return DateTime.fromJSDate(date).setLocale("id").toFormat("dd");
 }
