@@ -42,6 +42,8 @@ export function localeTime(date: Date, locale: string = "id"): string {
 }
 
 export function getYoutubeVideoId(url: string): string {
+  if (!url) return "";
+
   const urlParams = new URLSearchParams(new URL(url).search);
   return urlParams.get("v") || "";
 }
