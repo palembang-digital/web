@@ -2,6 +2,7 @@ import { auth } from "@/auth";
 import { FloatingHeader } from "@/components/floating-header";
 import ShimmerButton from "@/components/magicui/shimmer-button";
 import { ScrollArea } from "@/components/scroll-area";
+import SpeakersList from "@/components/speakers-list";
 import { Button } from "@/components/ui/button";
 import {
   TypographyH2,
@@ -86,25 +87,7 @@ export default async function Page({ params }: { params: { id: number } }) {
                   className="rounded-lg"
                 />
                 {event.eventsSpeakers.length > 0 && (
-                  <div>
-                    <TypographyH4>Speakers</TypographyH4>
-                    {event.eventsSpeakers.map((speaker) => (
-                      <Link
-                        href={`/${speaker.user.username}`}
-                        key={speaker.user.id}
-                        className="flex items-center my-4"
-                      >
-                        <Image
-                          src={speaker.user.image || ""}
-                          alt={speaker.user.name || ""}
-                          width={24}
-                          height={24}
-                          className="rounded-full"
-                        />
-                        <p className="ml-2 text-sm">{speaker.user.name}</p>
-                      </Link>
-                    ))}
-                  </div>
+                  <SpeakersList speakers={event.eventsSpeakers} />
                 )}
                 {(event.eventsHostsOrganizations.length > 0 ||
                   event.eventsHostsUsers.length > 0) && (
