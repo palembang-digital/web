@@ -1,4 +1,5 @@
 import { auth } from "@/auth";
+import DownloadTest from "@/components/certificates/download";
 import { FloatingHeader } from "@/components/floating-header";
 import { ScrollArea } from "@/components/scroll-area";
 import { SignOut } from "@/components/sign-out";
@@ -47,6 +48,7 @@ export default async function Page({
       />
       <div className="content-wrapper">
         <div className="content">
+          <SignOut />
           <Image
             src={user.image || ""}
             width={48}
@@ -64,7 +66,9 @@ export default async function Page({
               </Link>
             ))}
           </ol>
-          <SignOut />
+
+          <TypographyH4>Sertifikat:</TypographyH4>
+          <DownloadTest />
         </div>
       </div>
     </ScrollArea>
