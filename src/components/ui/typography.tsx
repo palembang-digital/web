@@ -10,7 +10,7 @@ export function TypographyH1({
   return (
     <h1
       className={cn(
-        "scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl",
+        "text-4xl font-extrabold tracking-tight lg:text-5xl",
         className
       )}
     >
@@ -29,7 +29,7 @@ export function TypographyH2({
   return (
     <h2
       className={cn(
-        "scroll-m-20 pb-2 text-3xl font-semibold tracking-tight first:mt-0",
+        "pb-2 text-3xl font-semibold tracking-tight first:mt-0",
         className
       )}
     >
@@ -46,12 +46,7 @@ export function TypographyH3({
   children: React.ReactNode;
 }) {
   return (
-    <h3
-      className={cn(
-        "scroll-m-20 text-2xl font-semibold tracking-tight",
-        className
-      )}
-    >
+    <h3 className={cn("text-2xl font-semibold tracking-tight", className)}>
       {children}
     </h3>
   );
@@ -65,12 +60,7 @@ export function TypographyH4({
   children: React.ReactNode;
 }) {
   return (
-    <h4
-      className={cn(
-        "scroll-m-20 text-xl font-semibold tracking-tight",
-        className
-      )}
-    >
+    <h4 className={cn("text-xl font-semibold tracking-tight", className)}>
       {children}
     </h4>
   );
@@ -85,5 +75,17 @@ export function TypographyLead({
 }) {
   return (
     <p className={cn("text-xl text-muted-foreground", className)}>{children}</p>
+  );
+}
+
+export function TypographyLarge({
+  className,
+  children,
+}: {
+  className?: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <div className={cn("text-lg font-semibold", className)}>{children}</div>
   );
 }
