@@ -1,4 +1,6 @@
 "use client";
+
+import { cn } from "@/lib/utils";
 import {
   AnimatePresence,
   motion,
@@ -7,6 +9,7 @@ import {
   useTransform,
 } from "framer-motion";
 import Image from "next/image";
+import Link from "next/link";
 import { useState } from "react";
 
 export const AnimatedTooltip = ({
@@ -15,8 +18,10 @@ export const AnimatedTooltip = ({
   items: {
     id: number;
     label: string;
-    description: string;
+    description?: string;
+    href?: string;
     image: string;
+    imageClassName?: string;
   }[];
 }) => {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
@@ -77,14 +82,19 @@ export const AnimatedTooltip = ({
               </motion.div>
             )}
           </AnimatePresence>
-          <Image
-            onMouseMove={handleMouseMove}
-            height={100}
-            width={100}
-            src={item.image}
-            alt={item.label}
-            className="object-cover !m-0 !p-0 object-top rounded-full h-6 w-6 border group-hover:scale-105 group-hover:z-30 border-white  relative transition duration-500"
-          />
+          <Link href={item.href ? item.href : ""}>
+            <Image
+              onMouseMove={handleMouseMove}
+              height={100}
+              width={100}
+              src={item.image}
+              alt={item.label}
+              className={cn(
+                "object-cover !m-0 !p-0 object-top rounded-full h-6 w-6 border group-hover:scale-105 group-hover:z-30 border-white  relative transition duration-500",
+                item.imageClassName
+              )}
+            />
+          </Link>
         </div>
       ))}
     </>
