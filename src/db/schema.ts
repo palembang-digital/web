@@ -264,6 +264,21 @@ export const insertOrganizationSchema = createInsertSchema(organizations).pick({
   longBio: true,
 });
 
+export const contactForm = pgTable("contact_form", {
+  id: serial("id").primaryKey(),
+  email: text("email").notNull(),
+  message: text("message").notNull(),
+  isRead: boolean("is_read").notNull().default(false),
+  createdAt: timestamp("created_at").notNull().defaultNow(),
+});
+
+export const insertContactFormSchema = createInsertSchema(contactForm, {
+  email: (schema) => schema.email.email(),
+}).pick({
+  email: true,
+  message: true,
+});
+
 // ==================================================
 //
 // RELATIONS

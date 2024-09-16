@@ -50,10 +50,10 @@ export default function NewOrganizationForm({
             });
 
             if (response.ok) {
-              toast("Organization created!");
+              toast.success("Organization created!");
               router.push(`/ecosystem`);
             } else {
-              alert("Failed to create organization");
+              toast.error("Failed to create organization");
             }
           } catch (error) {
             console.error(error);

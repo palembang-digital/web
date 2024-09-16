@@ -49,7 +49,7 @@ export default async function RootLayout({
             <div className="flex flex-1">{children}</div>
           </div>
         </main>
-        <Toaster />
+        <Toaster richColors />
       </body>
     </html>
   );

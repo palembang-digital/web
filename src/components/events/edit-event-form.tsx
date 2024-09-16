@@ -139,10 +139,10 @@ export default function EditEventForm({ event }: { event: any }) {
             });
 
             if (response.ok) {
-              toast("Event updated!");
+              toast.success("Event updated!");
               router.push(`/events/${event.id}`);
             } else {
-              alert("Failed to update event");
+              toast.error("Failed to update event");
             }
           } catch (error) {
             console.error(error);
