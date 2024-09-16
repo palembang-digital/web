@@ -17,8 +17,8 @@ function MemberCard({ user }: { user: any }) {
   }));
 
   return (
-    <div className="border rounded-lg p-4 flex flex-col h-full">
-      <Link key={user.id} href={`/${user.username}`}>
+    <div className="border rounded-lg p-4 flex flex-col h-full bg-background hover:bg-accent shadow-sm">
+      <Link href={`/${user.username}`}>
         <Image
           src={user.image || ""}
           width={64}
