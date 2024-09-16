@@ -3,6 +3,7 @@ import DownloadTest from "@/components/certificates/download";
 import EventCard from "@/components/events/event-card";
 import { FloatingHeader } from "@/components/floating-header";
 import { ScrollArea } from "@/components/scroll-area";
+import { SignOut } from "@/components/sign-out";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { db } from "@/db";
 import Image from "next/image";
@@ -65,7 +66,8 @@ export default async function Page({
               />
               <p className="text-xs text-neutral-400 mb-2">{user.username}</p>
               <p className="text-sm">{user.name}</p>
-              <p className="text-xs text-neutral-500">{user.bio}</p>
+              <p className="text-xs text-neutral-500 mb-4">{user.bio}</p>
+              <SignOut />
             </div>
 
             <div className="col-span-1 sm:col-span-2">

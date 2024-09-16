@@ -20,12 +20,12 @@ export default function OnboardingForm({ user }: { user: any }) {
           });
 
           if (response.ok) {
-            toast("You are onboarded! Have fun!");
+            toast.success("You are onboarded! Have fun!");
             setTimeout(() => {
               location.href = "/";
             }, 2000);
           } else {
-            alert("Failed to update user data");
+            toast.error("Failed to update user data");
           }
         } catch (error) {
           console.error(error);

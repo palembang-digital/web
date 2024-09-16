@@ -1,0 +1,1 @@
+ALTER TABLE "contact_form" ADD COLUMN "is_read" boolean DEFAULT false NOT NULL;

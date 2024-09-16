@@ -1,19 +1,19 @@
+import { Badge } from "@/components//ui/badge";
 import {
   TypographyH2,
   TypographyH3,
   TypographyH4,
   TypographyLead,
 } from "@/components/ui/typography";
-import { Badge } from "@/components//ui/badge";
-import { getDate, localeDate, localeTime, getDay } from "@/lib/utils";
+import { getDay, localeDate, localeTime } from "@/lib/utils";
 import Image from "next/image";
 import Link from "next/link";
 
 export default function UpcomingEvents({ events }: { events: any[] }) {
   return (
     <div className="rounded-lg p-6 bg-neutral-900">
+      <p className="italic text-neutral-400">Upcoming events</p>
       <TypographyH2 className="text-white">Kegiatan Patal</TypographyH2>
-      <p className=" text-neutral-400">Event dalam waktu dekat</p>
 
       <ol className="relative border-s border-dashed border-slate-400 mt-6">
         {events.map((event) => (
