@@ -7,7 +7,8 @@ import Image from "next/image";
 import Link from "next/link";
 
 function MemberCard({ user }: { user: any }) {
-  const events = user.eventsSpeakers?.map((event: any) => ({
+  const eventShownLimit = 4;
+  const events = user.eventsSpeakers.map((event: any) => ({
     id: event.eventId,
     label: event.event.name,
     href: `/events/${event.eventId}`,
@@ -32,7 +33,12 @@ function MemberCard({ user }: { user: any }) {
       {user.eventsSpeakers?.length > 0 && (
         <div className="flex mt-2 items-center">
           <p className="text-xs text-neutral-400 mr-1">Kegiatan:</p>
-          <AnimatedTooltip items={events} />
+          <AnimatedTooltip items={events.slice(0, eventShownLimit)} />
+          {events.length > eventShownLimit && (
+            <p className="text-xs text-neutral-400 ml-3">
+              +{events.length - eventShownLimit}
+            </p>
+          )}
         </div>
       )}
     </div>
@@ -48,7 +54,12 @@ export default async function Page() {
       eventsSpeakers: {
         with: {
           event: {
-            columns: { id: true, name: true, imageUrl: true },
+            columns: {
+              id: true,
+              name: true,
+              imageUrl: true,
+              scheduledStart: true,
+            },
           },
         },
       },
