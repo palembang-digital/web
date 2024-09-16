@@ -1,12 +1,11 @@
 import { auth } from "@/auth";
 import DownloadTest from "@/components/certificates/download";
+import EventCard from "@/components/events/event-card";
 import { FloatingHeader } from "@/components/floating-header";
 import { ScrollArea } from "@/components/scroll-area";
-import { SignOut } from "@/components/sign-out";
-import { TypographyH4 } from "@/components/ui/typography";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { db } from "@/db";
 import Image from "next/image";
-import Link from "next/link";
 
 export default async function Page({
   params,
@@ -21,7 +20,12 @@ export default async function Page({
       eventsSpeakers: {
         with: {
           event: {
-            columns: { id: true, name: true },
+            columns: {
+              id: true,
+              name: true,
+              imageUrl: true,
+              scheduledStart: true,
+            },
           },
         },
       },
@@ -40,6 +44,8 @@ export default async function Page({
     );
   }
 
+  const defaultTab = "events";
+
   return (
     <ScrollArea useScrollAreaId>
       <FloatingHeader
@@ -48,27 +54,58 @@ export default async function Page({
       />
       <div className="content-wrapper">
         <div className="content">
-          <SignOut />
-          <Image
-            src={user.image || ""}
-            width={48}
-            height={48}
-            alt={user.name || ""}
-            className="rounded-full"
-          />
-          <p>{user.name}</p>
-          <p>{user.username}</p>
-          <TypographyH4>Pernah menjadi speakers di event berikut:</TypographyH4>
-          <ol className="list-decimal">
-            {user.eventsSpeakers.map(({ event }) => (
-              <Link key={event.id} href={`/events/${event.id}`}>
-                <li>{event.name}</li>
-              </Link>
-            ))}
-          </ol>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <div className="col-span-1">
+              <Image
+                src={user.image || ""}
+                width={64}
+                height={64}
+                alt={user.name || "Profile Picture"}
+                className="rounded-full mb-2"
+              />
+              <p className="text-xs text-neutral-400 mb-2">{user.username}</p>
+              <p className="text-sm">{user.name}</p>
+              <p className="text-xs text-neutral-500">{user.bio}</p>
+            </div>
 
-          <TypographyH4>Sertifikat:</TypographyH4>
-          <DownloadTest />
+            <div className="col-span-1 sm:col-span-2">
+              <Tabs defaultValue={defaultTab}>
+                <TabsList>
+                  <TabsTrigger value="events">Kegiatan</TabsTrigger>
+                  <TabsTrigger value="certificates">Sertifikat</TabsTrigger>
+                  <TabsTrigger value="videos">Video</TabsTrigger>
+                </TabsList>
+
+                <TabsContent value={defaultTab}>
+                  {user.eventsSpeakers.length > 0 ? (
+                    <div className="grid grid-cols-1 gap-4 pt-2">
+                      {user.eventsSpeakers
+                        .sort((a, b) =>
+                          a.event.scheduledStart < b.event.scheduledStart
+                            ? 1
+                            : -1
+                        )
+                        .map((eventSpeaker) => (
+                          <EventCard
+                            key={eventSpeaker.event.id}
+                            event={eventSpeaker.event}
+                          />
+                        ))}
+                    </div>
+                  ) : (
+                    <p className="text-sm">
+                      Sepertinya {user.name} belum pernah mengikuti kegiatan
+                      Palembang Digital 🤔
+                    </p>
+                  )}
+                </TabsContent>
+
+                <TabsContent value="certificates">
+                  <DownloadTest />
+                </TabsContent>
+              </Tabs>
+            </div>
+          </div>
         </div>
       </div>
     </ScrollArea>
