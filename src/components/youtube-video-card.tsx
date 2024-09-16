@@ -37,7 +37,7 @@ export default function YouTubeVideoCard({ video }: { video: any }) {
   ];
 
   return (
-    <div className="border rounded-lg hover:shadow-sm hover:cursor-pointer">
+    <div className="">
       <Link href={`/videos/${video.id}`}>
         <Image
           className="rounded-t-lg"

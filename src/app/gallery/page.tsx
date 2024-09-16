@@ -18,7 +18,10 @@ export default async function Page() {
         <div className="content">
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-x-4 gap-y-6">
             {videos.map((video) => (
-              <div key={video.id}>
+              <div
+                key={video.id}
+                className="bg-background hover:bg-accent hover:cursor-pointer shadow-sm flex h-full border rounded-lg"
+              >
                 {video.videoType === "youtube" ? (
                   <YouTubeVideoCard video={video} />
                 ) : (

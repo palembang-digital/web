@@ -7,7 +7,9 @@ const EventList = async () => {
 
   return (
     <div>
-      <UpcomingEvents events={upcomingEvents} />
+      {upcomingEvents && upcomingEvents.length > 0 && (
+        <UpcomingEvents events={upcomingEvents} />
+      )}
       <PastEvents events={pastEvents} hideSeeMoreButton />
     </div>
   );
