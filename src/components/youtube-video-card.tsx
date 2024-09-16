@@ -2,6 +2,7 @@ import { AnimatedTooltip } from "@/components/ui/animated-tooltip";
 import { DateTime } from "luxon";
 import Image from "next/image";
 import Link from "next/link";
+import { TypographyH3 } from "./ui/typography";
 
 export default function YouTubeVideoCard({ video }: { video: any }) {
   const people = [
@@ -36,8 +37,8 @@ export default function YouTubeVideoCard({ video }: { video: any }) {
   ];
 
   return (
-    <Link href={`/videos/${video.id}`}>
-      <div className="border rounded-lg hover:shadow-sm hover:cursor-pointer">
+    <div className="border rounded-lg hover:shadow-sm hover:cursor-pointer">
+      <Link href={`/videos/${video.id}`}>
         <Image
           className="rounded-t-lg"
           src={video.thumbnails?.medium.url}
@@ -45,20 +46,20 @@ export default function YouTubeVideoCard({ video }: { video: any }) {
           height={video.thumbnails?.medium.height}
           alt={video.title}
         />
-        <div className="p-3">
+        <div className="p-4 pb-3">
           <p className="text-muted-foreground text-xs">
             {DateTime.fromJSDate(video.publishedAt)
               .setLocale("id")
               .toLocaleString(DateTime.DATE_FULL)}
           </p>
-          <h3 className="text-foreground text-sm font-semibold">
+          <TypographyH3 className="text-foreground text-sm font-semibold">
             {video.title}
-          </h3>
-          <div className="flex items-center mt-2">
-            <AnimatedTooltip items={people} />
-          </div>
+          </TypographyH3>
         </div>
+      </Link>
+      <div className="flex items-center p-4 pt-0">
+        <AnimatedTooltip items={people} />
       </div>
-    </Link>
+    </div>
   );
 }
