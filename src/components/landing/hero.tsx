@@ -1,9 +1,9 @@
 import { auth } from "@/auth";
-import GridPattern from "@/components/magicui/grid-pattern";
+import { Boxes } from "@/components/aceternityui/background-boxes";
+import ShimmerButton from "@/components/magicui/shimmer-button";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { TypographyH1 } from "@/components/ui/typography";
-import { cn } from "@/lib/utils";
 import Link from "next/link";
 
 export default async function Hero({
@@ -40,13 +40,15 @@ export default async function Hero({
 
   return (
     <div className="relative flex flex-col items-center justify-center gap-4 py-8">
-      <GridPattern
+      {/* <GridPattern
         width={15}
         height={15}
         className={cn(
           "[mask-image:radial-gradient(ellipse,white,transparent)]"
         )}
-      />
+      /> */}
+
+      <Boxes />
 
       <TypographyH1 className="z-10 whitespace-pre-wrap text-center text-neutral-900 lg:text-4xl">
         Dari wong kito, untuk wong kito!
@@ -82,7 +84,11 @@ export default async function Hero({
         </Link>
       ) : (
         <Link href="/api/auth/signin" className="z-10">
-          <Button>Bergabung sekarang!</Button>
+          <ShimmerButton>
+            <span className="whitespace-pre-wrap text-center text-sm font-medium leading-none tracking-tight text-white dark:from-white dark:to-slate-900/10">
+              Gabung sekarang!
+            </span>
+          </ShimmerButton>
         </Link>
       )}
     </div>

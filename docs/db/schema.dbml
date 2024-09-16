@@ -47,6 +47,14 @@ table authenticators {
   }
 }
 
+table contact_form {
+  id serial [pk, not null, increment]
+  email text [not null]
+  message text [not null]
+  is_read boolean [not null, default: false]
+  created_at timestamp [not null, default: `now()`]
+}
+
 table events {
   id serial [pk, not null, increment]
   name text [not null]

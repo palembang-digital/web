@@ -1,12 +1,13 @@
 import { auth } from "@/auth";
+import UpcomingEvents from "@/components/events/upcoming-events";
 import { FloatingHeader } from "@/components/floating-header";
-import Hero from "@/components/hero";
-import LandingAboutUs from "@/components/landing-about-us";
-import LandingFAQ from "@/components/landing-faq";
-import LandingFooter from "@/components/landing-footer";
+import Hero from "@/components/landing/hero";
+import LandingAboutUs from "@/components/landing/landing-about-us";
+import LandingContactUs from "@/components/landing/landing-contact-us";
+import LandingFAQ from "@/components/landing/landing-faq";
+import LandingFooter from "@/components/landing/landing-footer";
 import PastEvents from "@/components/past-events";
 import { ScrollArea } from "@/components/scroll-area";
-import UpcomingEvents from "@/components/upcoming-events";
 import { db } from "@/db";
 
 export default async function Page() {
@@ -45,9 +46,10 @@ export default async function Page() {
           <PastEvents events={pastEvents} />
           <LandingAboutUs />
           <LandingFAQ />
-          <LandingFooter />
+          <LandingContactUs />
         </div>
       </div>
+      <LandingFooter />
     </ScrollArea>
   );
 }
