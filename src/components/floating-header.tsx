@@ -3,6 +3,8 @@
 import { MobileDrawer } from "@/components/mobile-drawer";
 import { MOBILE_SCROLL_THRESHOLD, SCROLL_AREA_ID } from "@/lib/constants";
 import { Session } from "next-auth";
+import Image from "next/image";
+import Link from "next/link";
 import { memo, useEffect, useState } from "react";
 import Balancer from "react-wrap-balancer";
 
@@ -54,10 +56,21 @@ function Cmp({ scrollTitle, title, session, children }: FloatingHeaderProps) {
 
   return (
     <header className="sticky inset-x-0 top-0 z-10 mx-auto flex h-12 w-full shrink-0 items-center overflow-hidden border-b bg-white text-sm font-medium lg:hidden">
-      <div className="flex size-full items-center px-3">
+      <div className="flex size-full items-center px-1">
         <div className="flex w-full items-center justify-between gap-2">
           <div className="flex flex-1 items-center gap-1">
             <MobileDrawer session={session} />
+
+            <Link href="/">
+              <Image
+                src="/logo-black-bg.png"
+                alt="Palembang Digital"
+                width={24}
+                height={24}
+                loading="lazy"
+                className="mr-2"
+              />
+            </Link>
 
             <div className="flex flex-1 items-center justify-between">
               {scrollTitle && (
