@@ -32,7 +32,10 @@ export default async function Page() {
                 className="bg-background hover:bg-accent hover:cursor-pointer shadow-sm flex h-full border rounded-lg"
               >
                 {video.videoType === "youtube" ? (
-                  <YouTubeVideoCard video={video} />
+                  <YouTubeVideoCard
+                    video={video}
+                    speakers={video.videosSpeakers}
+                  />
                 ) : (
                   <video src={video.videoUrl || ""} controls />
                 )}

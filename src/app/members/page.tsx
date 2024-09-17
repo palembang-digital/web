@@ -7,7 +7,7 @@ import Image from "next/image";
 import Link from "next/link";
 
 function MemberCard({ user }: { user: any }) {
-  const eventShownLimit = 4;
+  const eventShownLimit = 5;
   const events = user.eventsSpeakers.map((event: any) => ({
     id: event.eventId,
     label: event.event.name,
