@@ -7,8 +7,8 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from "@/components/ui/drawer";
+import { PanelBottomOpenIcon } from "lucide-react";
 import { Session } from "next-auth";
-import Image from "next/image";
 
 export function MobileDrawer({ session }: { session: Session | null }) {
   return (
@@ -17,13 +17,7 @@ export function MobileDrawer({ session }: { session: Session | null }) {
       <DrawerDescription />
       <DrawerTrigger asChild>
         <Button variant="ghost" size="icon" title="Toggle drawer">
-          <Image
-            src="/logo-black-bg.png"
-            alt="Palembang Digital"
-            width={20}
-            height={20}
-            loading="lazy"
-          />
+          <PanelBottomOpenIcon size={16} />
         </Button>
       </DrawerTrigger>
       <DrawerContent className="h-4/5">
