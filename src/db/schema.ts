@@ -288,6 +288,7 @@ export const insertContactFormSchema = createInsertSchema(contactForm, {
 export const usersRelations = relations(users, ({ many }) => ({
   eventsSpeakers: many(eventsSpeakers),
   eventsHostsUsers: many(eventsHostsUsers),
+  videosSpeakers: many(videosSpeakers),
 }));
 
 export const organizationsRelations = relations(organizations, ({ many }) => ({

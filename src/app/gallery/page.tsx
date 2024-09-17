@@ -9,6 +9,15 @@ export default async function Page() {
 
   const videos = await db.query.videos.findMany({
     orderBy: (videos, { desc }) => [desc(videos.publishedAt)],
+    with: {
+      videosSpeakers: {
+        with: {
+          user: {
+            columns: { id: true, name: true, bio: true, image: true },
+          },
+        },
+      },
+    },
   });
 
   return (

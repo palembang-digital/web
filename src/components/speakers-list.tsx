@@ -12,7 +12,7 @@ export default function SpeakersList({ speakers }: { speakers: any[] }) {
           <Link
             href={`/${speaker.user.username}`}
             key={speaker.user.id}
-            className="flex items-center my-4"
+            className="flex items-center my-4 hover:underline"
           >
             <Image
               src={speaker.user.image || ""}

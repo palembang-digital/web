@@ -5,6 +5,7 @@ import { FloatingHeader } from "@/components/floating-header";
 import { ScrollArea } from "@/components/scroll-area";
 import { SignOut } from "@/components/sign-out";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import YouTubeVideoCard from "@/components/youtube-video-card";
 import { db } from "@/db";
 import Image from "next/image";
 
@@ -26,6 +27,20 @@ export default async function Page({
               name: true,
               imageUrl: true,
               scheduledStart: true,
+            },
+          },
+        },
+      },
+      videosSpeakers: {
+        with: {
+          video: {
+            columns: {
+              id: true,
+              title: true,
+              videoType: true,
+              videoUrl: true,
+              thumbnails: true,
+              publishedAt: true,
             },
           },
         },
@@ -104,6 +119,28 @@ export default async function Page({
 
                 <TabsContent value="certificates">
                   <DownloadTest />
+                </TabsContent>
+
+                <TabsContent value="videos">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-6 mt-4">
+                    {user.videosSpeakers &&
+                      user.videosSpeakers
+                        .sort((a, b) =>
+                          a.video.publishedAt < b.video.publishedAt ? 1 : -1
+                        )
+                        .map(({ video }) => (
+                          <div
+                            key={video.id}
+                            className="bg-background hover:bg-accent hover:cursor-pointer shadow-sm flex h-full border rounded-lg"
+                          >
+                            {video.videoType === "youtube" ? (
+                              <YouTubeVideoCard video={video} />
+                            ) : (
+                              <video src={video.videoUrl || ""} controls />
+                            )}
+                          </div>
+                        ))}
+                  </div>
                 </TabsContent>
               </Tabs>
             </div>
