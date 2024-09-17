@@ -40,14 +40,6 @@ export default async function Hero({
 
   return (
     <div className="relative flex flex-col items-center justify-center gap-4 py-8">
-      {/* <GridPattern
-        width={15}
-        height={15}
-        className={cn(
-          "[mask-image:radial-gradient(ellipse,white,transparent)]"
-        )}
-      /> */}
-
       <Boxes />
 
       <TypographyH1 className="z-10 whitespace-pre-wrap text-center text-neutral-900 lg:text-4xl">
@@ -65,7 +57,7 @@ export default async function Hero({
             stat.value && (
               <Card
                 key={stat.title}
-                className="border-none shadow-none text-center bg-neutral-100"
+                className="border-none shadow-none text-center bg-accent"
               >
                 <CardContent className="p-6">
                   <div className="text-2xl text-neutral-700 font-bold">

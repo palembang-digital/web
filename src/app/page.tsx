@@ -43,7 +43,9 @@ export default async function Page() {
               <UpcomingEvents events={upcomingEvents} />
             </div>
           )}
-          <PastEvents events={pastEvents} />
+          <div className="mt-16">
+            <PastEvents events={pastEvents} />
+          </div>
           <LandingAboutUs />
           <LandingFAQ />
           <LandingContactUs />

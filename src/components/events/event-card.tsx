@@ -17,7 +17,7 @@ export default function EventCard({ event }: { event: any }) {
             <p className="text-xs">{event.locationName}</p>
           )}
           {event.locationType && (
-            <Badge variant="secondary" className="mt-2">
+            <Badge variant="outline" className="mt-2">
               {event.locationType}
             </Badge>
           )}

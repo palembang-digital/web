@@ -8,7 +8,9 @@ const EventList = async () => {
   return (
     <div>
       {upcomingEvents && upcomingEvents.length > 0 && (
-        <UpcomingEvents events={upcomingEvents} />
+        <div className="mb-16">
+          <UpcomingEvents events={upcomingEvents} />
+        </div>
       )}
       <PastEvents events={pastEvents} hideSeeMoreButton />
     </div>

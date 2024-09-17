@@ -1,9 +1,9 @@
-import { auth } from '@/auth';
-import { FloatingHeader } from '@/components/floating-header';
-import { ScrollArea } from '@/components/scroll-area';
-import EventList from '@/components/events/event-list';
-import { Suspense } from 'react';
-import { Skeleton } from '@/components/ui/skeleton';
+import { auth } from "@/auth";
+import EventList from "@/components/events/event-list";
+import { FloatingHeader } from "@/components/floating-header";
+import { ScrollArea } from "@/components/scroll-area";
+import { Skeleton } from "@/components/ui/skeleton";
+import { Suspense } from "react";
 
 export const revalidate = 3600; // revalidate the data at most every hour
 
