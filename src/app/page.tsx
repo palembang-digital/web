@@ -9,6 +9,8 @@ import LandingFooter from "@/components/landing/landing-footer";
 import PastEvents from "@/components/past-events";
 import { ScrollArea } from "@/components/scroll-area";
 import { db } from "@/db";
+import { organizations, users } from "@/db/schema";
+import { count, eq } from "drizzle-orm";
 
 export default async function Page() {
   const session = await auth();
@@ -25,8 +27,17 @@ export default async function Page() {
     .filter((event) => new Date(event.scheduledStart) < new Date())
     .slice(0, 6);
 
-  const orgs = await db.query.organizations.findMany();
-  const startups = orgs.filter((org) => org.organizationType === "startup");
+  const members = await db.select({ count: count() }).from(users);
+  const membersCount = members.length > 0 ? members[0].count : 0;
+
+  const orgs = await db.select({ count: count() }).from(organizations);
+  const orgsCount = orgs.length > 0 ? orgs[0].count : 0;
+
+  const startups = await db
+    .select({ count: count() })
+    .from(organizations)
+    .where(eq(organizations.organizationType, "startup"));
+  const startupsCount = startups.length > 0 ? startups[0].count : 0;
 
   return (
     <ScrollArea useScrollAreaId>
@@ -35,8 +46,9 @@ export default async function Page() {
         <div className="content">
           <Hero
             eventCount={events.length}
-            startupCount={startups.length}
-            organizationCount={orgs.length - startups.length}
+            memberCount={membersCount}
+            startupCount={startupsCount}
+            organizationCount={orgsCount - startupsCount}
           />
           {upcomingEvents && upcomingEvents.length > 0 && (
             <div className="mt-16">

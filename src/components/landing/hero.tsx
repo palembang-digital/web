@@ -21,20 +21,24 @@ export default async function Hero({
 
   const stats = [
     {
-      title: "Anggota",
-      value: memberCount,
-    },
-    {
       title: "Kegiatan",
       value: eventCount,
+      href: "/events",
+    },
+    {
+      title: "Anggota",
+      value: memberCount,
+      href: "/members",
     },
     {
       title: "Startup",
       value: startupCount,
+      href: "/ecosystem",
     },
     {
       title: "Organisasi",
       value: organizationCount,
+      href: "/ecosystem",
     },
   ];
 
@@ -51,21 +55,20 @@ export default async function Hero({
         terbesar di Sumatera Selatan untuk tumbuh bersama di bidang IT.
       </p>
 
-      <div className="z-10 grid grid-cols-3 gap-2">
+      <div className="z-10 grid grid-cols-2 sm:grid-cols-4 gap-2">
         {stats.map(
           (stat) =>
             stat.value && (
-              <Card
-                key={stat.title}
-                className="border-none shadow-none text-center bg-accent"
-              >
-                <CardContent className="p-6">
-                  <div className="text-2xl text-neutral-700 font-bold">
-                    {stat.value}
-                  </div>
-                  <div className="text-sm text-neutral-500">{stat.title}</div>
-                </CardContent>
-              </Card>
+              <Link href={stat.href} key={stat.title}>
+                <Card className="border-none shadow-none hover:border hover:shadow-sm text-center bg-accent">
+                  <CardContent className="p-6">
+                    <div className="text-2xl text-neutral-700 font-bold">
+                      {stat.value}
+                    </div>
+                    <div className="text-sm text-neutral-500">{stat.title}</div>
+                  </CardContent>
+                </Card>
+              </Link>
             )
         )}
       </div>
