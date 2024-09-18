@@ -8,7 +8,12 @@ export function SignOut() {
         await signOut({ redirectTo: "/" });
       }}
     >
-      <button type="submit">Keluar</button>
+      <button
+        type="submit"
+        className="text-xs text-neutral-500 hover:underline"
+      >
+        Keluar
+      </button>
     </form>
   );
 }

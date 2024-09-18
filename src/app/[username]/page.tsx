@@ -4,10 +4,12 @@ import EventCard from "@/components/events/event-card";
 import { FloatingHeader } from "@/components/floating-header";
 import { ScrollArea } from "@/components/scroll-area";
 import { SignOut } from "@/components/sign-out";
+import { Separator } from "@/components/ui/separator";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import YouTubeVideoCard from "@/components/youtube-video-card";
 import { db } from "@/db";
 import Image from "next/image";
+import Link from "next/link";
 
 export default async function Page({
   params,
@@ -80,9 +82,23 @@ export default async function Page({
                 className="rounded-full mb-2"
               />
               <p className="text-xs text-neutral-400 mb-2">{user.username}</p>
-              <p className="text-sm">{user.name}</p>
+              <p className="text-md">{user.name}</p>
+              <p className="text-xs">{user.occupation}</p>
+              {user.institution && (
+                <p className="text-xs mb-2">🏢 {user.institution}</p>
+              )}
               <p className="text-xs text-neutral-500 mb-4">{user.bio}</p>
-              <SignOut />
+              {session && (
+                <>
+                  <Separator />
+                  <Link href="/settings/profile">
+                    <p className="text-xs text-neutral-500 hover:underline mt-4">
+                      Pengaturan
+                    </p>
+                  </Link>
+                  <SignOut />
+                </>
+              )}
             </div>
 
             <div className="col-span-1 sm:col-span-2">

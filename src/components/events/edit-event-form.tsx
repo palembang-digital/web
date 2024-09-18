@@ -3,6 +3,7 @@
 import { UploadWidget } from "@/components/cloudinary/upload-widget";
 import AutoForm, { AutoFormSubmit } from "@/components/ui/auto-form";
 import { Button } from "@/components/ui/button";
+import { MultiSelect } from "@/components/ui/multi-select";
 import { insertEventSchema } from "@/db/schema";
 import { CloudinaryUploadWidgetInfo } from "next-cloudinary";
 import Image from "next/image";
@@ -10,7 +11,6 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { FormControl, FormItem, FormLabel } from "../ui/form";
-import { MultiSelect } from "../ui/multi-select";
 
 export default function EditEventForm({ event }: { event: any }) {
   const router = useRouter();

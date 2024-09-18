@@ -46,6 +46,15 @@ export const onboardingSchema = createInsertSchema(users).pick({
   bio: true,
 });
 
+export const insertUserSchema = createInsertSchema(users).pick({
+  name: true,
+  username: true,
+  phoneNumber: true,
+  occupation: true,
+  institution: true,
+  bio: true,
+});
+
 export const accounts = pgTable(
   "accounts",
   {
