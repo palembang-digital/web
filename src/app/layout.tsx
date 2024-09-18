@@ -5,6 +5,7 @@ import { SideMenu } from "@/components/side-menu";
 import { Toaster } from "@/components/ui/sonner";
 import { cn } from "@/lib/utils";
 import { GoogleAnalytics } from "@next/third-parties/google";
+import { Analytics } from "@vercel/analytics/react";
 import newrelic from "newrelic";
 import type { Metadata, Viewport } from "next";
 import { Inter as FontSans } from "next/font/google";
@@ -35,14 +36,17 @@ export default async function RootLayout({
 }>) {
   const session = await auth();
 
+  // @ts-ignore
   if (newrelic.agent.collector.isConnected() === false) {
     await new Promise((resolve) => {
+      // @ts-ignore
       newrelic.agent.on("connected", resolve);
     });
   }
 
   const browserTimingHeader = newrelic.getBrowserTimingHeader({
     hasToRemoveScriptWrapper: true,
+    // @ts-ignore
     allowTransactionlessInjection: true,
   });
 
@@ -69,6 +73,7 @@ export default async function RootLayout({
           </div>
         </main>
         <Toaster richColors />
+        <Analytics />
       </body>
       <GoogleAnalytics gaId="UA-169186060-1" />
     </html>
