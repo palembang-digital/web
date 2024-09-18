@@ -4,6 +4,7 @@ import { MenuContent } from "@/components/menu-content";
 import { SideMenu } from "@/components/side-menu";
 import { Toaster } from "@/components/ui/sonner";
 import { cn } from "@/lib/utils";
+import { GoogleAnalytics } from "@next/third-parties/google";
 import type { Metadata, Viewport } from "next";
 import { Inter as FontSans } from "next/font/google";
 
@@ -51,6 +52,7 @@ export default async function RootLayout({
         </main>
         <Toaster richColors />
       </body>
+      <GoogleAnalytics gaId="UA-169186060-1" />
     </html>
   );
 }
