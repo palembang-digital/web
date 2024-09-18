@@ -1,14 +1,14 @@
 "use client";
 
 import AutoForm, { AutoFormSubmit } from "@/components/ui/auto-form";
-import { onboardingSchema } from "@/db/schema";
+import { insertUserSchema } from "@/db/schema";
 import { toast } from "sonner";
 
-export default function OnboardingForm({ user }: { user: any }) {
+export default function ProfileForm({ user }: { user: any }) {
   return (
     <AutoForm
       values={user}
-      formSchema={onboardingSchema}
+      formSchema={insertUserSchema}
       fieldConfig={{
         bio: {
           fieldType: "textarea",
@@ -25,19 +25,16 @@ export default function OnboardingForm({ user }: { user: any }) {
           });
 
           if (response.ok) {
-            toast.success("You are onboarded! Have fun!");
-            setTimeout(() => {
-              location.href = "/";
-            }, 2000);
+            toast.success("Profile updated!");
           } else {
-            toast.error("Failed to update user data");
+            toast.error("Failed to update profile data");
           }
         } catch (error) {
           console.error(error);
         }
       }}
     >
-      <AutoFormSubmit>Mulai</AutoFormSubmit>
+      <AutoFormSubmit>Simpan</AutoFormSubmit>
     </AutoForm>
   );
 }

@@ -28,7 +28,7 @@ function MemberCard({ user }: { user: any }) {
         />
         <p className="text-xs text-neutral-400 mb-2">{user.username}</p>
         <p className="text-sm">{user.name}</p>
-        <p className="text-xs text-neutral-500">{user.bio}</p>
+        <p className="text-xs text-neutral-500">{user.occupation}</p>
       </Link>
       {user.eventsSpeakers?.length > 0 && (
         <div className="flex mt-2 items-center">
