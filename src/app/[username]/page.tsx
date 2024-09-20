@@ -1,5 +1,5 @@
 import { auth } from "@/auth";
-import DownloadTest from "@/components/certificates/download";
+import CeriticateDownload from "@/components/certificates/download";
 import EventCard from "@/components/events/event-card";
 import { FloatingHeader } from "@/components/floating-header";
 import { ScrollArea } from "@/components/scroll-area";
@@ -134,7 +134,7 @@ export default async function Page({
                 </TabsContent>
 
                 <TabsContent value="certificates">
-                  <DownloadTest />
+                  <CeriticateDownload />
                 </TabsContent>
 
                 <TabsContent value="videos">

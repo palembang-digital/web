@@ -37,12 +37,12 @@ export default async function RootLayout({
   const session = await auth();
 
   // @ts-ignore
-  if (newrelic.agent.collector.isConnected() === false) {
-    await new Promise((resolve) => {
-      // @ts-ignore
-      newrelic.agent.on("connected", resolve);
-    });
-  }
+  // if (newrelic.agent.collector.isConnected() === false) {
+  //   await new Promise((resolve) => {
+  //     // @ts-ignore
+  //     newrelic.agent.on("connected", resolve);
+  //   });
+  // }
 
   const browserTimingHeader = newrelic.getBrowserTimingHeader({
     hasToRemoveScriptWrapper: true,

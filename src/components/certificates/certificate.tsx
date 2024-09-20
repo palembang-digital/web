@@ -9,6 +9,8 @@ import {
   TypographyLead,
 } from "@/components/ui/typography";
 import { forwardRef } from "react";
+import { QRCodeCanvas } from 'qrcode.react';
+
 
 interface CertificateSignature {
   name: string;
@@ -43,7 +45,7 @@ const Certificate = forwardRef<HTMLDivElement, CertificateProps>(
     ref
   ) => {
     return (
-      <div id={id} ref={ref} className="bg-slate-100 px-10 py-10 relative">
+      <div id={id} ref={ref} className="bg-slate-100 px-10 py-10 relative min-w-[700px]">
         <div className="absolute bottom-0 left-0 w-full h-1/4 bg-slate-200 z-0"></div>
 
         <div className="bg-white border p-8 relative shadow-sm align-middle">
@@ -106,6 +108,14 @@ const Certificate = forwardRef<HTMLDivElement, CertificateProps>(
             /> */}
               </div>
             ))}
+          </div>
+
+          <div className="absolute bottom-8 right-8 flex items-center justify-center flex-col">
+            <div className="bg-gray-100 py-2 px-4 rounded-lg inline-block mb-3">
+              <p className="text-xs text-gray-500 text-center">Nomor Sertifikat</p>
+              <p className="font-bold text-sm text-gray-900 text-center">LD2J2BE-231</p>
+            </div>
+            <QRCodeCanvas value="https://reactjs.org/" />
           </div>
         </div>
       </div>
