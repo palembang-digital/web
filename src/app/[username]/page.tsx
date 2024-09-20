@@ -1,5 +1,5 @@
 import { auth } from "@/auth";
-import CeriticateDownload from "@/components/certificates/download";
+import CerticateDownload from "@/components/certificates/download";
 import EventCard from "@/components/events/event-card";
 import { FloatingHeader } from "@/components/floating-header";
 import { ScrollArea } from "@/components/scroll-area";
@@ -150,7 +150,7 @@ export default async function Page({
                     <div className="grid grid-cols-1 gap-4 pt-2">
                       {user.certificates.map((certificate) => (
                         <div key={certificate.id} className="bg-background p-4">
-                          <CeriticateDownload
+                          <CerticateDownload
                             eventName={certificate.event.name}
                             recipientName={user.name || ""}
                             startDate={certificate.event.scheduledStart}

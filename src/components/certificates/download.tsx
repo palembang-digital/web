@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { downloadImage } from "@/lib/canvas";
 import { useCallback, useRef } from "react";
 
-function CeriticateDownload({
+function CerticateDownload({
   eventName,
   recipientName,
   startDate,
@@ -54,4 +54,4 @@ function CeriticateDownload({
   );
 }
 
-export default CeriticateDownload;
+export default CerticateDownload;
