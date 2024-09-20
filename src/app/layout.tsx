@@ -6,10 +6,8 @@ import { Toaster } from "@/components/ui/sonner";
 import { cn } from "@/lib/utils";
 import { GoogleAnalytics } from "@next/third-parties/google";
 import { Analytics } from "@vercel/analytics/react";
-import newrelic from "newrelic";
 import type { Metadata, Viewport } from "next";
 import { Inter as FontSans } from "next/font/google";
-import Script from "next/script";
 
 const fontSans = FontSans({
   subsets: ["latin"],
@@ -36,27 +34,8 @@ export default async function RootLayout({
 }>) {
   const session = await auth();
 
-  // @ts-ignore
-  // if (newrelic.agent.collector.isConnected() === false) {
-  //   await new Promise((resolve) => {
-  //     // @ts-ignore
-  //     newrelic.agent.on("connected", resolve);
-  //   });
-  // }
-
-  const browserTimingHeader = newrelic.getBrowserTimingHeader({
-    hasToRemoveScriptWrapper: true,
-    // @ts-ignore
-    allowTransactionlessInjection: true,
-  });
-
   return (
     <html lang="en" suppressHydrationWarning>
-      <Script
-        id="nr-browser-agent"
-        dangerouslySetInnerHTML={{ __html: browserTimingHeader }}
-      />
-
       <body
         className={cn(
           "min-h-screen bg-background font-sans antialiased",

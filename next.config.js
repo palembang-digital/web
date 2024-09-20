@@ -1,15 +1,4 @@
-"use strict";
-
-const nrExternals = require("newrelic/load-externals");
-
 module.exports = {
-  experimental: {
-    serverComponentsExternalPackages: ["newrelic"],
-  },
-  webpack: (config) => {
-    nrExternals(config);
-    return config;
-  },
   images: {
     remotePatterns: [
       {
