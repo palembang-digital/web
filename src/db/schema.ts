@@ -9,6 +9,7 @@ import {
   serial,
   text,
   timestamp,
+  unique,
 } from "drizzle-orm/pg-core";
 import { createInsertSchema } from "drizzle-zod";
 import type { AdapterAccountType } from "next-auth/adapters";
@@ -288,6 +289,25 @@ export const insertContactFormSchema = createInsertSchema(contactForm, {
   message: true,
 });
 
+export const certificates = pgTable(
+  "certificates",
+  {
+    id: text("id")
+      .primaryKey()
+      .$defaultFn(() => crypto.randomUUID()),
+    eventId: integer("event_id")
+      .notNull()
+      .references(() => events.id, { onDelete: "cascade" }),
+    userId: text("user_id")
+      .notNull()
+      .references(() => users.id, { onDelete: "cascade" }),
+    createdAt: timestamp("created_at").notNull().defaultNow(),
+  },
+  (t) => ({
+    unq: unique().on(t.eventId, t.userId),
+  })
+);
+
 // ==================================================
 //
 // RELATIONS
@@ -298,6 +318,7 @@ export const usersRelations = relations(users, ({ many }) => ({
   eventsSpeakers: many(eventsSpeakers),
   eventsHostsUsers: many(eventsHostsUsers),
   videosSpeakers: many(videosSpeakers),
+  certificates: many(certificates),
 }));
 
 export const organizationsRelations = relations(organizations, ({ many }) => ({
@@ -309,6 +330,7 @@ export const eventsRelations = relations(events, ({ many }) => ({
   eventsVideos: many(eventsVideos),
   eventsHostsUsers: many(eventsHostsUsers),
   eventsHostsOrganizations: many(eventsHostsOrganizations),
+  certificates: many(certificates),
 }));
 
 export const videosRelations = relations(videos, ({ many }) => ({
@@ -373,6 +395,17 @@ export const videosSpeakersRelations = relations(videosSpeakers, ({ one }) => ({
   }),
   user: one(users, {
     fields: [videosSpeakers.userId],
+    references: [users.id],
+  }),
+}));
+
+export const certificatesRelations = relations(certificates, ({ one }) => ({
+  event: one(events, {
+    fields: [certificates.eventId],
+    references: [events.id],
+  }),
+  user: one(users, {
+    fields: [certificates.userId],
     references: [users.id],
   }),
 }));

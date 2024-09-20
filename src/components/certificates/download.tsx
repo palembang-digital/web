@@ -1,15 +1,25 @@
 "use client";
 
+import Certificate, {
+  CertificateProps,
+} from "@/components/certificates/certificate";
+import { Button } from "@/components/ui/button";
 import { downloadImage } from "@/lib/canvas";
 import { useCallback, useRef } from "react";
-import { Button } from "../ui/button";
-import Certificate from "./certificate";
 
-function CeriticateDownload() {
+function CeriticateDownload({
+  eventName,
+  recipientName,
+  startDate,
+  endDate,
+  signatures,
+  certificateCode,
+  certificateTitle,
+}: CertificateProps) {
   const refCertificate = useRef<HTMLDivElement>(null);
 
   const checkGenerated = useCallback(async () => {
-    await downloadImage(refCertificate, "certificate.png");
+    await downloadImage(refCertificate, `${eventName}.png`);
   }, []);
 
   return (
@@ -17,12 +27,12 @@ function CeriticateDownload() {
       <div className="overflow-auto">
         <Certificate
           ref={refCertificate}
-          certificateCode="SDS-2024-001"
-          certificateTitle="Sertifikat Apresiasi"
-          eventName="Sriwijaya Digital Startup"
-          recipientName="Budi Pekerti"
-          startDate="20 Juni 2024"
-          endDate="22 Juni 2024"
+          certificateCode={certificateCode}
+          certificateTitle={certificateTitle}
+          eventName={eventName}
+          recipientName={recipientName}
+          startDate={startDate}
+          endDate={endDate}
           signatures={[
             {
               name: "Doremi",
@@ -37,7 +47,7 @@ function CeriticateDownload() {
           ]}
         />
       </div>
-      <Button onClick={checkGenerated} className="mt-5 w-full">
+      <Button onClick={checkGenerated} className="mt-5">
         Download Certificate
       </Button>
     </div>

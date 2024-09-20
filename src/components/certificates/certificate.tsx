@@ -8,6 +8,7 @@ import {
   TypographyLarge,
   TypographyLead,
 } from "@/components/ui/typography";
+import { localeDate } from "@/lib/utils";
 import { QRCodeCanvas } from "qrcode.react";
 import { forwardRef } from "react";
 
@@ -17,14 +18,14 @@ interface CertificateSignature {
   signature: string;
 }
 
-interface CertificateProps {
+export interface CertificateProps {
   certificateCode: string;
   certificateTitle: string;
   eventName: string;
   recipientName: string;
-  startDate: string;
-  endDate: string;
-  signatures: CertificateSignature[];
+  startDate: Date;
+  endDate?: Date;
+  signatures?: CertificateSignature[];
 }
 
 const Certificate = forwardRef<HTMLDivElement, CertificateProps>(
@@ -37,14 +38,13 @@ const Certificate = forwardRef<HTMLDivElement, CertificateProps>(
       signatures,
       certificateCode,
       certificateTitle,
-      ...props
     },
     ref
   ) => {
     return (
       <div
         ref={ref}
-        className="bg-slate-100 px-10 py-10 relative min-w-[700px]"
+        className="bg-slate-100 px-10 py-10 relative min-w-[700px] max-w-[700px]"
       >
         <div className="absolute bottom-0 left-0 w-full h-1/4 bg-slate-200 z-0"></div>
 
@@ -84,12 +84,12 @@ const Certificate = forwardRef<HTMLDivElement, CertificateProps>(
             </TypographyH4>
           </div>
           <TypographyLead className="text-sm mb-4">
-            pada tanggal {startDate}
-            {endDate && ` sampai ${endDate}`}.
+            pada tanggal {localeDate(startDate)}
+            {endDate && ` sampai ${localeDate(endDate)}`}.
           </TypographyLead>
 
           <div className="flex items-center gap-x-6 mt-8 pt-1 w-max border-t">
-            {signatures.map((signature) => (
+            {signatures?.map((signature) => (
               <div key={signature.name} className="flex items-center gap-x-4">
                 <div>
                   <TypographyLarge className="text-sm">
@@ -111,15 +111,7 @@ const Certificate = forwardRef<HTMLDivElement, CertificateProps>(
           </div>
 
           <div className="absolute bottom-8 right-8 flex items-center justify-center flex-col">
-            <div className="bg-gray-100 py-2 px-4 rounded-lg inline-block mb-3">
-              <p className="text-xs text-gray-500 text-center">
-                Nomor Sertifikat
-              </p>
-              <p className="font-bold text-sm text-gray-900 text-center">
-                LD2J2BE-231
-              </p>
-            </div>
-            <QRCodeCanvas value="https://reactjs.org/" />
+            <QRCodeCanvas value={`/certificates/${certificateCode}`} />
           </div>
         </div>
       </div>
