@@ -8,6 +8,7 @@ import { Separator } from "@/components/ui/separator";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import YouTubeVideoCard from "@/components/youtube-video-card";
 import { db } from "@/db";
+import { localeDate } from "@/lib/utils";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -43,6 +44,17 @@ export default async function Page({
               videoUrl: true,
               thumbnails: true,
               publishedAt: true,
+            },
+          },
+        },
+      },
+      certificates: {
+        with: {
+          event: {
+            columns: {
+              name: true,
+              scheduledStart: true,
+              scheduledEnd: true,
             },
           },
         },
@@ -134,7 +146,32 @@ export default async function Page({
                 </TabsContent>
 
                 <TabsContent value="certificates">
-                  <CeriticateDownload />
+                  {user.certificates.length > 0 ? (
+                    <div className="grid grid-cols-1 gap-4 pt-2">
+                      {user.certificates.map((certificate) => (
+                        <div key={certificate.id} className="bg-background p-4">
+                          <CeriticateDownload
+                            eventName={certificate.event.name}
+                            recipientName={user.name || ""}
+                            startDate={certificate.event.scheduledStart}
+                            endDate={
+                              localeDate(certificate.event.scheduledStart) !==
+                              localeDate(certificate.event.scheduledEnd)
+                                ? certificate.event.scheduledEnd
+                                : undefined
+                            }
+                            certificateCode={certificate.id}
+                            certificateTitle="Sertifikat Apresiasi"
+                          />
+                        </div>
+                      ))}
+                    </div>
+                  ) : (
+                    <p className="text-sm">
+                      Sepertinya {user.name} belum push rank ngumpulin
+                      sertifikat 🤔
+                    </p>
+                  )}
                 </TabsContent>
 
                 <TabsContent value="videos">
