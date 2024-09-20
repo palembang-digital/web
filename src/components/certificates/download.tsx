@@ -1,7 +1,7 @@
 "use client";
 
 import { downloadImage } from "@/lib/canvas";
-import { useCallback, useRef } from "react";
+import { useCallback, useId, useRef } from "react";
 import Certificate from "./certificate";
 
 function DownloadTest() {
@@ -11,10 +11,13 @@ function DownloadTest() {
     await downloadImage(refCertificate, "certificate.png");
   }, []);
 
+  const id = useId();
+
   return (
     <div>
       <Certificate
         ref={refCertificate}
+        id={id}
         certificateCode="SDS-2024-001"
         certificateTitle="Sertifikat Apresiasi"
         eventName="Sriwijaya Digital Startup"
