@@ -1,9 +1,9 @@
 "use client";
 
-import { downloadImage } from "@/lib/canvas";
 import { useCallback, useId, useRef } from "react";
 import Certificate from "./certificate";
 import { Button } from "../ui/button";
+import { downloadImage } from "@/lib/image";
 
 function CeriticateDownload() {
   const refCertificate = useRef<HTMLDivElement>(null);
