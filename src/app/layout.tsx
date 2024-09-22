@@ -15,9 +15,31 @@ const fontSans = FontSans({
 });
 
 export const metadata: Metadata = {
-  title: "Palembang Digital",
+  title: {
+    default: "Palembang Digital",
+    template: "%s · Palembang Digital",
+  },
   description:
     "Platform komunitas yang menghubungkan ribuan penggiat IT di Sumatera Selatan",
+  applicationName: "Palembang Digital",
+  authors: [
+    { name: "Palembang Digital", url: "https://www.palembangdigital.org" },
+  ],
+  creator: "Palembang Digital",
+  publisher: "Palembang Digital",
+  keywords: [
+    "Palembang",
+    "Digital",
+    "Komunitas",
+    "IT",
+    "Sumatera Selatan",
+    "Startup",
+    "Programmer",
+    "Developer",
+    "Designer",
+    "Tech",
+    "Community",
+  ],
 };
 
 export const viewport: Viewport = {

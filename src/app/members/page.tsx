@@ -3,8 +3,13 @@ import { FloatingHeader } from "@/components/floating-header";
 import { ScrollArea } from "@/components/scroll-area";
 import { AnimatedTooltip } from "@/components/ui/animated-tooltip";
 import { db } from "@/db";
+import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
+
+export const metadata: Metadata = {
+  title: "Anggota",
+};
 
 function MemberCard({ user }: { user: any }) {
   const eventShownLimit = 5;

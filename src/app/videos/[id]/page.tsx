@@ -2,27 +2,33 @@ import { auth } from "@/auth";
 import { FloatingHeader } from "@/components/floating-header";
 import { ScrollArea } from "@/components/scroll-area";
 import { TypographyH4 } from "@/components/ui/typography";
-import { db } from "@/db";
 import { getYoutubeVideoId } from "@/lib/utils";
+import { getVideo } from "@/services";
 import { YouTubeEmbed } from "@next/third-parties/google";
+import type { Metadata } from "next";
 import Link from "next/link";
+
+export async function generateMetadata({
+  params,
+}: {
+  params: { id: number };
+}): Promise<Metadata> {
+  const video = await getVideo(params.id);
+  if (!video) {
+    return {
+      title: "Video not found",
+    };
+  }
+
+  return {
+    title: video.title,
+  };
+}
 
 export default async function Page({ params }: { params: { id: number } }) {
   const session = await auth();
 
-  const video = await db.query.videos.findFirst({
-    where: (videos, { eq }) => eq(videos.id, params.id),
-    with: {
-      eventsVideos: {
-        with: {
-          event: {
-            columns: { id: true, name: true, description: true },
-          },
-        },
-      },
-    },
-  });
-
+  const video = await getVideo(params.id);
   if (!video) {
     return (
       <ScrollArea useScrollAreaId>
