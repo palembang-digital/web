@@ -7,10 +7,29 @@ import { SignOut } from "@/components/sign-out";
 import { Separator } from "@/components/ui/separator";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import YouTubeVideoCard from "@/components/youtube-video-card";
-import { db } from "@/db";
 import { localeDate } from "@/lib/utils";
 import Image from "next/image";
 import Link from "next/link";
+
+import { getUser } from "@/services";
+import type { Metadata } from "next";
+
+export async function generateMetadata({
+  params,
+}: {
+  params: { username: string };
+}): Promise<Metadata> {
+  const user = await getUser(params.username);
+  if (!user) {
+    return {
+      title: "User not found",
+    };
+  }
+
+  return {
+    title: `${user.username} (${user.name})`,
+  };
+}
 
 export default async function Page({
   params,
@@ -19,49 +38,7 @@ export default async function Page({
 }) {
   const session = await auth();
 
-  const user = await db.query.users.findFirst({
-    where: (users, { eq }) => eq(users.username, params.username),
-    with: {
-      eventsSpeakers: {
-        with: {
-          event: {
-            columns: {
-              id: true,
-              name: true,
-              imageUrl: true,
-              scheduledStart: true,
-            },
-          },
-        },
-      },
-      videosSpeakers: {
-        with: {
-          video: {
-            columns: {
-              id: true,
-              title: true,
-              videoType: true,
-              videoUrl: true,
-              thumbnails: true,
-              publishedAt: true,
-            },
-          },
-        },
-      },
-      certificates: {
-        with: {
-          event: {
-            columns: {
-              name: true,
-              scheduledStart: true,
-              scheduledEnd: true,
-            },
-          },
-        },
-      },
-    },
-  });
-
+  const user = await getUser(params.username);
   if (!user) {
     return (
       <ScrollArea useScrollAreaId>
@@ -100,17 +77,20 @@ export default async function Page({
                 <p className="text-xs mb-2">🏢 {user.institution}</p>
               )}
               <p className="text-xs text-neutral-500 mb-4">{user.bio}</p>
-              {session && (
-                <>
-                  <Separator />
-                  <Link href="/settings/profile">
-                    <p className="text-xs text-neutral-500 hover:underline mt-4">
-                      Pengaturan
-                    </p>
-                  </Link>
-                  <SignOut />
-                </>
-              )}
+              {
+                // @ts-ignore
+                session && session.user?.username === user.username && (
+                  <>
+                    <Separator />
+                    <Link href="/settings/profile">
+                      <p className="text-xs text-neutral-500 hover:underline mt-4">
+                        Pengaturan
+                      </p>
+                    </Link>
+                    <SignOut />
+                  </>
+                )
+              }
             </div>
 
             <div className="col-span-1 sm:col-span-2">

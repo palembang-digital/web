@@ -10,8 +10,8 @@ import {
   TypographyH4,
 } from "@/components/ui/typography";
 import YouTubeVideoCard from "@/components/youtube-video-card";
-import { db } from "@/db";
 import { getDate, getMonthYear, localeDate, localeTime } from "@/lib/utils";
+import { getEvent } from "@/services";
 import { GoogleMapsEmbed } from "@next/third-parties/google";
 import {
   CircleCheckBigIcon,
@@ -20,53 +20,31 @@ import {
   UsersIcon,
   VideoIcon,
 } from "lucide-react";
+import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
+
+export async function generateMetadata({
+  params,
+}: {
+  params: { id: number };
+}): Promise<Metadata> {
+  const event = await getEvent(params.id);
+  if (!event) {
+    return {
+      title: "Event not found",
+    };
+  }
+
+  return {
+    title: event.name,
+  };
+}
 
 export default async function Page({ params }: { params: { id: number } }) {
   const session = await auth();
 
-  const event = await db.query.events.findFirst({
-    where: (events, { eq }) => eq(events.id, params.id),
-    with: {
-      eventsSpeakers: {
-        with: {
-          user: {
-            columns: { id: true, name: true, username: true, image: true },
-          },
-        },
-      },
-      eventsHostsUsers: {
-        with: {
-          user: {
-            columns: { id: true, name: true, username: true, image: true },
-          },
-        },
-      },
-      eventsHostsOrganizations: {
-        with: {
-          organization: {
-            columns: { id: true, name: true, slug: true, image: true },
-          },
-        },
-      },
-      eventsVideos: {
-        with: {
-          video: {
-            columns: {
-              id: true,
-              title: true,
-              videoType: true,
-              videoUrl: true,
-              thumbnails: true,
-              publishedAt: true,
-            },
-          },
-        },
-      },
-    },
-  });
-
+  const event = await getEvent(params.id);
   if (!event) {
     return <p>Event not found</p>;
   }

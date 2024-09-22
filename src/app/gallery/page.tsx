@@ -3,6 +3,11 @@ import { FloatingHeader } from "@/components/floating-header";
 import { ScrollArea } from "@/components/scroll-area";
 import YouTubeVideoCard from "@/components/youtube-video-card";
 import { db } from "@/db";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Galeri",
+};
 
 export default async function Page() {
   const session = await auth();
