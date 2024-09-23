@@ -2,6 +2,7 @@ import { auth } from "@/auth";
 import { db } from "@/db";
 import {
   events,
+  eventsCommittees,
   eventsHostsOrganizations,
   eventsHostsUsers,
   eventsSpeakers,
@@ -57,6 +58,14 @@ export async function POST(req: Request) {
         userId: speaker.value,
       }));
       await tx.insert(eventsSpeakers).values(speakers);
+    }
+
+    if (data.committees && data.committees.length > 0) {
+      const committees = data.committees.map((committee: any) => ({
+        eventId: eventId,
+        userId: committee.value,
+      }));
+      await tx.insert(eventsCommittees).values(committees);
     }
 
     if (data.hostsOrganizations && data.hostsOrganizations.length > 0) {

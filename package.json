@@ -11,7 +11,8 @@
     "db:generate": "drizzle-kit generate && npm run db:erd",
     "db:migrate": "drizzle-kit migrate",
     "db:studio": "drizzle-kit studio",
-    "db:erd": "tsx scripts/dbml.ts && dbml-renderer -i docs/db/schema.dbml -o docs/db/erd.svg"
+    "db:erd": "tsx scripts/dbml.ts && dbml-renderer -i docs/db/schema.dbml -o docs/db/erd.svg",
+    "db:all": "npm run db:generate && npm run db:migrate && npm run db:erd"
   },
   "dependencies": {
     "@auth/drizzle-adapter": "^1.4.1",
@@ -68,6 +69,7 @@
     "next-auth": "^5.0.0-beta.19",
     "next-cloudinary": "^6.6.2",
     "next-themes": "^0.3.0",
+    "nuqs": "^1.19.2",
     "postgres": "^3.4.4",
     "qrcode.react": "^4.0.1",
     "react": "^18",

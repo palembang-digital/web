@@ -51,10 +51,11 @@ table certificates {
   id text [pk, not null]
   event_id integer [not null]
   user_id text [not null]
+  role text
   created_at timestamp [not null, default: `now()`]
 
   indexes {
-    (event_id, user_id) [name: 'certificates_event_id_user_id_unique', unique]
+    (event_id, user_id, role) [name: 'certificates_event_id_user_id_role_unique', unique]
   }
 }
 
@@ -81,6 +82,17 @@ table events {
   location_name text
   location_url text
   location_type event_location_type
+}
+
+table events_committees {
+  event_id integer [not null]
+  user_id text [not null]
+  role text
+  description text
+
+  indexes {
+    (event_id, user_id) [pk]
+  }
 }
 
 table events_hosts_organizations {
@@ -189,6 +201,10 @@ table videos_speakers {
 ref: certificates.event_id > events.id
 
 ref: certificates.user_id > users.id
+
+ref: events_committees.event_id > events.id
+
+ref: events_committees.user_id > users.id
 
 ref: events_hosts_organizations.event_id > events.id
 

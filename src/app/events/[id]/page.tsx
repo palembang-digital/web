@@ -4,6 +4,7 @@ import { FloatingHeader } from "@/components/floating-header";
 import ShimmerButton from "@/components/magicui/shimmer-button";
 import { ScrollArea } from "@/components/scroll-area";
 import SpeakersList from "@/components/speakers-list";
+import { AnimatedTooltip } from "@/components/ui/animated-tooltip";
 import { Button } from "@/components/ui/button";
 import {
   TypographyH2,
@@ -99,6 +100,26 @@ function EventSchedule({ event }: { event: any }) {
   );
 }
 
+function EventCommittees({ committees }: { committees: any[] }) {
+  const items = committees.map(({ user }) => ({
+    id: user.id,
+    label: user.name,
+    image: user.image,
+    href: `/${user.username}`,
+  }));
+
+  return (
+    <div>
+      <TypographyH4>Panitia</TypographyH4>
+      <div className="flex flex-wrap">
+        {items.map((item) => (
+          <AnimatedTooltip items={[item]} />
+        ))}
+      </div>
+    </div>
+  );
+}
+
 export default async function Page({ params }: { params: { id: number } }) {
   const session = await auth();
 
@@ -167,6 +188,9 @@ export default async function Page({ params }: { params: { id: number } }) {
                       </Link>
                     ))}
                   </div>
+                )}
+                {event.eventsCommittees.length > 0 && (
+                  <EventCommittees committees={event.eventsCommittees} />
                 )}
               </div>
             </div>
@@ -295,18 +319,22 @@ export default async function Page({ params }: { params: { id: number } }) {
                 <div className="flex flex-col gap-2">
                   <TypographyH4>Dokumentasi Kegiatan</TypographyH4>
                   <div className="grid grid-cols-1 sm:grid-cols-3 gap-x-4 gap-y-6">
-                    {event.eventsVideos.map(({ video }) => (
-                      <div
-                        key={video.id}
-                        className="bg-background hover:bg-accent hover:cursor-pointer shadow-sm flex h-full border rounded-lg"
-                      >
-                        {video.videoType === "youtube" ? (
-                          <YouTubeVideoCard video={video} />
-                        ) : (
-                          <video src={video.videoUrl || ""} controls />
-                        )}
-                      </div>
-                    ))}
+                    {event.eventsVideos
+                      .sort((a, b) =>
+                        a.video.publishedAt > b.video.publishedAt ? 1 : -1
+                      )
+                      .map(({ video }) => (
+                        <div
+                          key={video.id}
+                          className="bg-background hover:bg-accent hover:cursor-pointer shadow-sm flex h-full border rounded-lg"
+                        >
+                          {video.videoType === "youtube" ? (
+                            <YouTubeVideoCard video={video} />
+                          ) : (
+                            <video src={video.videoUrl || ""} controls />
+                          )}
+                        </div>
+                      ))}
                   </div>
                 </div>
               </div>
