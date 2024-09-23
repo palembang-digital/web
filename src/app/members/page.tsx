@@ -2,7 +2,7 @@ import { auth } from "@/auth";
 import { FloatingHeader } from "@/components/floating-header";
 import { ScrollArea } from "@/components/scroll-area";
 import { AnimatedTooltip } from "@/components/ui/animated-tooltip";
-import { db } from "@/db";
+import { getUsers, mergeUserEvents } from "@/services";
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
@@ -13,11 +13,11 @@ export const metadata: Metadata = {
 
 function MemberCard({ user }: { user: any }) {
   const eventShownLimit = 5;
-  const events = user.eventsSpeakers.map((event: any) => ({
-    id: event.eventId,
-    label: event.event.name,
-    href: `/events/${event.eventId}`,
-    image: event.event.imageUrl,
+  const events = mergeUserEvents(user).map((event: any) => ({
+    id: event.id,
+    label: event.name,
+    href: `/events/${event.id}`,
+    image: event.imageUrl,
     imageClassName: "rounded-sm",
   }));
 
@@ -35,7 +35,7 @@ function MemberCard({ user }: { user: any }) {
         <p className="text-sm">{user.name}</p>
         <p className="text-xs text-neutral-500">{user.occupation}</p>
       </Link>
-      {user.eventsSpeakers?.length > 0 && (
+      {events?.length > 0 && (
         <div className="flex mt-2 items-center">
           <p className="text-xs text-neutral-400 mr-1">Kegiatan:</p>
           <AnimatedTooltip items={events.slice(0, eventShownLimit)} />
@@ -53,23 +53,7 @@ function MemberCard({ user }: { user: any }) {
 export default async function Page() {
   const session = await auth();
 
-  const users = await db.query.users.findMany({
-    orderBy: (users, { asc }) => [asc(users.name)],
-    with: {
-      eventsSpeakers: {
-        with: {
-          event: {
-            columns: {
-              id: true,
-              name: true,
-              imageUrl: true,
-              scheduledStart: true,
-            },
-          },
-        },
-      },
-    },
-  });
+  const users = await getUsers();
 
   return (
     <ScrollArea useScrollAreaId>

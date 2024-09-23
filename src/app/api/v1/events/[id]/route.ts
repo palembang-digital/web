@@ -2,11 +2,13 @@ import { auth } from "@/auth";
 import { db } from "@/db";
 import {
   events,
+  eventsCommittees,
   eventsHostsOrganizations,
   eventsHostsUsers,
   eventsSpeakers,
   eventsVideos,
 } from "@/db/schema";
+import { getEvent } from "@/services";
 import { and, eq } from "drizzle-orm";
 
 export async function PUT(
@@ -23,16 +25,9 @@ export async function PUT(
     return Response.json({ message: "Not authorized" }, { status: 403 });
   }
 
-  const currentEvent = await db.query.events.findFirst({
-    where: (events, { eq }) => eq(events.id, params.id),
-    with: {
-      eventsSpeakers: true,
-      eventsHostsOrganizations: true,
-      eventsHostsUsers: true,
-      eventsVideos: true,
-    },
-  });
+  const currentEvent = await getEvent(params.id);
   const currentSpeakers = currentEvent?.eventsSpeakers;
+  const currentCommittees = currentEvent?.eventsCommittees;
   const currentHostsOrganizations = currentEvent?.eventsHostsOrganizations;
   const currentHostsUsers = currentEvent?.eventsHostsUsers;
   const currentVideos = currentEvent?.eventsVideos;
@@ -48,6 +43,11 @@ export async function PUT(
   const inputSpeakers = data.speakers.map((speaker: any) => ({
     eventId: currentEvent?.id,
     userId: speaker.value,
+  }));
+
+  const inputCommittees = data.committees.map((committee: any) => ({
+    eventId: currentEvent?.id,
+    userId: committee.value,
   }));
 
   const inputHostsOrganizations = data.hostsOrganizations.map(
@@ -82,6 +82,24 @@ export async function PUT(
         (inputSpeaker: any) =>
           currentSpeaker.eventId === inputSpeaker.eventId &&
           currentSpeaker.userId === inputSpeaker.userId
+      )
+  );
+
+  const newCommittees = inputCommittees?.filter(
+    (inputCommittee: any) =>
+      !currentCommittees?.some(
+        (currentCommittee: any) =>
+          currentCommittee.eventId === inputCommittee.eventId &&
+          currentCommittee.userId === inputCommittee.userId
+      )
+  );
+
+  const deletedCommittees = currentSpeakers?.filter(
+    (currentCommittee) =>
+      !inputCommittees.some(
+        (inputCommittee: any) =>
+          currentCommittee.eventId === inputCommittee.eventId &&
+          currentCommittee.userId === inputCommittee.userId
       )
   );
 
@@ -160,6 +178,22 @@ export async function PUT(
       });
     }
 
+    if (newCommittees && newCommittees.length > 0) {
+      await tx.insert(eventsCommittees).values(newCommittees);
+    }
+    if (deletedCommittees && deletedCommittees.length > 0) {
+      deletedCommittees.forEach(async (deletedCommittee: any) => {
+        await tx
+          .delete(eventsCommittees)
+          .where(
+            and(
+              eq(eventsCommittees.eventId, deletedCommittee.eventId),
+              eq(eventsCommittees.userId, deletedCommittee.userId)
+            )
+          );
+      });
+    }
+
     if (newHostsOrganizations && newHostsOrganizations.length > 0) {
       await tx.insert(eventsHostsOrganizations).values(newHostsOrganizations);
     }
@@ -217,13 +251,7 @@ export async function PUT(
     }
   });
 
-  const updatedEvent = await db.query.events.findFirst({
-    where: (events, { eq }) => eq(events.id, params.id),
-    with: {
-      eventsSpeakers: true,
-      eventsVideos: true,
-    },
-  });
+  const updatedEvent = await getEvent(params.id);
 
   return Response.json({
     message: "Event updated",

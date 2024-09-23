@@ -22,40 +22,24 @@ export default function EventForm({
   const [values, setValues] = useState(event);
 
   const [speakers, setSpeakers] = useState([]);
-  const [selectedSpeakers, setSelectedSpeakers] = useState(
-    event.eventsSpeakers
-      ? event.eventsSpeakers
-          .map((es: any) => ({
-            value: es.userId,
-            label: es.user.name,
-          }))
-          .sort((a: any, b: any) => a.label.localeCompare(b.label))
-      : []
-  );
+  const [committees, setCommittees] = useState([]);
+  const [hostsUsers, setHostsUsers] = useState([]);
   useEffect(() => {
     fetch("/api/v1/users")
       .then((res) => res.json())
       .then((data) => {
-        setSpeakers(
-          data.map((user: any) => ({
-            value: user.id,
-            label: user.name,
-          }))
-        );
+        const users = data.map((user: any) => ({
+          value: user.id,
+          label: user.name,
+        }));
+
+        setSpeakers(users);
+        setCommittees(users);
+        setHostsUsers(users);
       });
   }, []);
 
   const [hostsOrganizations, setHostsOrganizations] = useState([]);
-  const [selectedHostsOrganizations, setSelectedHostsOrganizations] = useState(
-    event.eventsHostsOrganizations
-      ? event.eventsHostsOrganizations
-          .map((es: any) => ({
-            value: es.organizationId,
-            label: es.organization.name,
-          }))
-          .sort((a: any, b: any) => a.label.localeCompare(b.label))
-      : []
-  );
   useEffect(() => {
     fetch("/api/v1/organizations")
       .then((res) => res.json())
@@ -69,7 +53,39 @@ export default function EventForm({
       });
   }, []);
 
-  const [hostsUsers, setHostsUsers] = useState([]);
+  const [selectedSpeakers, setSelectedSpeakers] = useState(
+    event.eventsSpeakers
+      ? event.eventsSpeakers
+          .map((es: any) => ({
+            value: es.userId,
+            label: es.user.name,
+          }))
+          .sort((a: any, b: any) => a.label.localeCompare(b.label))
+      : []
+  );
+
+  const [selectedCommittees, setSelectedCommittees] = useState(
+    event.eventsCommittees
+      ? event.eventsCommittees
+          .map((es: any) => ({
+            value: es.userId,
+            label: es.user.name,
+          }))
+          .sort((a: any, b: any) => a.label.localeCompare(b.label))
+      : []
+  );
+
+  const [selectedHostsOrganizations, setSelectedHostsOrganizations] = useState(
+    event.eventsHostsOrganizations
+      ? event.eventsHostsOrganizations
+          .map((es: any) => ({
+            value: es.organizationId,
+            label: es.organization.name,
+          }))
+          .sort((a: any, b: any) => a.label.localeCompare(b.label))
+      : []
+  );
+
   const [selectedHostsUsers, setSelectedHostsUsers] = useState(
     event.eventsHostsUsers
       ? event.eventsHostsUsers
@@ -80,18 +96,6 @@ export default function EventForm({
           .sort((a: any, b: any) => a.label.localeCompare(b.label))
       : []
   );
-  useEffect(() => {
-    fetch("/api/v1/users")
-      .then((res) => res.json())
-      .then((data) => {
-        setHostsUsers(
-          data.map((user: any) => ({
-            value: user.id,
-            label: user.name,
-          }))
-        );
-      });
-  }, []);
 
   const [videos, setVideos] = useState([]);
   const [selectedVideos, setSelectedVideos] = useState(
@@ -155,6 +159,7 @@ export default function EventForm({
           const requestData = {
             event: data,
             speakers: selectedSpeakers,
+            committees: selectedCommittees,
             hostsOrganizations: selectedHostsOrganizations,
             hostsUsers: selectedHostsUsers,
             videos: selectedVideos,
@@ -172,6 +177,20 @@ export default function EventForm({
                 placeholder="Pilih speaker"
                 selected={selectedSpeakers}
                 setSelected={setSelectedSpeakers}
+              />
+            </FormControl>
+          </FormItem>
+        </div>
+
+        <div className="flex flex-row  items-center space-x-2">
+          <FormItem className="flex w-full flex-col justify-start">
+            <FormLabel>Committees</FormLabel>
+            <FormControl>
+              <MultiSelect
+                options={committees}
+                placeholder="Pilih panitia"
+                selected={selectedCommittees}
+                setSelected={setSelectedCommittees}
               />
             </FormControl>
           </FormItem>

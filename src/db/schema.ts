@@ -176,6 +176,23 @@ export const eventsSpeakers = pgTable(
   })
 );
 
+export const eventsCommittees = pgTable(
+  "events_committees",
+  {
+    eventId: integer("event_id")
+      .notNull()
+      .references(() => events.id, { onDelete: "cascade" }),
+    userId: text("user_id")
+      .notNull()
+      .references(() => users.id, { onDelete: "cascade" }),
+    role: text("role"),
+    description: text("description"),
+  },
+  (t) => ({
+    pk: primaryKey({ columns: [t.eventId, t.userId] }),
+  })
+);
+
 export const eventsHostsUsers = pgTable(
   "events_hosts_users",
   {
@@ -304,10 +321,11 @@ export const certificates = pgTable(
     userId: text("user_id")
       .notNull()
       .references(() => users.id, { onDelete: "cascade" }),
+    role: text("role"),
     createdAt: timestamp("created_at").notNull().defaultNow(),
   },
   (t) => ({
-    unq: unique().on(t.eventId, t.userId),
+    unq: unique().on(t.eventId, t.userId, t.role),
   })
 );
 
@@ -319,6 +337,7 @@ export const certificates = pgTable(
 
 export const usersRelations = relations(users, ({ many }) => ({
   eventsSpeakers: many(eventsSpeakers),
+  eventsCommittees: many(eventsCommittees),
   eventsHostsUsers: many(eventsHostsUsers),
   videosSpeakers: many(videosSpeakers),
   certificates: many(certificates),
@@ -330,6 +349,7 @@ export const organizationsRelations = relations(organizations, ({ many }) => ({
 
 export const eventsRelations = relations(events, ({ many }) => ({
   eventsSpeakers: many(eventsSpeakers),
+  eventsCommittees: many(eventsCommittees),
   eventsVideos: many(eventsVideos),
   eventsHostsUsers: many(eventsHostsUsers),
   eventsHostsOrganizations: many(eventsHostsOrganizations),
@@ -351,6 +371,20 @@ export const eventsSpeakersRelations = relations(eventsSpeakers, ({ one }) => ({
     references: [users.id],
   }),
 }));
+
+export const eventsCommitteesRelations = relations(
+  eventsCommittees,
+  ({ one }) => ({
+    event: one(events, {
+      fields: [eventsCommittees.eventId],
+      references: [events.id],
+    }),
+    user: one(users, {
+      fields: [eventsCommittees.userId],
+      references: [users.id],
+    }),
+  })
+);
 
 export const eventsHostsUsersRelations = relations(
   eventsHostsUsers,

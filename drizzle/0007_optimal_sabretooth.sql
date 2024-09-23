@@ -1,0 +1,2 @@
+ALTER TABLE "certificates" DROP CONSTRAINT "certificates_event_id_user_id_unique";--> statement-breakpoint
+ALTER TABLE "certificates" ADD CONSTRAINT "certificates_event_id_user_id_role_unique" UNIQUE("event_id","user_id","role");

@@ -3,7 +3,13 @@ import PastEvents from "../past-events";
 import UpcomingEvents from "./upcoming-events";
 
 const EventList = async () => {
-  const { pastEvents, upcomingEvents } = await getEvents();
+  const events = await getEvents();
+  const upcomingEvents = events.filter(
+    (event) => new Date(event.scheduledStart) >= new Date()
+  );
+  const pastEvents = events.filter(
+    (event) => new Date(event.scheduledStart) < new Date()
+  );
 
   return (
     <div>

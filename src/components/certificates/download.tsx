@@ -10,6 +10,7 @@ import { useCallback, useRef } from "react";
 function CerticateDownload({
   eventName,
   recipientName,
+  role,
   startDate,
   endDate,
   signatures,
@@ -31,6 +32,7 @@ function CerticateDownload({
           certificateTitle={certificateTitle}
           eventName={eventName}
           recipientName={recipientName}
+          role={role}
           startDate={startDate}
           endDate={endDate}
           signatures={[
