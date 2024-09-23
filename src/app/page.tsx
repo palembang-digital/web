@@ -21,9 +21,9 @@ export default async function Page() {
   const upcomingEvents = events.filter(
     (event) => new Date(event.scheduledStart) >= new Date()
   );
-  const pastEvents = events
-    .filter((event) => new Date(event.scheduledStart) < new Date())
-    .slice(0, 6);
+  const pastEvents = events.filter(
+    (event) => new Date(event.scheduledStart) < new Date()
+  );
 
   const videos = await getVideos();
 
@@ -46,7 +46,7 @@ export default async function Page() {
             </div>
           )}
           <div className="mt-16">
-            <PastEvents events={pastEvents} />
+            <PastEvents events={pastEvents.slice(0, 6)} />
           </div>
           <div className="mt-16">
             <Videos videos={videos.slice(0, 6)} />
