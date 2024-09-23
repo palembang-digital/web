@@ -112,8 +112,8 @@ function EventCommittees({ committees }: { committees: any[] }) {
     <div>
       <TypographyH4>Panitia</TypographyH4>
       <div className="flex flex-wrap">
-        {items.map((item) => (
-          <AnimatedTooltip items={[item]} />
+        {items.map((item, index) => (
+          <AnimatedTooltip key={`committees-${index}`} items={[item]} />
         ))}
       </div>
     </div>

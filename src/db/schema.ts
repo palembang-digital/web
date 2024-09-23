@@ -321,7 +321,7 @@ export const certificates = pgTable(
     userId: text("user_id")
       .notNull()
       .references(() => users.id, { onDelete: "cascade" }),
-    role: text("role"),
+    role: text("role").notNull().default("Peserta"),
     createdAt: timestamp("created_at").notNull().defaultNow(),
   },
   (t) => ({

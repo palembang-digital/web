@@ -48,6 +48,7 @@ export default async function Page({ params }: Params) {
             <CerticateDownload
               eventName={cert.event.name}
               recipientName={cert.user.name || ""}
+              role={cert.role || ""}
               startDate={cert.event.scheduledStart}
               endDate={
                 localeDate(cert.event.scheduledStart) !==
