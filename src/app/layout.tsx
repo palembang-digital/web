@@ -3,6 +3,7 @@ import { auth } from "@/auth";
 import { MenuContent } from "@/components/menu-content";
 import { SideMenu } from "@/components/side-menu";
 import { Toaster } from "@/components/ui/sonner";
+import { TooltipProvider } from "@/components/ui/tooltip";
 import { cn } from "@/lib/utils";
 import { GoogleAnalytics } from "@next/third-parties/google";
 import { Analytics } from "@vercel/analytics/react";
@@ -65,14 +66,16 @@ export default async function RootLayout({
         )}
         suppressHydrationWarning
       >
-        <main vaul-drawer-wrapper="" className="min-h-screen bg-white">
-          <div className="lg:flex">
-            <SideMenu className="relative hidden lg:flex">
-              <MenuContent session={session} />
-            </SideMenu>
-            <div className="flex flex-1">{children}</div>
-          </div>
-        </main>
+        <TooltipProvider>
+          <main vaul-drawer-wrapper="" className="min-h-screen bg-white">
+            <div className="lg:flex">
+              <SideMenu className="relative hidden lg:flex">
+                <MenuContent session={session} />
+              </SideMenu>
+              <div className="flex flex-1">{children}</div>
+            </div>
+          </main>
+        </TooltipProvider>
         <Toaster richColors />
         <Analytics />
       </body>

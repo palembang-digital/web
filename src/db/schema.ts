@@ -148,6 +148,7 @@ export const events = pgTable("events", {
 
 export const insertEventSchema = createInsertSchema(events, {
   registrationFee: z.coerce.number(),
+  locationType: z.string().optional(),
 }).pick({
   name: true,
   imageUrl: true,
@@ -156,6 +157,8 @@ export const insertEventSchema = createInsertSchema(events, {
   scheduledEnd: true,
   registrationFee: true,
   description: true,
+  locationName: true,
+  locationType: true,
 });
 
 export const eventsSpeakers = pgTable(

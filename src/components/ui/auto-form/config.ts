@@ -5,6 +5,7 @@ import AutoFormFile from "./fields/file";
 import AutoFormInput from "./fields/input";
 import AutoFormNumber from "./fields/number";
 import AutoFormRadioGroup from "./fields/radio-group";
+import AutoFormRichTextarea from "./fields/rich-textarea";
 import AutoFormSwitch from "./fields/switch";
 import AutoFormTextarea from "./fields/textarea";
 
@@ -15,6 +16,7 @@ export const INPUT_COMPONENTS = {
   radio: AutoFormRadioGroup,
   switch: AutoFormSwitch,
   textarea: AutoFormTextarea,
+  richtextarea: AutoFormRichTextarea,
   number: AutoFormNumber,
   file: AutoFormFile,
   fallback: AutoFormInput,
