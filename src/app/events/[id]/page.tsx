@@ -1,4 +1,5 @@
 import { auth } from "@/auth";
+import EventDescription from "@/components/events/event-description";
 import { FloatingHeader } from "@/components/floating-header";
 import ShimmerButton from "@/components/magicui/shimmer-button";
 import { ScrollArea } from "@/components/scroll-area";
@@ -10,7 +11,7 @@ import {
   TypographyH4,
 } from "@/components/ui/typography";
 import YouTubeVideoCard from "@/components/youtube-video-card";
-import { getDate, getMonthYear, localeDate, localeTime } from "@/lib/utils";
+import { cn, getDate, getMonthYear, localeDate, localeTime } from "@/lib/utils";
 import { getEvent } from "@/services";
 import { GoogleMapsEmbed } from "@next/third-parties/google";
 import {
@@ -41,6 +42,63 @@ export async function generateMetadata({
   };
 }
 
+function EventSchedule({ event }: { event: any }) {
+  return (
+    <div className="flex flex-row gap-3 items-center">
+      <div>
+        <p className="font-semibold text-xs text-white bg-black rounded-t-md p-2">
+          {getMonthYear(event.scheduledStart)}
+        </p>
+        <TypographyH2 className="rounded-b-md p-2 border border-t-0 text-md text-center">
+          {getDate(event.scheduledStart)}
+        </TypographyH2>
+      </div>
+
+      <div>
+        {localeDate(event.scheduledStart) !== localeDate(event.scheduledEnd) ? (
+          <>
+            <TypographyH2 className="text-md pb-0">
+              {localeDate(event.scheduledStart)}
+            </TypographyH2>
+            <p className="text-xs text-neutral-500">
+              {localeTime(event.scheduledStart)}
+            </p>
+          </>
+        ) : (
+          <TypographyH2 className="text-md pb-0">
+            {localeTime(event.scheduledStart)}
+          </TypographyH2>
+        )}
+      </div>
+
+      {event.scheduledEnd && (
+        <>
+          <div>
+            <p className="text-xs text-neutral-500">s/d</p>
+          </div>
+          <div>
+            {localeDate(event.scheduledStart) !==
+            localeDate(event.scheduledEnd) ? (
+              <>
+                <TypographyH2 className="text-md pb-0">
+                  {localeDate(event.scheduledEnd)}
+                </TypographyH2>
+                <p className="text-xs text-neutral-500">
+                  {localeTime(event.scheduledEnd)}
+                </p>
+              </>
+            ) : (
+              <TypographyH2 className="text-md pb-0">
+                {localeTime(event.scheduledEnd)}
+              </TypographyH2>
+            )}
+          </div>
+        </>
+      )}
+    </div>
+  );
+}
+
 export default async function Page({ params }: { params: { id: number } }) {
   const session = await auth();
 
@@ -54,6 +112,12 @@ export default async function Page({ params }: { params: { id: number } }) {
       <FloatingHeader session={session} scrollTitle={event.name} />
       <div className="content-wrapper">
         <div className="content">
+          {
+            // @ts-ignore
+            session?.user?.role === "administrator" && (
+              <Link href={`/events/${params.id}/edit`}>Edit</Link>
+            )
+          }
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             <div className="col-span-1">
               <div className="grid grid-cols-1 gap-4">
@@ -113,42 +177,7 @@ export default async function Page({ params }: { params: { id: number } }) {
                   <TypographyH3>{event.name}</TypographyH3>
 
                   {/* Schedule component */}
-                  <div className="flex flex-row gap-3 items-center">
-                    <div>
-                      <p className="font-semibold text-xs text-white bg-black rounded-t-md p-2">
-                        {getMonthYear(event.scheduledStart)}
-                      </p>
-                      <TypographyH2 className="rounded-b-md p-2 border border-t-0 text-md text-center">
-                        {getDate(event.scheduledStart)}
-                      </TypographyH2>
-                    </div>
-                    <div>
-                      <TypographyH2 className="text-md pb-0">
-                        {localeDate(event.scheduledStart)}
-                      </TypographyH2>
-                      <p className="text-xs text-neutral-500">
-                        {localeTime(event.scheduledStart)}
-                      </p>
-                    </div>
-                    {event.scheduledEnd && (
-                      <>
-                        <div>
-                          {/* <TypographyH2 className="text-md pb-0">
-                            -
-                          </TypographyH2> */}
-                          <p className="text-xs text-neutral-500">s/d</p>
-                        </div>
-                        <div>
-                          <TypographyH2 className="text-md pb-0">
-                            {localeDate(event.scheduledEnd)}
-                          </TypographyH2>
-                          <p className="text-xs text-neutral-500">
-                            {localeTime(event.scheduledEnd)}
-                          </p>
-                        </div>
-                      </>
-                    )}
-                  </div>
+                  <EventSchedule event={event} />
 
                   {/* Location component */}
                   {event.locationName && (
@@ -161,7 +190,15 @@ export default async function Page({ params }: { params: { id: number } }) {
                         <TypographyH2 className="text-md pb-0">
                           {event.locationName}
                         </TypographyH2>
-                        <p className="text-xs text-neutral-500">
+                        <p
+                          className={cn(
+                            "text-xs text-pink-500 bg-pink-100 rounded-sm p-1 px-2 w-fit",
+                            event.locationType === "online" &&
+                              "bg-blue-100 text-blue-500",
+                            event.locationType === "hybrid" &&
+                              "bg-green-100 text-green-500"
+                          )}
+                        >
                           {event.locationType}
                         </p>
                       </div>
@@ -194,23 +231,31 @@ export default async function Page({ params }: { params: { id: number } }) {
                       </Button>
                     </div>
                   ) : (
-                    <ShimmerButton>
-                      <TicketIcon className="mr-2 h-4 w-4" />
-                      <span className="whitespace-pre-wrap text-center text-sm font-medium leading-none tracking-tight text-white dark:from-white dark:to-slate-900/10">
-                        Daftar sekarang!
-                      </span>
-                    </ShimmerButton>
+                    <Link href={event.registrationUrl || ""} className="w-full">
+                      <ShimmerButton>
+                        <TicketIcon className="mr-2 h-4 w-4" />
+                        <span className="whitespace-pre-wrap text-center text-sm font-medium leading-none tracking-tight text-white dark:from-white dark:to-slate-900/10">
+                          Daftar sekarang!
+                        </span>
+                      </ShimmerButton>
+                    </Link>
                   )}
                 </div>
 
-                {event.description && (
-                  <div className="border border-slate-200 rounded-lg p-4">
-                    <div className="flex flex-col gap-2">
-                      <TypographyH4>Tentang</TypographyH4>
-                      <p className="text-sm">{event.description}</p>
+                {event.description &&
+                  event.description !==
+                    `<p class="text-node"></p><p class="text-node"></p>` && (
+                    <div className="border border-slate-200 rounded-lg p-4">
+                      <div className="flex flex-col gap-2">
+                        <TypographyH4>Tentang</TypographyH4>
+                        {/* <p className="text-sm">{event.description}</p> */}
+                        {/* <div
+                        dangerouslySetInnerHTML={{ __html: event.description }}
+                      /> */}
+                        <EventDescription description={event.description} />
+                      </div>
                     </div>
-                  </div>
-                )}
+                  )}
 
                 {event.locationType === "offline" && (
                   <div className="border border-slate-200 rounded-lg p-4">
