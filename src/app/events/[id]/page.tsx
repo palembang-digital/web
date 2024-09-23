@@ -1,5 +1,6 @@
 import { auth } from "@/auth";
 import EventDescription from "@/components/events/event-description";
+import EventLocationType from "@/components/events/event-location-type";
 import { FloatingHeader } from "@/components/floating-header";
 import ShimmerButton from "@/components/magicui/shimmer-button";
 import { ScrollArea } from "@/components/scroll-area";
@@ -12,7 +13,7 @@ import {
   TypographyH4,
 } from "@/components/ui/typography";
 import YouTubeVideoCard from "@/components/youtube-video-card";
-import { cn, getDate, getMonthYear, localeDate, localeTime } from "@/lib/utils";
+import { getDate, getMonthYear, localeDate, localeTime } from "@/lib/utils";
 import { getEvent } from "@/services";
 import { GoogleMapsEmbed } from "@next/third-parties/google";
 import {
@@ -214,17 +215,9 @@ export default async function Page({ params }: { params: { id: number } }) {
                         <TypographyH2 className="text-md pb-0">
                           {event.locationName}
                         </TypographyH2>
-                        <p
-                          className={cn(
-                            "text-xs text-pink-500 bg-pink-100 rounded-sm p-1 px-2 w-fit",
-                            event.locationType === "online" &&
-                              "bg-blue-100 text-blue-500",
-                            event.locationType === "hybrid" &&
-                              "bg-green-100 text-green-500"
-                          )}
-                        >
-                          {event.locationType}
-                        </p>
+                        {event.locationType && (
+                          <EventLocationType type={event.locationType} />
+                        )}
                       </div>
                     </div>
                   )}

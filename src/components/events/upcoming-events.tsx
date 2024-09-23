@@ -1,11 +1,11 @@
-import { Badge } from "@/components//ui/badge";
+import EventLocationType from "@/components/events/event-location-type";
 import {
   TypographyH2,
   TypographyH3,
   TypographyH4,
   TypographyLead,
 } from "@/components/ui/typography";
-import { cn, getDay, localeDate, localeTime } from "@/lib/utils";
+import { getDay, localeDate, localeTime } from "@/lib/utils";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -48,18 +48,7 @@ export default function UpcomingEvents({ events }: { events: any[] }) {
                     {localeTime(new Date(event.scheduledEnd))}
                   </p>
 
-                  <Badge
-                    variant="outline"
-                    className={cn(
-                      "mt-2 mb-4 text-base text-pink-500 bg-pink-100 rounded-sm px-1",
-                      event.locationType === "online" &&
-                        "bg-blue-100 text-blue-500",
-                      event.locationType === "hybrid" &&
-                        "bg-green-100 text-green-500"
-                    )}
-                  >
-                    {event.locationType || "offline"}
-                  </Badge>
+                  <EventLocationType type={event.locationType} />
                 </div>
                 <div className="my-auto ">
                   <Image
