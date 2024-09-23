@@ -7,13 +7,15 @@ import { TypographyH1 } from "@/components/ui/typography";
 import Link from "next/link";
 
 export default async function Hero({
-  memberCount,
-  eventCount,
-  startupCount,
-  organizationCount,
+  eventCount = 0,
+  videoCount = 0,
+  memberCount = 0,
+  startupCount = 0,
+  organizationCount = 0,
 }: {
-  memberCount?: number;
   eventCount?: number;
+  videoCount?: number;
+  memberCount?: number;
   startupCount?: number;
   organizationCount?: number;
 }) {
@@ -24,6 +26,11 @@ export default async function Hero({
       title: "Kegiatan",
       value: eventCount,
       href: "/events",
+    },
+    {
+      title: "Video",
+      value: videoCount,
+      href: "/gallery",
     },
     {
       title: "Anggota",
@@ -55,22 +62,22 @@ export default async function Hero({
         terbesar di Sumatera Selatan untuk tumbuh bersama di bidang IT.
       </p>
 
-      <div className="z-10 grid grid-cols-2 sm:grid-cols-4 gap-2">
-        {stats.map(
-          (stat) =>
-            stat.value && (
-              <Link href={stat.href} key={stat.title}>
-                <Card className="border-none shadow-none hover:border hover:shadow-sm text-center bg-accent">
-                  <CardContent className="p-6">
-                    <div className="text-2xl text-neutral-700 font-bold">
-                      {stat.value}
-                    </div>
-                    <div className="text-sm text-neutral-500">{stat.title}</div>
-                  </CardContent>
-                </Card>
-              </Link>
-            )
-        )}
+      <div className="z-10 grid grid-cols-2 sm:grid-cols-3 gap-2">
+        {stats
+          .filter((stat) => stat.value > 0)
+          .sort((a, b) => (a.value < b.value ? 1 : -1))
+          .map((stat) => (
+            <Link href={stat.href} key={stat.title}>
+              <Card className="border-none shadow-none hover:border hover:shadow-sm text-center bg-accent">
+                <CardContent className="p-6">
+                  <div className="text-2xl text-neutral-700 font-bold">
+                    {stat.value}
+                  </div>
+                  <div className="text-sm text-neutral-500">{stat.title}</div>
+                </CardContent>
+              </Card>
+            </Link>
+          ))}
       </div>
 
       {session ? (

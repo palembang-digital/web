@@ -1,60 +1,62 @@
 import { db } from "@/db";
 import { cache } from "react";
 
-export const getUsers = cache(async () => {
-  const users = await db.query.users.findMany({
-    orderBy: (users, { asc }) => [asc(users.name)],
+const usersRelationships = {
+  eventsSpeakers: {
     with: {
-      eventsSpeakers: {
-        with: {
-          event: {
-            columns: {
-              id: true,
-              name: true,
-              imageUrl: true,
-              scheduledStart: true,
-            },
-          },
-        },
-      },
-      eventsCommittees: {
-        with: {
-          event: {
-            columns: {
-              id: true,
-              name: true,
-              imageUrl: true,
-              scheduledStart: true,
-            },
-          },
-        },
-      },
-      videosSpeakers: {
-        with: {
-          video: {
-            columns: {
-              id: true,
-              title: true,
-              videoType: true,
-              videoUrl: true,
-              thumbnails: true,
-              publishedAt: true,
-            },
-          },
-        },
-      },
-      certificates: {
-        with: {
-          event: {
-            columns: {
-              name: true,
-              scheduledStart: true,
-              scheduledEnd: true,
-            },
-          },
+      event: {
+        columns: {
+          id: true,
+          name: true,
+          imageUrl: true,
+          scheduledStart: true,
         },
       },
     },
+  },
+  eventsCommittees: {
+    with: {
+      event: {
+        columns: {
+          id: true,
+          name: true,
+          imageUrl: true,
+          scheduledStart: true,
+        },
+      },
+    },
+  },
+  videosSpeakers: {
+    with: {
+      video: {
+        columns: {
+          id: true,
+          title: true,
+          videoType: true,
+          videoUrl: true,
+          thumbnails: true,
+          publishedAt: true,
+        },
+      },
+    },
+  },
+  certificates: {
+    with: {
+      event: {
+        columns: {
+          name: true,
+          scheduledStart: true,
+          scheduledEnd: true,
+        },
+      },
+    },
+  },
+};
+
+export const getUsers = cache(async () => {
+  const users = await db.query.users.findMany({
+    orderBy: (users, { asc }) => [asc(users.name)],
+    with: usersRelationships,
   });
 
   return users;
@@ -63,57 +65,7 @@ export const getUsers = cache(async () => {
 export const getUser = cache(async (username: string) => {
   const user = await db.query.users.findFirst({
     where: (users, { eq }) => eq(users.username, username),
-    with: {
-      eventsSpeakers: {
-        with: {
-          event: {
-            columns: {
-              id: true,
-              name: true,
-              imageUrl: true,
-              scheduledStart: true,
-            },
-          },
-        },
-      },
-      eventsCommittees: {
-        with: {
-          event: {
-            columns: {
-              id: true,
-              name: true,
-              imageUrl: true,
-              scheduledStart: true,
-            },
-          },
-        },
-      },
-      videosSpeakers: {
-        with: {
-          video: {
-            columns: {
-              id: true,
-              title: true,
-              videoType: true,
-              videoUrl: true,
-              thumbnails: true,
-              publishedAt: true,
-            },
-          },
-        },
-      },
-      certificates: {
-        with: {
-          event: {
-            columns: {
-              name: true,
-              scheduledStart: true,
-              scheduledEnd: true,
-            },
-          },
-        },
-      },
-    },
+    with: usersRelationships,
   });
 
   return user;
