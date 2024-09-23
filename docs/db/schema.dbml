@@ -51,7 +51,7 @@ table certificates {
   id text [pk, not null]
   event_id integer [not null]
   user_id text [not null]
-  role text
+  role text [not null, default: 'Peserta']
   created_at timestamp [not null, default: `now()`]
 
   indexes {
