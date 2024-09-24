@@ -21,7 +21,7 @@ export default function EventCard({ event }: { event: any }) {
           )}
         </div>
 
-        <div className="">
+        <div className="flex items-center">
           <Image
             src={event.imageUrl || ""}
             width={256}
