@@ -3,7 +3,12 @@ import EventList from "@/components/events/event-list";
 import { FloatingHeader } from "@/components/floating-header";
 import { ScrollArea } from "@/components/scroll-area";
 import { Skeleton } from "@/components/ui/skeleton";
+import type { Metadata } from "next";
 import { Suspense } from "react";
+
+export const metadata: Metadata = {
+  title: "Kegiatan",
+};
 
 export const revalidate = 3600; // revalidate the data at most every hour
 

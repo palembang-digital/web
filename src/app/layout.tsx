@@ -3,6 +3,7 @@ import { auth } from "@/auth";
 import { MenuContent } from "@/components/menu-content";
 import { SideMenu } from "@/components/side-menu";
 import { Toaster } from "@/components/ui/sonner";
+import { TooltipProvider } from "@/components/ui/tooltip";
 import { cn } from "@/lib/utils";
 import { GoogleAnalytics } from "@next/third-parties/google";
 import { Analytics } from "@vercel/analytics/react";
@@ -15,9 +16,31 @@ const fontSans = FontSans({
 });
 
 export const metadata: Metadata = {
-  title: "Palembang Digital",
+  title: {
+    default: "Palembang Digital",
+    template: "%s · Palembang Digital",
+  },
   description:
     "Platform komunitas yang menghubungkan ribuan penggiat IT di Sumatera Selatan",
+  applicationName: "Palembang Digital",
+  authors: [
+    { name: "Palembang Digital", url: "https://www.palembangdigital.org" },
+  ],
+  creator: "Palembang Digital",
+  publisher: "Palembang Digital",
+  keywords: [
+    "Palembang",
+    "Digital",
+    "Komunitas",
+    "IT",
+    "Sumatera Selatan",
+    "Startup",
+    "Programmer",
+    "Developer",
+    "Designer",
+    "Tech",
+    "Community",
+  ],
 };
 
 export const viewport: Viewport = {
@@ -43,14 +66,16 @@ export default async function RootLayout({
         )}
         suppressHydrationWarning
       >
-        <main vaul-drawer-wrapper="" className="min-h-screen bg-white">
-          <div className="lg:flex">
-            <SideMenu className="relative hidden lg:flex">
-              <MenuContent session={session} />
-            </SideMenu>
-            <div className="flex flex-1">{children}</div>
-          </div>
-        </main>
+        <TooltipProvider>
+          <main vaul-drawer-wrapper="" className="min-h-screen bg-white">
+            <div className="lg:flex">
+              <SideMenu className="relative hidden lg:flex">
+                <MenuContent session={session} />
+              </SideMenu>
+              <div className="flex flex-1">{children}</div>
+            </div>
+          </main>
+        </TooltipProvider>
         <Toaster richColors />
         <Analytics />
       </body>

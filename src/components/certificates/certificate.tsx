@@ -23,6 +23,7 @@ export interface CertificateProps {
   certificateTitle: string;
   eventName: string;
   recipientName: string;
+  role: string;
   startDate: Date;
   endDate?: Date;
   signatures?: CertificateSignature[];
@@ -33,6 +34,7 @@ const Certificate = forwardRef<HTMLDivElement, CertificateProps>(
     {
       eventName,
       recipientName,
+      role,
       startDate,
       endDate,
       signatures,
@@ -76,7 +78,7 @@ const Certificate = forwardRef<HTMLDivElement, CertificateProps>(
           </TypographyH3>
 
           <TypographyLead className="text-sm mb-4">
-            atas partisipasinya sebagai pembicara pada kegiatan:
+            atas partisipasinya sebagai {role} pada kegiatan:
           </TypographyLead>
           <div className="px-4 py-2 mb-4 bg-black w-max rounded-md align-middle">
             <TypographyH4 className="text-white text-sm">

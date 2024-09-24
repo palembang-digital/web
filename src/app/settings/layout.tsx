@@ -3,6 +3,11 @@ import { auth } from "@/auth";
 import { FloatingHeader } from "@/components/floating-header";
 import { ScrollArea } from "@/components/scroll-area";
 import { Separator } from "@/components/ui/separator";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Pengaturan",
+};
 
 const sidebarNavItems = [
   {

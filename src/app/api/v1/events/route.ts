@@ -1,4 +1,13 @@
+import { auth } from "@/auth";
 import { db } from "@/db";
+import {
+  events,
+  eventsCommittees,
+  eventsHostsOrganizations,
+  eventsHostsUsers,
+  eventsSpeakers,
+  eventsVideos,
+} from "@/db/schema";
 import { NextResponse } from "next/server";
 
 export async function GET() {
@@ -11,4 +20,80 @@ export async function GET() {
   });
 
   return NextResponse.json(events);
+}
+
+export async function POST(req: Request) {
+  const session = await auth();
+  if (!session?.user) {
+    return Response.json({ message: "Not authenticated" }, { status: 401 });
+  }
+
+  // @ts-ignore
+  if (session?.user?.role !== "administrator") {
+    return Response.json({ message: "Not authorized" }, { status: 403 });
+  }
+
+  const data = await req.json();
+
+  const inputEvent = {
+    ...data.event,
+    scheduledStart: new Date(data.event.scheduledStart),
+    scheduledEnd: new Date(data.event.scheduledEnd),
+  };
+
+  await db.transaction(async (tx) => {
+    const result = await tx.insert(events).values(inputEvent).returning();
+    if (result.length === 0) {
+      return Response.json(
+        { message: "Failed to create event" },
+        { status: 500 }
+      );
+    }
+
+    const eventId = result[0].id;
+
+    if (data.speakers && data.speakers.length > 0) {
+      const speakers = data.speakers.map((speaker: any) => ({
+        eventId: eventId,
+        userId: speaker.value,
+      }));
+      await tx.insert(eventsSpeakers).values(speakers);
+    }
+
+    if (data.committees && data.committees.length > 0) {
+      const committees = data.committees.map((committee: any) => ({
+        eventId: eventId,
+        userId: committee.value,
+      }));
+      await tx.insert(eventsCommittees).values(committees);
+    }
+
+    if (data.hostsOrganizations && data.hostsOrganizations.length > 0) {
+      const hostsOrganizations = data.hostsOrganizations.map(
+        (organization: any) => ({
+          eventId: eventId,
+          organizationId: organization.value,
+        })
+      );
+      await tx.insert(eventsHostsOrganizations).values(hostsOrganizations);
+    }
+
+    if (data.hostsUsers && data.hostsUsers.length > 0) {
+      const hostsUsers = data.hostsUsers.map((user: any) => ({
+        eventId: eventId,
+        userId: user.value,
+      }));
+      await tx.insert(eventsHostsUsers).values(hostsUsers);
+    }
+
+    if (data.videos && data.videos.length > 0) {
+      const videos = data.videos.map((video: any) => ({
+        eventId: eventId,
+        videoId: video.value,
+      }));
+      await tx.insert(eventsVideos).values(videos);
+    }
+  });
+
+  return Response.json({ message: "Event created" });
 }

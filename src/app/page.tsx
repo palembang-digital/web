@@ -8,36 +8,27 @@ import LandingFAQ from "@/components/landing/landing-faq";
 import LandingFooter from "@/components/landing/landing-footer";
 import PastEvents from "@/components/past-events";
 import { ScrollArea } from "@/components/scroll-area";
+import Videos from "@/components/videos/videos";
 import { db } from "@/db";
-import { organizations, users } from "@/db/schema";
-import { count, eq } from "drizzle-orm";
+import { users } from "@/db/schema";
+import { getEvents, getVideos } from "@/services";
+import { count } from "drizzle-orm";
 
 export default async function Page() {
   const session = await auth();
 
-  const events = await db.query.events.findMany({
-    orderBy: (events, { desc }) => [desc(events.scheduledStart)],
-  });
-
+  const events = await getEvents();
   const upcomingEvents = events.filter(
     (event) => new Date(event.scheduledStart) >= new Date()
   );
+  const pastEvents = events.filter(
+    (event) => new Date(event.scheduledStart) < new Date()
+  );
 
-  const pastEvents = events
-    .filter((event) => new Date(event.scheduledStart) < new Date())
-    .slice(0, 6);
+  const videos = await getVideos();
 
   const members = await db.select({ count: count() }).from(users);
   const membersCount = members.length > 0 ? members[0].count : 0;
-
-  const orgs = await db.select({ count: count() }).from(organizations);
-  const orgsCount = orgs.length > 0 ? orgs[0].count : 0;
-
-  const startups = await db
-    .select({ count: count() })
-    .from(organizations)
-    .where(eq(organizations.organizationType, "startup"));
-  const startupsCount = startups.length > 0 ? startups[0].count : 0;
 
   return (
     <ScrollArea useScrollAreaId>
@@ -46,9 +37,8 @@ export default async function Page() {
         <div className="content">
           <Hero
             eventCount={events.length}
+            videoCount={videos.length}
             memberCount={membersCount}
-            startupCount={startupsCount}
-            organizationCount={orgsCount - startupsCount}
           />
           {upcomingEvents && upcomingEvents.length > 0 && (
             <div className="mt-16">
@@ -56,7 +46,10 @@ export default async function Page() {
             </div>
           )}
           <div className="mt-16">
-            <PastEvents events={pastEvents} />
+            <PastEvents events={pastEvents.slice(0, 6)} />
+          </div>
+          <div className="mt-16">
+            <Videos videos={videos.slice(0, 6)} />
           </div>
           <LandingAboutUs />
           <LandingFAQ />

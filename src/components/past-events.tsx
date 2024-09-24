@@ -26,8 +26,8 @@ export default function PastEvents({
 
       {!hideSeeMoreButton && (
         <Link href="/events">
-          <Button variant="outline" className="mt-4">
-            Lihat semuanya
+          <Button variant="outline" className="mt-4 text-xs">
+            Lihat semua kegiatan
           </Button>
         </Link>
       )}

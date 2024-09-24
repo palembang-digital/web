@@ -1,8 +1,8 @@
-import { Badge } from "@/components//ui/badge";
 import { TypographyH3 } from "@/components/ui/typography";
 import { localeDate } from "@/lib/utils";
 import Image from "next/image";
 import Link from "next/link";
+import EventLocationType from "./event-location-type";
 
 export default function EventCard({ event }: { event: any }) {
   return (
@@ -17,13 +17,11 @@ export default function EventCard({ event }: { event: any }) {
             <p className="text-xs">{event.locationName}</p>
           )}
           {event.locationType && (
-            <Badge variant="outline" className="mt-2">
-              {event.locationType}
-            </Badge>
+            <EventLocationType type={event.locationType} className="mt-2" />
           )}
         </div>
 
-        <div className="">
+        <div className="flex items-center">
           <Image
             src={event.imageUrl || ""}
             width={256}
