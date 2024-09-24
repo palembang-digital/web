@@ -4,7 +4,7 @@ import Certificate, {
   CertificateProps,
 } from "@/components/certificates/certificate";
 import { Button } from "@/components/ui/button";
-import { downloadImage } from "@/lib/canvas";
+import { downloadImage } from "@/lib/image";
 import { useCallback, useRef } from "react";
 
 function CerticateDownload({
