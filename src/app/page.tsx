@@ -17,7 +17,16 @@ import { count } from "drizzle-orm";
 export default async function Page() {
   const session = await auth();
 
-  const events = await getEvents();
+  const eventsData = getEvents();
+  const videosData = getVideos();
+  const membersData = db.select({ count: count() }).from(users);
+
+  const [events, videos, members] = await Promise.all([
+    eventsData,
+    videosData,
+    membersData,
+  ]);
+
   const upcomingEvents = events.filter(
     (event) => new Date(event.scheduledStart) >= new Date()
   );
@@ -25,9 +34,6 @@ export default async function Page() {
     (event) => new Date(event.scheduledStart) < new Date()
   );
 
-  const videos = await getVideos();
-
-  const members = await db.select({ count: count() }).from(users);
   const membersCount = members.length > 0 ? members[0].count : 0;
 
   return (
