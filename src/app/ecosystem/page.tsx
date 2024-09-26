@@ -1,7 +1,8 @@
+import { columns } from "@/app/ecosystem/columns";
+import { DataTable } from "@/app/ecosystem/data-table";
 import { auth } from "@/auth";
 import { FloatingHeader } from "@/components/floating-header";
 import { ScrollArea } from "@/components/scroll-area";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { db } from "@/db";
 import type { Metadata } from "next";
 import Image from "next/image";
@@ -56,30 +57,7 @@ export default async function Page() {
       <FloatingHeader session={session} scrollTitle="Ekosistem" />
       <div className="content-wrapper">
         <div className="content">
-          <Tabs defaultValue={defaultOrgType}>
-            <TabsList className="w-full">
-              {uniqueOrgTypes.map((orgType) => (
-                <TabsTrigger
-                  key={orgType}
-                  value={orgType}
-                  className="capitalize"
-                >
-                  {orgType}
-                </TabsTrigger>
-              ))}
-            </TabsList>
-
-            <TabsContent value={defaultOrgType}>
-              <OrganizationList orgs={orgs} />
-            </TabsContent>
-            {uniqueOrgTypes.map((orgType) => (
-              <TabsContent key={orgType} value={orgType}>
-                <OrganizationList
-                  orgs={orgs.filter((org) => org.organizationType === orgType)}
-                />
-              </TabsContent>
-            ))}
-          </Tabs>
+          <DataTable columns={columns} data={orgs} />
         </div>
       </div>
     </ScrollArea>
