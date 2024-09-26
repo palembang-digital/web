@@ -11,7 +11,7 @@ import {
   timestamp,
   unique,
 } from "drizzle-orm/pg-core";
-import { createInsertSchema } from "drizzle-zod";
+import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 import type { AdapterAccountType } from "next-auth/adapters";
 import { generateUsername } from "unique-username-generator";
 import { z } from "zod";
@@ -281,6 +281,8 @@ export const organizations = pgTable("organizations", {
   createdAt: timestamp("created_at").notNull().defaultNow(),
   updatedAt: timestamp("updated_at").notNull().defaultNow(),
 });
+
+export const selectOrganizationSchema = createSelectSchema(organizations);
 
 export const insertOrganizationSchema = createInsertSchema(organizations).pick({
   name: true,
