@@ -10,7 +10,7 @@ import PastEvents from "@/components/past-events";
 import { ScrollArea } from "@/components/scroll-area";
 import Videos from "@/components/videos/videos";
 import { db } from "@/db";
-import { users } from "@/db/schema";
+import { organizations, users } from "@/db/schema";
 import { getEvents, getVideos } from "@/services";
 import { count } from "drizzle-orm";
 
@@ -20,11 +20,13 @@ export default async function Page() {
   const eventsData = getEvents();
   const videosData = getVideos();
   const membersData = db.select({ count: count() }).from(users);
+  const orgsData = db.select({ count: count() }).from(organizations);
 
-  const [events, videos, members] = await Promise.all([
+  const [events, videos, members, orgs] = await Promise.all([
     eventsData,
     videosData,
     membersData,
+    orgsData,
   ]);
 
   const upcomingEvents = events.filter(
@@ -35,6 +37,7 @@ export default async function Page() {
   );
 
   const membersCount = members.length > 0 ? members[0].count : 0;
+  const orgsCount = orgs.length > 0 ? orgs[0].count : 0;
 
   return (
     <ScrollArea useScrollAreaId>
@@ -45,6 +48,7 @@ export default async function Page() {
             eventCount={events.length}
             videoCount={videos.length}
             memberCount={membersCount}
+            organizationCount={orgsCount}
           />
           {upcomingEvents && upcomingEvents.length > 0 && (
             <div className="mt-16">

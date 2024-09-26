@@ -62,7 +62,7 @@ export default async function Hero({
         terbesar di Sumatera Selatan untuk tumbuh bersama di bidang IT.
       </p>
 
-      <div className="z-10 grid grid-cols-2 sm:grid-cols-3 gap-2">
+      <div className="z-10 grid grid-cols-2 sm:grid-cols-4 gap-2">
         {stats
           .filter((stat) => stat.value > 0)
           .sort((a, b) => (a.value < b.value ? 1 : -1))
