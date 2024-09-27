@@ -18,13 +18,12 @@ export default async function Page() {
           For You
           {/* <Input placeholder="Post something new" />
           <Button>Post</Button> */}
-          <NewPostForm />
-          {feeds.map((feed) => (
-            <div key={feed.id} className="mt-8">
-              <PostCard content={feed.content} />
-              <div>{feed.user.name}</div>
-            </div>
-          ))}
+          {session && <NewPostForm />}
+          <div className="flex flex-col gap-4 mt-6">
+            {feeds.map((feed) => (
+              <PostCard key={feed.id} feed={feed} user={session?.user} />
+            ))}
+          </div>
         </div>
       </div>
     </ScrollArea>

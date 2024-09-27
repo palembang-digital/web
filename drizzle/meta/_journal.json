@@ -78,6 +78,13 @@
       "when": 1727440303699,
       "tag": "0010_petite_marvel_boy",
       "breakpoints": true
+    },
+    {
+      "idx": 11,
+      "version": "7",
+      "when": 1727442210246,
+      "tag": "0011_curious_speed_demon",
+      "breakpoints": true
     }
   ]
 }

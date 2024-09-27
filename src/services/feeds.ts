@@ -8,6 +8,13 @@ export const getFeeds = cache(async () => {
       user: {
         columns: { id: true, name: true, username: true, image: true },
       },
+      likes: {
+        with: {
+          user: {
+            columns: { id: true, name: true, username: true, image: true },
+          },
+        },
+      },
     },
   });
 
