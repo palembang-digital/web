@@ -17,12 +17,10 @@ export default async function Page() {
         <div className="content">
           For You
           <p className="text-xs">
-            This feature is still under heavy development. We will delete all
-            posts once the feature ready to be released.
+            This feature is still under heavy development.
           </p>
           <p className="text-xs">
-            Until then, you are free to post anything here, as long as it&quot;s
-            worth sharing.
+            Please be mindful of the content you will post here.
           </p>
           {/* <Input placeholder="Post something new" />
           <Button>Post</Button> */}
