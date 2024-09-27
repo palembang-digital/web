@@ -345,6 +345,21 @@ export const insertFeedSchema = createInsertSchema(feeds).pick({
   content: true,
 });
 
+export const feedsLikes = pgTable(
+  "feeds_likes",
+  {
+    feedId: integer("feed_id")
+      .notNull()
+      .references(() => feeds.id, { onDelete: "cascade" }),
+    userId: text("user_id")
+      .notNull()
+      .references(() => users.id, { onDelete: "cascade" }),
+  },
+  (t) => ({
+    pk: primaryKey({ columns: [t.feedId, t.userId] }),
+  })
+);
+
 // ==================================================
 //
 // RELATIONS
@@ -358,6 +373,7 @@ export const usersRelations = relations(users, ({ many }) => ({
   videosSpeakers: many(videosSpeakers),
   certificates: many(certificates),
   feeds: many(feeds),
+  feedsLikes: many(feedsLikes),
 }));
 
 export const organizationsRelations = relations(organizations, ({ many }) => ({
@@ -464,9 +480,21 @@ export const certificatesRelations = relations(certificates, ({ one }) => ({
   }),
 }));
 
-export const feedsUsersRelations = relations(feeds, ({ one }) => ({
+export const feedsUsersRelations = relations(feeds, ({ one, many }) => ({
   user: one(users, {
     fields: [feeds.userId],
     references: [users.id],
+  }),
+  likes: many(feedsLikes),
+}));
+
+export const feedsLikesRelations = relations(feedsLikes, ({ one }) => ({
+  user: one(users, {
+    fields: [feedsLikes.userId],
+    references: [users.id],
+  }),
+  feed: one(feeds, {
+    fields: [feedsLikes.feedId],
+    references: [feeds.id],
   }),
 }));

@@ -31,7 +31,7 @@ export default function NewPostForm() {
           });
 
           if (response.ok) {
-            toast.success("Event updated!");
+            toast.success("Post created!");
             router.push(`/for-you`);
           } else {
             toast.error("Failed to post");
