@@ -1,4 +1,5 @@
 import {
+  FlowerIcon,
   HeartHandshakeIcon,
   HouseIcon,
   ImagePlayIcon,
@@ -18,6 +19,11 @@ export const MENU_LINKS: MenuLink[] = [
     href: "/",
     label: "Beranda",
     icon: <HouseIcon size={24} />,
+  },
+  {
+    href: "/for-you",
+    label: "For You",
+    icon: <FlowerIcon size={24} />,
   },
   {
     href: "/events",
