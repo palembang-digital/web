@@ -64,6 +64,20 @@
       "when": 1727121266876,
       "tag": "0008_big_bloodstrike",
       "breakpoints": true
+    },
+    {
+      "idx": 9,
+      "version": "7",
+      "when": 1727440082876,
+      "tag": "0009_salty_otto_octavius",
+      "breakpoints": true
+    },
+    {
+      "idx": 10,
+      "version": "7",
+      "when": 1727440303699,
+      "tag": "0010_petite_marvel_boy",
+      "breakpoints": true
     }
   ]
 }
