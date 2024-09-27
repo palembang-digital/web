@@ -331,6 +331,20 @@ export const certificates = pgTable(
   })
 );
 
+export const feeds = pgTable("feeds", {
+  id: serial("id").primaryKey(),
+  content: text("content").notNull(),
+  userId: text("user_id")
+    .notNull()
+    .references(() => users.id, { onDelete: "cascade" }),
+  createdAt: timestamp("created_at").notNull().defaultNow(),
+  updatedAt: timestamp("updated_at").notNull().defaultNow(),
+});
+
+export const insertFeedSchema = createInsertSchema(feeds).pick({
+  content: true,
+});
+
 // ==================================================
 //
 // RELATIONS
@@ -343,6 +357,7 @@ export const usersRelations = relations(users, ({ many }) => ({
   eventsHostsUsers: many(eventsHostsUsers),
   videosSpeakers: many(videosSpeakers),
   certificates: many(certificates),
+  feeds: many(feeds),
 }));
 
 export const organizationsRelations = relations(organizations, ({ many }) => ({
@@ -445,6 +460,13 @@ export const certificatesRelations = relations(certificates, ({ one }) => ({
   }),
   user: one(users, {
     fields: [certificates.userId],
+    references: [users.id],
+  }),
+}));
+
+export const feedsUsersRelations = relations(feeds, ({ one }) => ({
+  user: one(users, {
+    fields: [feeds.userId],
     references: [users.id],
   }),
 }));
