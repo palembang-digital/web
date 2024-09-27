@@ -16,6 +16,14 @@ export default async function Page() {
       <div className="content-wrapper">
         <div className="content">
           For You
+          <p className="text-xs">
+            This feature is still under heavy development. We will delete all
+            posts once the feature ready to be released.
+          </p>
+          <p className="text-xs">
+            Until then, you are free to post anything here, as long as it&quot;s
+            worth sharing.
+          </p>
           {/* <Input placeholder="Post something new" />
           <Button>Post</Button> */}
           {session && <NewPostForm />}

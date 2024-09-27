@@ -13,7 +13,7 @@ export default function NewPostForm() {
       formSchema={insertFeedSchema}
       fieldConfig={{
         content: {
-          fieldType: "richtextarea",
+          fieldType: "textarea",
         },
       }}
       onSubmit={async (data) => {
