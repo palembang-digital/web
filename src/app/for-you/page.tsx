@@ -22,8 +22,6 @@ export default async function Page() {
           <p className="text-xs">
             Please be mindful of the content you will post here.
           </p>
-          {/* <Input placeholder="Post something new" />
-          <Button>Post</Button> */}
           {session && <NewPostForm />}
           <div className="flex flex-col gap-4 mt-6">
             {feeds.map((feed: any) => (
