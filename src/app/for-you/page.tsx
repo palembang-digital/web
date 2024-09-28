@@ -26,7 +26,7 @@ export default async function Page() {
           <Button>Post</Button> */}
           {session && <NewPostForm />}
           <div className="flex flex-col gap-4 mt-6">
-            {feeds.map((feed) => (
+            {feeds.map((feed: any) => (
               <PostCard key={feed.id} feed={feed} user={session?.user} />
             ))}
           </div>

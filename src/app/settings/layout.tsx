@@ -14,6 +14,10 @@ const sidebarNavItems = [
     title: "Profil",
     href: "/settings/profile",
   },
+  {
+    title: "Email",
+    href: "/settings/email",
+  },
 ];
 
 export default async function Layout({
