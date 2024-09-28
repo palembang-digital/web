@@ -4,6 +4,12 @@ enum event_location_type {
   hybrid
 }
 
+enum rsvp_type {
+  yes
+  maybe
+  no
+}
+
 enum user_role {
   administrator
   member
@@ -82,6 +88,17 @@ table events {
   location_name text
   location_url text
   location_type event_location_type
+}
+
+table events_attendees {
+  event_id integer [not null]
+  user_id text [not null]
+  rsvp rsvp_type [not null, default: 'yes']
+  attended boolean [not null, default: false]
+
+  indexes {
+    (event_id, user_id) [pk]
+  }
 }
 
 table events_committees {
@@ -218,6 +235,10 @@ table videos_speakers {
 ref: certificates.event_id > events.id
 
 ref: certificates.user_id > users.id
+
+ref: events_attendees.event_id > events.id
+
+ref: events_attendees.user_id > users.id
 
 ref: events_committees.event_id > events.id
 

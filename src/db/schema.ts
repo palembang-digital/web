@@ -161,6 +161,25 @@ export const insertEventSchema = createInsertSchema(events, {
   locationType: true,
 });
 
+export const rsvpTypeEnum = pgEnum("rsvp_type", ["yes", "maybe", "no"]);
+
+export const eventsAttendees = pgTable(
+  "events_attendees",
+  {
+    eventId: integer("event_id")
+      .notNull()
+      .references(() => events.id, { onDelete: "cascade" }),
+    userId: text("user_id")
+      .notNull()
+      .references(() => users.id, { onDelete: "cascade" }),
+    rsvp: rsvpTypeEnum("rsvp").notNull().default("yes"),
+    attended: boolean("attended").notNull().default(false),
+  },
+  (t) => ({
+    pk: primaryKey({ columns: [t.eventId, t.userId] }),
+  })
+);
+
 export const eventsSpeakers = pgTable(
   "events_speakers",
   {
@@ -368,6 +387,7 @@ export const feedsLikes = pgTable(
 
 export const usersRelations = relations(users, ({ many }) => ({
   eventsSpeakers: many(eventsSpeakers),
+  eventsAttendees: many(eventsAttendees),
   eventsCommittees: many(eventsCommittees),
   eventsHostsUsers: many(eventsHostsUsers),
   videosSpeakers: many(videosSpeakers),
@@ -382,6 +402,7 @@ export const organizationsRelations = relations(organizations, ({ many }) => ({
 
 export const eventsRelations = relations(events, ({ many }) => ({
   eventsSpeakers: many(eventsSpeakers),
+  eventsAttendees: many(eventsAttendees),
   eventsCommittees: many(eventsCommittees),
   eventsVideos: many(eventsVideos),
   eventsHostsUsers: many(eventsHostsUsers),
@@ -404,6 +425,20 @@ export const eventsSpeakersRelations = relations(eventsSpeakers, ({ one }) => ({
     references: [users.id],
   }),
 }));
+
+export const eventsAttendeesRelations = relations(
+  eventsAttendees,
+  ({ one }) => ({
+    event: one(events, {
+      fields: [eventsAttendees.eventId],
+      references: [events.id],
+    }),
+    user: one(users, {
+      fields: [eventsAttendees.userId],
+      references: [users.id],
+    }),
+  })
+);
 
 export const eventsCommitteesRelations = relations(
   eventsCommittees,

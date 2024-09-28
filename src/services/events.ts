@@ -64,6 +64,13 @@ export const getEvent = cache(async (id: number) => {
           },
         },
       },
+      eventsAttendees: {
+        with: {
+          user: {
+            columns: { id: true, name: true, username: true, image: true },
+          },
+        },
+      },
       eventsCommittees: {
         with: {
           user: {
