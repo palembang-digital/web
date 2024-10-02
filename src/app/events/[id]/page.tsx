@@ -247,7 +247,7 @@ export default async function Page({ params }: { params: { id: number } }) {
                         ini telah berakhir
                       </Button>
                     </div>
-                  ) : (
+                  ) : event.registrationUrl ? (
                     <Link href={event.registrationUrl || ""} className="w-full">
                       <ShimmerButton>
                         <TicketIcon className="mr-2 h-4 w-4" />
@@ -256,6 +256,8 @@ export default async function Page({ params }: { params: { id: number } }) {
                         </span>
                       </ShimmerButton>
                     </Link>
+                  ) : (
+                    <></>
                   )}
                 </div>
 
