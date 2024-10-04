@@ -21,7 +21,6 @@ export default function UpcomingEvents({ events }: { events: any[] }) {
             new Date(a.scheduledStart) > new Date(b.scheduledStart) ? 1 : -1
           )
           .map((event) => (
-            // TODO: #77 Create a new UpcomingEventCard component
             <Link href={`/events/${event.id}`} key={event.id}>
               <li className="flex flex-col sm:flex-row gap-4 mt-6 ps-6 hover:bg-neutral-800">
                 <div className="absolute w-3 h-3 bg-slate-400 rounded-full -start-[0.4rem] border border-slate-400"></div>

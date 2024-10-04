@@ -1,8 +1,15 @@
 import { db } from "@/db";
+import { videos } from "@/db/schema";
+import { count } from "drizzle-orm";
 import { cache } from "react";
 
-export const getVideos = cache(async () => {
+export const getVideosCount = cache(async () => {
+  return await db.select({ count: count() }).from(videos);
+});
+
+export const getVideos = cache(async ({ limit }: { limit?: number }) => {
   const videos = await db.query.videos.findMany({
+    limit: limit,
     orderBy: (videos, { desc }) => [desc(videos.publishedAt)],
     with: {
       eventsVideos: {

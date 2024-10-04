@@ -1,14 +1,16 @@
 import "@/app/globals.css";
-import { auth } from "@/auth";
+import Loading from "@/app/loading";
 import { MenuContent } from "@/components/menu-content";
 import { SideMenu } from "@/components/side-menu";
 import { Toaster } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { cn } from "@/lib/utils";
+import { getSession } from "@/services/auth";
 import { GoogleAnalytics } from "@next/third-parties/google";
 import { Analytics } from "@vercel/analytics/react";
 import type { Metadata, Viewport } from "next";
 import { Inter as FontSans } from "next/font/google";
+import { Suspense } from "react";
 
 const fontSans = FontSans({
   subsets: ["latin"],
@@ -55,7 +57,7 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const session = await auth();
+  const session = await getSession();
 
   return (
     <html lang="en" suppressHydrationWarning>
@@ -72,7 +74,9 @@ export default async function RootLayout({
               <SideMenu className="relative hidden lg:flex">
                 <MenuContent session={session} />
               </SideMenu>
-              <div className="flex flex-1">{children}</div>
+              <div className="flex flex-1">
+                <Suspense fallback={<Loading />}>{children}</Suspense>
+              </div>
             </div>
           </main>
         </TooltipProvider>

@@ -3,13 +3,12 @@ import { Button } from "@/components/ui/button";
 import { TypographyH2 } from "@/components/ui/typography";
 import Link from "next/link";
 
-// TODO: #78 Implement past events component
 export default function PastEvents({
   events,
-  hideSeeMoreButton,
+  showSeeMoreButton,
 }: {
   events: any[];
-  hideSeeMoreButton?: boolean;
+  showSeeMoreButton?: boolean;
 }) {
   return (
     <div className="p-6">
@@ -24,7 +23,7 @@ export default function PastEvents({
         ))}
       </div>
 
-      {!hideSeeMoreButton && (
+      {showSeeMoreButton && (
         <Link href="/events">
           <Button variant="outline" className="mt-4 text-xs">
             Lihat semua kegiatan

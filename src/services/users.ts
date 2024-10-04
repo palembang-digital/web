@@ -1,5 +1,11 @@
 import { db } from "@/db";
+import { users } from "@/db/schema";
+import { count } from "drizzle-orm";
 import { cache } from "react";
+
+export const getUsersCount = cache(async () => {
+  return await db.select({ count: count() }).from(users);
+});
 
 export const getUsers = cache(async () => {
   const users = await db.query.users.findMany({

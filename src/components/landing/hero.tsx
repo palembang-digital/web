@@ -1,50 +1,38 @@
-import { auth } from "@/auth";
+"use client";
+
 import { Boxes } from "@/components/aceternityui/background-boxes";
 import ShimmerButton from "@/components/magicui/shimmer-button";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { TypographyH1 } from "@/components/ui/typography";
+import { fetcher } from "@/lib/fetcher";
+import { Session } from "next-auth";
 import Link from "next/link";
+import useSWR from "swr";
+import { Skeleton } from "../ui/skeleton";
 
-export default async function Hero({
-  eventCount = 0,
-  videoCount = 0,
-  memberCount = 0,
-  startupCount = 0,
-  organizationCount = 0,
-}: {
-  eventCount?: number;
-  videoCount?: number;
-  memberCount?: number;
-  startupCount?: number;
-  organizationCount?: number;
-}) {
-  const session = await auth();
+export default function Hero({ session }: { session: Session | null }) {
+  const { data, isLoading } = useSWR("/api/v1/stats", fetcher);
 
   const stats = [
     {
       title: "Kegiatan",
-      value: eventCount,
+      value: data?.eventsCount,
       href: "/events",
     },
     {
       title: "Video",
-      value: videoCount,
+      value: data?.videosCount,
       href: "/gallery",
     },
     {
       title: "Anggota",
-      value: memberCount,
+      value: data?.membersCount,
       href: "/members",
     },
     {
-      title: "Startup",
-      value: startupCount,
-      href: "/ecosystem",
-    },
-    {
       title: "Organisasi",
-      value: organizationCount,
+      value: data?.orgsCount,
       href: "/ecosystem",
     },
   ];
@@ -63,21 +51,30 @@ export default async function Hero({
       </p>
 
       <div className="z-10 grid grid-cols-2 sm:grid-cols-4 gap-2">
-        {stats
-          .filter((stat) => stat.value > 0)
-          .sort((a, b) => (a.value < b.value ? 1 : -1))
-          .map((stat) => (
-            <Link href={stat.href} key={stat.title}>
-              <Card className="border-none shadow-none hover:border hover:shadow-sm text-center bg-accent">
-                <CardContent className="p-6">
-                  <div className="text-2xl text-neutral-700 font-bold">
-                    {stat.value}
-                  </div>
-                  <div className="text-sm text-neutral-500">{stat.title}</div>
-                </CardContent>
-              </Card>
-            </Link>
-          ))}
+        {isLoading ? (
+          <>
+            <Skeleton className="h-[100px] w-[100px]" />
+            <Skeleton className="h-[100px] w-[100px]" />
+            <Skeleton className="h-[100px] w-[100px]" />
+            <Skeleton className="h-[100px] w-[100px]" />
+          </>
+        ) : (
+          stats
+            .filter((stat) => stat.value > 0)
+            .sort((a, b) => (a.value < b.value ? 1 : -1))
+            .map((stat) => (
+              <Link href={stat.href} key={stat.title}>
+                <Card className="border-none shadow-none hover:border hover:shadow-sm text-center bg-accent">
+                  <CardContent className="p-6">
+                    <div className="text-2xl text-neutral-700 font-bold">
+                      {stat.value}
+                    </div>
+                    <div className="text-sm text-neutral-500">{stat.title}</div>
+                  </CardContent>
+                </Card>
+              </Link>
+            ))
+        )}
       </div>
 
       {session ? (

@@ -8,16 +8,15 @@ import {
   eventsSpeakers,
   eventsVideos,
 } from "@/db/schema";
-import { NextResponse } from "next/server";
+import { getEvents } from "@/services";
+import { NextRequest, NextResponse } from "next/server";
 
-export async function GET() {
-  const events = await db.query.events.findMany({
-    with: {
-      eventsSpeakers: true,
-      eventsVideos: true,
-    },
-    orderBy: (events, { desc }) => [desc(events.scheduledStart)],
-  });
+export async function GET(request: NextRequest) {
+  const searchParams = request.nextUrl.searchParams;
+  const limitParam = searchParams.get("limit");
+  const limit = limitParam ? parseInt(limitParam, 10) : undefined;
+
+  const events = await getEvents({ limit: limit });
 
   return NextResponse.json(events);
 }
