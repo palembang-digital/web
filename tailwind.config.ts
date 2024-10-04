@@ -22,6 +22,7 @@ const config = {
         reveal: "reveal 0.7s ease-in-out",
         slide: "slide var(--speed) ease-in-out infinite alternate",
         "spin-around": "spin-around calc(var(--speed) * 2) infinite linear",
+        "spin-slow": "spin 2s linear infinite",
       },
       fontFamily: {
         sans: ["var(--font-sans)", ...fontFamily.sans],
