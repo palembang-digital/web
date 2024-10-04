@@ -2,9 +2,7 @@ import { auth } from "@/auth";
 import EventList from "@/components/events/event-list";
 import { FloatingHeader } from "@/components/floating-header";
 import { ScrollArea } from "@/components/scroll-area";
-import { Skeleton } from "@/components/ui/skeleton";
 import type { Metadata } from "next";
-import { Suspense } from "react";
 
 export const metadata: Metadata = {
   title: "Kegiatan",
@@ -20,9 +18,7 @@ export default async function Page() {
       <FloatingHeader session={session} scrollTitle="Kegiatan Patal" />
       <div className="content-wrapper">
         <div className="content">
-          <Suspense fallback={<Skeleton className="h-12 w-full" />}>
-            <EventList />
-          </Suspense>
+          <EventList />
         </div>
       </div>
     </ScrollArea>

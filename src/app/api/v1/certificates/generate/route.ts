@@ -4,8 +4,9 @@ import { getEvents } from "@/services";
 import { sql } from "drizzle-orm";
 import { NextResponse } from "next/server";
 
-export async function POST(req: Request) {
-  const events = await getEvents();
+export async function POST() {
+  const events = await getEvents({ limit: 1000 });
+
   const eventsWithSpeakers = events.filter(
     (event) => event.eventsSpeakers.length > 0
   );
