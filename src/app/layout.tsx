@@ -10,6 +10,7 @@ import { GoogleAnalytics } from "@next/third-parties/google";
 import { Analytics } from "@vercel/analytics/react";
 import type { Metadata, Viewport } from "next";
 import { Inter as FontSans } from "next/font/google";
+import NextTopLoader from "nextjs-toploader";
 import { Suspense } from "react";
 
 const fontSans = FontSans({
@@ -68,6 +69,12 @@ export default async function RootLayout({
         )}
         suppressHydrationWarning
       >
+        <NextTopLoader
+          color="#0f172a"
+          height={2}
+          shadow="0 0 10px #0f172a,0 0 5px #0f172a"
+          showSpinner={false}
+        />
         <TooltipProvider>
           <main vaul-drawer-wrapper="" className="min-h-screen bg-white">
             <div className="lg:flex">
