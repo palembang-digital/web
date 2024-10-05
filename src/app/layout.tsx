@@ -8,6 +8,7 @@ import { cn } from "@/lib/utils";
 import { getSession } from "@/services/auth";
 import { GoogleAnalytics } from "@next/third-parties/google";
 import { Analytics } from "@vercel/analytics/react";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import type { Metadata, Viewport } from "next";
 import { Inter as FontSans } from "next/font/google";
 import NextTopLoader from "nextjs-toploader";
@@ -89,6 +90,7 @@ export default async function RootLayout({
         </TooltipProvider>
         <Toaster richColors />
         <Analytics />
+        <SpeedInsights />
       </body>
       <GoogleAnalytics gaId="UA-169186060-1" />
     </html>
