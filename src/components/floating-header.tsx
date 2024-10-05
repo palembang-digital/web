@@ -56,11 +56,9 @@ function Cmp({ scrollTitle, title, session, children }: FloatingHeaderProps) {
 
   return (
     <header className="sticky inset-x-0 top-0 z-10 mx-auto flex h-12 w-full shrink-0 items-center overflow-hidden border-b bg-white text-sm font-medium lg:hidden">
-      <div className="flex size-full items-center px-1">
+      <div className="flex size-full items-center px-4">
         <div className="flex w-full items-center justify-between gap-2">
           <div className="flex flex-1 items-center gap-1">
-            <MobileDrawer session={session} />
-
             <Link href="/">
               <Image
                 src="/logo-black-bg.png"
@@ -68,7 +66,7 @@ function Cmp({ scrollTitle, title, session, children }: FloatingHeaderProps) {
                 width={24}
                 height={24}
                 loading="lazy"
-                className="mr-2"
+                className="ml-2 mr-2"
               />
             </Link>
 
@@ -93,6 +91,8 @@ function Cmp({ scrollTitle, title, session, children }: FloatingHeaderProps) {
                 </Balancer>
               )}
             </div>
+
+            <MobileDrawer session={session} />
           </div>
         </div>
       </div>

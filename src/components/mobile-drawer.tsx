@@ -17,7 +17,7 @@ export function MobileDrawer({ session }: { session: Session | null }) {
       <DrawerDescription />
       <DrawerTrigger asChild>
         <Button variant="ghost" size="icon" title="Toggle drawer">
-          <PanelBottomOpenIcon size={16} />
+          <PanelBottomOpenIcon size={20} />
         </Button>
       </DrawerTrigger>
       <DrawerContent className="h-4/5">
