@@ -69,3 +69,13 @@ export function getYoutubeVideoId(url: string): string {
   const urlParams = new URLSearchParams(new URL(url).search);
   return urlParams.get("v") || "";
 }
+
+export function timeAgo(
+  date: Date,
+  zone: string = "Asia/Jakarta",
+  locale: string = "id"
+): string {
+  return (
+    DateTime.fromJSDate(date).setZone(zone).setLocale(locale).toRelative() || ""
+  );
+}

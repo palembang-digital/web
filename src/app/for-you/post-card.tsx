@@ -4,9 +4,9 @@ import useMinimalTiptapEditor from "@/components/minimal-tiptap/hooks/use-minima
 import "@/components/minimal-tiptap/styles/index.css";
 import { AnimatedTooltip } from "@/components/ui/animated-tooltip";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
-import { Button } from "@/components/ui/button";
+import { timeAgo } from "@/lib/utils";
 import { EditorContent } from "@tiptap/react";
-import { ThumbsUpIcon } from "lucide-react";
+import { HeartIcon } from "lucide-react";
 import { toast } from "sonner";
 
 export default function PostCard({
@@ -68,46 +68,59 @@ export default function PostCard({
       id: user.id,
       label: user.name,
       image: user.image,
+      imageClassName: "h-5 w-5",
       href: `/${user.username}`,
     }));
 
-  const likedByShownLimit = 5;
+  const likedByShownLimit = 2;
 
   return (
-    <div key={feed.id}>
-      <div className="flex border p-4 rounded-md">
-        <Avatar>
+    <div className="flex flex-col border-b pb-6 gap-4">
+      <div className="flex items-center gap-2">
+        <Avatar className="h-6 w-6">
           <AvatarImage src={feed.user.image || ""} />
         </Avatar>
-        <div className="flex flex-col ml-2">
-          <p className="text-xs font-bold">{feed.user.name}</p>
-          <EditorContent className="minimal-tiptap-editor" editor={editor} />
-          <div className="flex items-center">
-            {likedBy && (
+        <p className="text-xs font-medium">{feed.user.name}</p>
+        <p className="text-xs text-neutral-500">{timeAgo(feed.createdAt)}</p>
+      </div>
+
+      <div className="flex flex-col">
+        <EditorContent className="minimal-tiptap-editor" editor={editor} />
+
+        <div className="flex mt-2 items-center">
+          {isUserLiked ? (
+            <>
+              <HeartIcon
+                className="mr-1 h-4 w-4 hover:cursor-pointer"
+                color="#fb7185"
+                fill="#fb7185"
+                onClick={unlikePost(feed.id)}
+              />
+            </>
+          ) : (
+            <HeartIcon
+              className="mr-1 h-4 w-4 hover:cursor-pointer"
+              strokeWidth={1.5}
+              onClick={likePost(feed.id)}
+            />
+          )}
+          {likedBy.length > 0 && (
+            <p className="text-xs text-neutral-500">{likedBy.length}</p>
+          )}
+        </div>
+        {likedBy.length > 0 && (
+          <div className="flex items-center mt-2">
+            <p className="text-xs text-neutral-500">Disukai oleh</p>
+            <div className="flex ml-1">
               <AnimatedTooltip items={likedBy.slice(0, likedByShownLimit)} />
-            )}
-            {likedBy.length > 0 && (
-              <p className="text-xs text-neutral-400 ml-3">
-                {likedBy.length > likedByShownLimit &&
-                  `+${likedBy.length} - ${likedByShownLimit} `}
-                liked this
+            </div>
+            {likedBy.length > likedByShownLimit && (
+              <p className="text-xs text-neutral-500 ml-3">
+                dan {likedBy.length - likedByShownLimit} lainnya
               </p>
             )}
           </div>
-          <div className="flex gap-2 mt-2 items-center">
-            {isUserLiked ? (
-              <Button variant="ghost" size="sm" onClick={unlikePost(feed.id)}>
-                <ThumbsUpIcon className="mr-2 h-4 w-4" />
-                Unlike
-              </Button>
-            ) : (
-              <Button variant="ghost" size="sm" onClick={likePost(feed.id)}>
-                <ThumbsUpIcon className="mr-2 h-4 w-4" />
-                Like
-              </Button>
-            )}
-          </div>
-        </div>
+        )}
       </div>
     </div>
   );

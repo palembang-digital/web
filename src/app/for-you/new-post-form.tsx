@@ -3,20 +3,31 @@
 import AutoForm, { AutoFormSubmit } from "@/components/ui/auto-form";
 import { insertFeedSchema } from "@/db/schema";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 import { toast } from "sonner";
 
 export default function NewPostForm() {
   const router = useRouter();
 
+  const [values, setValues] = useState({});
+  const [loading, setLoading] = useState(false);
+
   return (
     <AutoForm
       formSchema={insertFeedSchema}
+      values={values}
       fieldConfig={{
         content: {
           fieldType: "textarea",
+          inputProps: {
+            placeholder: "How's your day?",
+            showLabel: false,
+          },
         },
       }}
       onSubmit={async (data) => {
+        setLoading(true);
+
         const requestData = {
           feed: data,
         };
@@ -33,6 +44,8 @@ export default function NewPostForm() {
           if (response.ok) {
             toast.success("Post created!");
             router.push(`/for-you`);
+            setLoading(false);
+            setValues({ content: "" });
           } else {
             toast.error("Failed to post");
           }
@@ -41,7 +54,7 @@ export default function NewPostForm() {
         }
       }}
     >
-      <AutoFormSubmit>Post</AutoFormSubmit>
+      <AutoFormSubmit disabled={loading}>Post</AutoFormSubmit>
     </AutoForm>
   );
 }
