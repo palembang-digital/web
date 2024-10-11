@@ -2,6 +2,8 @@ import { auth } from "@/auth";
 import { db } from "@/db";
 import { feedsComments } from "@/db/schema";
 import { getFeedComments } from "@/services/feed_comments";
+import { answerQuestionTask } from "@/trigger/patal-bot";
+import { tasks } from "@trigger.dev/sdk/v3";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(
@@ -44,6 +46,13 @@ export async function POST(
       );
     }
   });
+
+  if (inputComment.comment.includes("@patal-bot")) {
+    await tasks.trigger<typeof answerQuestionTask>(
+      "patal-bot-answer-question",
+      { feedId: params.id, query: inputComment.comment, user: user }
+    );
+  }
 
   return Response.json({ message: "Success" });
 }

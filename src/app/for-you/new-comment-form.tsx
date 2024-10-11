@@ -56,7 +56,7 @@ export default function NewCommentForm({
           if (response.ok) {
             toast.success("Coment sent!");
             setLoading(false);
-            setValues({ comment: "" });
+            setValues({ comment: undefined });
             mutate(`/api/v1/feeds/${feedId}/comments`);
           } else {
             toast.error("Failed to send comment");

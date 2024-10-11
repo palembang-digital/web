@@ -47,7 +47,7 @@ export default function NewPostForm() {
             toast.success("Post created!");
             router.push(`/for-you`);
             setLoading(false);
-            setValues({ content: "" });
+            setValues({ content: undefined });
             mutate("/api/v1/feeds");
           } else {
             toast.error("Failed to post");
