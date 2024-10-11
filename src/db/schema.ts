@@ -399,6 +399,30 @@ export const feedsLikes = pgTable(
   })
 );
 
+export const feedsComments = pgTable(
+  "feeds_comments",
+  {
+    feedId: integer("feed_id")
+      .notNull()
+      .references(() => feeds.id, { onDelete: "cascade" }),
+    userId: text("user_id")
+      .notNull()
+      .references(() => users.id, { onDelete: "cascade" }),
+    comment: text("comment").notNull(),
+    createdAt: timestamp("created_at").notNull().defaultNow(),
+    updatedAt: timestamp("updated_at").notNull().defaultNow(),
+  },
+  (t) => ({
+    pk: primaryKey({ columns: [t.feedId, t.userId] }),
+  })
+);
+
+export const insertFeedCommentSchema = createInsertSchema(feedsComments, {
+  comment: z.string().max(300),
+}).pick({
+  comment: true,
+});
+
 // ==================================================
 //
 // RELATIONS
@@ -414,6 +438,7 @@ export const usersRelations = relations(users, ({ many }) => ({
   certificates: many(certificates),
   feeds: many(feeds),
   feedsLikes: many(feedsLikes),
+  feedsComments: many(feedsComments),
 }));
 
 export const organizationsRelations = relations(organizations, ({ many }) => ({
@@ -541,6 +566,7 @@ export const feedsUsersRelations = relations(feeds, ({ one, many }) => ({
     references: [users.id],
   }),
   likes: many(feedsLikes),
+  comments: many(feedsComments),
 }));
 
 export const feedsLikesRelations = relations(feedsLikes, ({ one }) => ({
@@ -550,6 +576,17 @@ export const feedsLikesRelations = relations(feedsLikes, ({ one }) => ({
   }),
   feed: one(feeds, {
     fields: [feedsLikes.feedId],
+    references: [feeds.id],
+  }),
+}));
+
+export const feedsCommentsRelations = relations(feedsComments, ({ one }) => ({
+  user: one(users, {
+    fields: [feedsComments.userId],
+    references: [users.id],
+  }),
+  feed: one(feeds, {
+    fields: [feedsComments.feedId],
     references: [feeds.id],
   }),
 }));

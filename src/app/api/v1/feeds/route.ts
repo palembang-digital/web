@@ -19,8 +19,6 @@ export async function POST(req: Request) {
   const user = session.user;
 
   const data = await req.json();
-  console.log(data);
-  console.log(user);
 
   const inputFeed = {
     content: data.feed.content,

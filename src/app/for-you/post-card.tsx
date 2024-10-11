@@ -1,25 +1,37 @@
 "use client";
 
-import useMinimalTiptapEditor from "@/components/minimal-tiptap/hooks/use-minimal-tiptap";
+import NewCommentForm from "@/app/for-you/new-comment-form";
+import Loading from "@/app/loading";
 import "@/components/minimal-tiptap/styles/index.css";
 import { AnimatedTooltip } from "@/components/ui/animated-tooltip";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
+import {
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
+import { fetcher } from "@/lib/fetcher";
 import { timeAgo } from "@/lib/utils";
-import { EditorContent } from "@tiptap/react";
-import { HeartIcon } from "lucide-react";
+import { HeartIcon, MessageCircleIcon } from "lucide-react";
+import Link from "next/link";
+import { useState } from "react";
 import { toast } from "sonner";
-import { useSWRConfig } from "swr";
+import useSWR, { useSWRConfig } from "swr";
 
 export default function PostCard({
   feed,
   user,
 }: Readonly<{ feed: any; user: any }>) {
-  const editor = useMinimalTiptapEditor({
-    value: feed.content,
-    editable: false,
-    immediatelyRender: false,
-  });
   const { mutate } = useSWRConfig();
+
+  const [shouldFetch, setShouldFetch] = useState(false);
+  const { data: comments, isLoading: loadingComments } = useSWR(
+    shouldFetch ? `/api/v1/feeds/${feed.id}/comments` : null,
+    fetcher
+  );
 
   const likePost = (feedId: number) => async () => {
     try {
@@ -78,24 +90,37 @@ export default function PostCard({
 
   const likedByShownLimit = 5;
 
+  const commentedBy = feed.comments;
+
   return (
-    <div className="flex flex-col border-b pb-6 gap-4">
-      <div className="flex items-center gap-2">
-        <Avatar className="h-6 w-6">
-          <AvatarImage src={feed.user.image || ""} />
-        </Avatar>
-        <p className="text-xs font-medium">{feed.user.name}</p>
-        <p className="text-xs text-neutral-500">{timeAgo(feed.createdAt)}</p>
-      </div>
+    <Sheet onOpenChange={() => setShouldFetch(!shouldFetch)}>
+      <div className="flex flex-col border-b pb-6 gap-4">
+        {/* User */}
+        <div className="flex items-center gap-2">
+          <Link href={feed.user.username}>
+            <Avatar className="h-6 w-6">
+              <AvatarImage src={feed.user.image || ""} />
+            </Avatar>
+          </Link>
+          <Link href={feed.user.username}>
+            <p className="text-xs font-semibold">{feed.user.name}</p>
+          </Link>
+          <Link href={feed.user.username} className="hidden sm:block">
+            <p className="text-xs text-neutral-500">@{feed.user.username}</p>
+          </Link>
+          <p className="text-xs text-neutral-500">·</p>
+          <p className="text-xs text-neutral-500">{timeAgo(feed.createdAt)}</p>
+        </div>
 
-      <div className="flex flex-col">
-        <EditorContent className="minimal-tiptap-editor" editor={editor} />
+        {/* Content */}
+        <p className="text-sm">{feed.content}</p>
 
-        <div className="flex mt-2 items-center">
+        {/* Actions */}
+        <div className="flex items-center">
           {isUserLiked ? (
             <>
               <HeartIcon
-                className="mr-1 h-4 w-4 hover:cursor-pointer hover:animate-pulse"
+                className="mr-1 h-5 w-5 hover:cursor-pointer hover:animate-pulse"
                 color="#fb7185"
                 fill="#fb7185"
                 onClick={unlikePost(feed.id)}
@@ -103,7 +128,7 @@ export default function PostCard({
             </>
           ) : (
             <HeartIcon
-              className="mr-1 h-4 w-4 hover:cursor-pointer hover:animate-pulse"
+              className="mr-1 h-5 w-5 hover:cursor-pointer hover:animate-pulse"
               strokeWidth={1.5}
               onClick={likePost(feed.id)}
             />
@@ -111,7 +136,21 @@ export default function PostCard({
           {likedBy.length > 0 && (
             <p className="text-xs text-neutral-500">{likedBy.length}</p>
           )}
+
+          <SheetTrigger asChild>
+            <MessageCircleIcon
+              className="ml-4 h-5 w-5 hover:cursor-pointer hover:animate-pulse"
+              strokeWidth={1.5}
+            />
+          </SheetTrigger>
+          {commentedBy.length > 0 && (
+            <p className="text-xs text-neutral-500 ml-1">
+              {commentedBy.length}
+            </p>
+          )}
         </div>
+
+        {/* Liked by */}
         {likedBy.length > 0 && (
           <div className="flex items-center mt-2">
             <p className="text-xs text-neutral-500">Disukai oleh</p>
@@ -126,6 +165,96 @@ export default function PostCard({
           </div>
         )}
       </div>
-    </div>
+
+      <SheetContent className="w-10/12 sm:w-1/2 sm:max-w-1/2">
+        <SheetHeader>
+          <SheetTitle>
+            <div className="flex items-center gap-2">
+              <Link href={feed.user.username}>
+                <Avatar className="h-6 w-6">
+                  <AvatarImage src={feed.user.image || ""} />
+                </Avatar>
+              </Link>
+              <Link href={feed.user.username}>
+                <p className="text-xs font-semibold">{feed.user.name}</p>
+              </Link>
+              <Link href={feed.user.username} className="hidden sm:block">
+                <p className="text-xs text-neutral-500">
+                  @{feed.user.username}
+                </p>
+              </Link>
+              <p className="text-xs text-neutral-500">·</p>
+              <p className="text-xs text-neutral-500">
+                {timeAgo(feed.createdAt)}
+              </p>
+            </div>
+          </SheetTitle>
+        </SheetHeader>
+
+        <SheetDescription></SheetDescription>
+
+        <div className="flex flex-col gap-4 mt-4">
+          <p className="text-sm">{feed.content}</p>
+
+          <div className="flex items-center">
+            {isUserLiked ? (
+              <>
+                <HeartIcon
+                  className="mr-1 h-5 w-5 hover:cursor-pointer hover:animate-pulse"
+                  color="#fb7185"
+                  fill="#fb7185"
+                  onClick={unlikePost(feed.id)}
+                />
+              </>
+            ) : (
+              <HeartIcon
+                className="mr-1 h-5 w-5 hover:cursor-pointer hover:animate-pulse"
+                strokeWidth={1.5}
+                onClick={likePost(feed.id)}
+              />
+            )}
+            {likedBy.length > 0 && (
+              <p className="text-xs text-neutral-500">{likedBy.length}</p>
+            )}
+
+            <MessageCircleIcon
+              className="ml-4 h-5 w-5 hover:cursor-pointer hover:animate-pulse"
+              strokeWidth={1.5}
+            />
+          </div>
+        </div>
+
+        {loadingComments && <Loading />}
+
+        {comments &&
+          comments.map((comment: any) => (
+            <div
+              key={comment.id}
+              className="flex flex-col gap-2 border-t mt-4 pt-4"
+            >
+              <div className="flex items-center gap-2">
+                <Link href={comment.user.username}>
+                  <Avatar className="h-6 w-6">
+                    <AvatarImage src={comment.user.image || ""} />
+                  </Avatar>
+                </Link>
+
+                <Link href={comment.user.username}>
+                  <p className="text-xs font-semibold">{comment.user.name}</p>
+                </Link>
+                <p className="text-xs text-neutral-500">·</p>
+                <p className="text-xs text-neutral-500">
+                  {timeAgo(feed.createdAt)}
+                </p>
+              </div>
+              <p className="text-sm">{comment.comment}</p>
+            </div>
+          ))}
+
+        <div className="border-t mt-4 pt-4">
+          <NewCommentForm feedId={feed.id} />
+        </div>
+      </SheetContent>
+    </Sheet>
   );
 }

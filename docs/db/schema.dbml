@@ -156,6 +156,18 @@ table feeds {
   updated_at timestamp [not null, default: `now()`]
 }
 
+table feeds_comments {
+  feed_id integer [not null]
+  user_id text [not null]
+  comment text [not null]
+  created_at timestamp [not null, default: `now()`]
+  updated_at timestamp [not null, default: `now()`]
+
+  indexes {
+    (feed_id, user_id) [pk]
+  }
+}
+
 table feeds_likes {
   feed_id integer [not null]
   user_id text [not null]
@@ -259,6 +271,10 @@ ref: events_speakers.user_id > users.id
 ref: events_videos.event_id > events.id
 
 ref: events_videos.video_id > videos.id
+
+ref: feeds_comments.user_id > users.id
+
+ref: feeds_comments.feed_id > feeds.id
 
 ref: feeds_likes.user_id > users.id
 
