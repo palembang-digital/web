@@ -20,6 +20,7 @@ export const getFeeds = cache(async () => {
           },
         },
       },
+      comments: true,
     },
   });
 

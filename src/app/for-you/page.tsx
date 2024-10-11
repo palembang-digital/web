@@ -13,7 +13,7 @@ export default async function Page() {
       <FloatingHeader session={session} scrollTitle="For You" />
       <div className="content-wrapper">
         <div className="content">
-          <TypographyH2 className="text-neutral-800">For You</TypographyH2>
+          <TypographyH2 className="text-neutral-800 mb-2">For You</TypographyH2>
 
           {session && <NewPostForm />}
 
