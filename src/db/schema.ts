@@ -399,23 +399,18 @@ export const feedsLikes = pgTable(
   })
 );
 
-export const feedsComments = pgTable(
-  "feeds_comments",
-  {
-    feedId: integer("feed_id")
-      .notNull()
-      .references(() => feeds.id, { onDelete: "cascade" }),
-    userId: text("user_id")
-      .notNull()
-      .references(() => users.id, { onDelete: "cascade" }),
-    comment: text("comment").notNull(),
-    createdAt: timestamp("created_at").notNull().defaultNow(),
-    updatedAt: timestamp("updated_at").notNull().defaultNow(),
-  },
-  (t) => ({
-    pk: primaryKey({ columns: [t.feedId, t.userId] }),
-  })
-);
+export const feedsComments = pgTable("feeds_comments", {
+  id: serial("id").primaryKey(),
+  feedId: integer("feed_id")
+    .notNull()
+    .references(() => feeds.id, { onDelete: "cascade" }),
+  userId: text("user_id")
+    .notNull()
+    .references(() => users.id, { onDelete: "cascade" }),
+  comment: text("comment").notNull(),
+  createdAt: timestamp("created_at").notNull().defaultNow(),
+  updatedAt: timestamp("updated_at").notNull().defaultNow(),
+});
 
 export const insertFeedCommentSchema = createInsertSchema(feedsComments, {
   comment: z.string().max(300),

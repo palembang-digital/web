@@ -166,7 +166,7 @@ export default function PostCard({
         )}
       </div>
 
-      <SheetContent className="w-10/12 sm:w-1/2 sm:max-w-1/2">
+      <SheetContent className="w-10/12 sm:w-1/2 sm:max-w-1/2 overflow-auto">
         <SheetHeader>
           <SheetTitle>
             <div className="flex items-center gap-2">
