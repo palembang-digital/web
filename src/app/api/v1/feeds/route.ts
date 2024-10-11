@@ -1,6 +1,14 @@
 import { auth } from "@/auth";
 import { db } from "@/db";
 import { feeds } from "@/db/schema";
+import { getFeeds } from "@/services/feeds";
+import { NextRequest, NextResponse } from "next/server";
+
+export async function GET(request: NextRequest) {
+  const feeds = await getFeeds();
+
+  return NextResponse.json(feeds);
+}
 
 export async function POST(req: Request) {
   const session = await auth();

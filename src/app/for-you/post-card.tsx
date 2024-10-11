@@ -8,6 +8,7 @@ import { timeAgo } from "@/lib/utils";
 import { EditorContent } from "@tiptap/react";
 import { HeartIcon } from "lucide-react";
 import { toast } from "sonner";
+import { useSWRConfig } from "swr";
 
 export default function PostCard({
   feed,
@@ -18,6 +19,7 @@ export default function PostCard({
     editable: false,
     immediatelyRender: false,
   });
+  const { mutate } = useSWRConfig();
 
   const likePost = (feedId: number) => async () => {
     try {
@@ -30,6 +32,7 @@ export default function PostCard({
 
       if (response.ok) {
         toast.success("You liked this post!");
+        mutate("/api/v1/feeds");
       } else {
         toast.error("Failed to like post");
       }
@@ -49,6 +52,7 @@ export default function PostCard({
 
       if (response.ok) {
         toast.success("You unliked this post!");
+        mutate("/api/v1/feeds");
       } else {
         toast.error("Failed to unlike post");
       }
@@ -72,7 +76,7 @@ export default function PostCard({
       href: `/${user.username}`,
     }));
 
-  const likedByShownLimit = 2;
+  const likedByShownLimit = 5;
 
   return (
     <div className="flex flex-col border-b pb-6 gap-4">
@@ -91,7 +95,7 @@ export default function PostCard({
           {isUserLiked ? (
             <>
               <HeartIcon
-                className="mr-1 h-4 w-4 hover:cursor-pointer"
+                className="mr-1 h-4 w-4 hover:cursor-pointer hover:animate-pulse"
                 color="#fb7185"
                 fill="#fb7185"
                 onClick={unlikePost(feed.id)}
@@ -99,7 +103,7 @@ export default function PostCard({
             </>
           ) : (
             <HeartIcon
-              className="mr-1 h-4 w-4 hover:cursor-pointer"
+              className="mr-1 h-4 w-4 hover:cursor-pointer hover:animate-pulse"
               strokeWidth={1.5}
               onClick={likePost(feed.id)}
             />

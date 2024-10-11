@@ -1,15 +1,12 @@
 import NewPostForm from "@/app/for-you/new-post-form";
-import PostCard from "@/app/for-you/post-card";
 import { auth } from "@/auth";
 import { FloatingHeader } from "@/components/floating-header";
 import { ScrollArea } from "@/components/scroll-area";
 import { TypographyH2 } from "@/components/ui/typography";
-import { getFeeds } from "@/services/feeds";
+import FeedList from "./feed-list";
 
 export default async function Page() {
   const session = await auth();
-
-  const feeds = await getFeeds();
 
   return (
     <ScrollArea useScrollAreaId>
@@ -19,11 +16,8 @@ export default async function Page() {
           <TypographyH2 className="text-neutral-800">For You</TypographyH2>
 
           {session && <NewPostForm />}
-          <div className="flex flex-col gap-6 mt-8">
-            {feeds.map((feed: any) => (
-              <PostCard key={feed.id} feed={feed} user={session?.user} />
-            ))}
-          </div>
+
+          <FeedList session={session} />
         </div>
       </div>
     </ScrollArea>

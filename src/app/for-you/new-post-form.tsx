@@ -5,8 +5,10 @@ import { insertFeedSchema } from "@/db/schema";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "sonner";
+import { useSWRConfig } from "swr";
 
 export default function NewPostForm() {
+  const { mutate } = useSWRConfig();
   const router = useRouter();
 
   const [values, setValues] = useState({});
@@ -46,6 +48,7 @@ export default function NewPostForm() {
             router.push(`/for-you`);
             setLoading(false);
             setValues({ content: "" });
+            mutate("/api/v1/feeds");
           } else {
             toast.error("Failed to post");
           }
