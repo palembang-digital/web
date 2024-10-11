@@ -157,7 +157,7 @@ export default function PostCard({
 
         {/* Liked by */}
         {likedBy.length > 0 && (
-          <div className="flex items-center mt-2">
+          <div className="flex items-center">
             <p className="text-xs text-neutral-500">Disukai oleh</p>
             <div className="flex ml-1">
               <AnimatedTooltip items={likedBy.slice(0, likedByShownLimit)} />
