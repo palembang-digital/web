@@ -38,7 +38,16 @@ export const users = pgTable("users", {
   bio: text("bio"),
 });
 
-export const onboardingSchema = createInsertSchema(users).pick({
+export const onboardingSchema = createInsertSchema(users, {
+  username: z
+    .string()
+    .min(3)
+    .max(20)
+    .regex(/^[a-zA-Z0-9_.-]+$/, {
+      message:
+        "Username can only contain alphanumeric characters, underscores (_), dashes (-), and periods (.)",
+    }),
+}).pick({
   name: true,
   username: true,
   phoneNumber: true,
@@ -47,7 +56,16 @@ export const onboardingSchema = createInsertSchema(users).pick({
   bio: true,
 });
 
-export const insertUserSchema = createInsertSchema(users).pick({
+export const insertUserSchema = createInsertSchema(users, {
+  username: z
+    .string()
+    .min(3)
+    .max(20)
+    .regex(/^[a-zA-Z0-9_.-]+$/, {
+      message:
+        "Username can only contain alphanumeric characters, underscores (_), dashes (-), and periods (.)",
+    }),
+}).pick({
   name: true,
   username: true,
   phoneNumber: true,
@@ -360,7 +378,9 @@ export const feeds = pgTable("feeds", {
   updatedAt: timestamp("updated_at").notNull().defaultNow(),
 });
 
-export const insertFeedSchema = createInsertSchema(feeds).pick({
+export const insertFeedSchema = createInsertSchema(feeds, {
+  content: z.string().min(1).max(300),
+}).pick({
   content: true,
 });
 

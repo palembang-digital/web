@@ -6,7 +6,12 @@ export const getFeeds = cache(async () => {
     orderBy: (feeds, { desc }) => [desc(feeds.createdAt)],
     with: {
       user: {
-        columns: { id: true, name: true, username: true, image: true },
+        columns: {
+          id: true,
+          name: true,
+          username: true,
+          image: true,
+        },
       },
       likes: {
         with: {

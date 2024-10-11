@@ -3,6 +3,7 @@ import PostCard from "@/app/for-you/post-card";
 import { auth } from "@/auth";
 import { FloatingHeader } from "@/components/floating-header";
 import { ScrollArea } from "@/components/scroll-area";
+import { TypographyH2 } from "@/components/ui/typography";
 import { getFeeds } from "@/services/feeds";
 
 export default async function Page() {
@@ -15,15 +16,10 @@ export default async function Page() {
       <FloatingHeader session={session} scrollTitle="For You" />
       <div className="content-wrapper">
         <div className="content">
-          For You
-          <p className="text-xs">
-            This feature is still under heavy development.
-          </p>
-          <p className="text-xs">
-            Please be mindful of the content you will post here.
-          </p>
+          <TypographyH2 className="text-neutral-800">For You</TypographyH2>
+
           {session && <NewPostForm />}
-          <div className="flex flex-col gap-4 mt-6">
+          <div className="flex flex-col gap-6 mt-6">
             {feeds.map((feed: any) => (
               <PostCard key={feed.id} feed={feed} user={session?.user} />
             ))}
