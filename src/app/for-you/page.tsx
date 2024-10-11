@@ -19,7 +19,7 @@ export default async function Page() {
           <TypographyH2 className="text-neutral-800">For You</TypographyH2>
 
           {session && <NewPostForm />}
-          <div className="flex flex-col gap-6 mt-6">
+          <div className="flex flex-col gap-6 mt-8">
             {feeds.map((feed: any) => (
               <PostCard key={feed.id} feed={feed} user={session?.user} />
             ))}
