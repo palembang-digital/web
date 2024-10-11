@@ -16,6 +16,7 @@ export default function NewPostForm() {
 
   return (
     <AutoForm
+      className="space-y-2"
       formSchema={insertFeedSchema}
       values={values}
       fieldConfig={{
@@ -57,6 +58,9 @@ export default function NewPostForm() {
         }
       }}
     >
+      <p className="text-xs text-neutral-500 mt-2">
+        Tips: Mention @patal-bot agar pertanyaan kamu dijawab oleh AI kami. 🤖
+      </p>
       <AutoFormSubmit disabled={loading}>Post</AutoFormSubmit>
     </AutoForm>
   );
