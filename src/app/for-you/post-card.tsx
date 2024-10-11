@@ -113,7 +113,12 @@ export default function PostCard({
         </div>
 
         {/* Content */}
-        <p className="text-sm">{feed.content}</p>
+        <p
+          className="text-sm"
+          dangerouslySetInnerHTML={{
+            __html: feed.content.replaceAll("\n", "<br/>"),
+          }}
+        />
 
         {/* Actions */}
         <div className="flex items-center">
@@ -194,7 +199,12 @@ export default function PostCard({
         <SheetDescription></SheetDescription>
 
         <div className="flex flex-col gap-4 mt-4">
-          <p className="text-sm">{feed.content}</p>
+          <p
+            className="text-sm"
+            dangerouslySetInnerHTML={{
+              __html: feed.content.replaceAll("\n", "<br/>"),
+            }}
+          />
 
           <div className="flex items-center">
             {isUserLiked ? (
@@ -247,7 +257,12 @@ export default function PostCard({
                   {timeAgo(feed.createdAt)}
                 </p>
               </div>
-              <p className="text-sm">{comment.comment}</p>
+              <p
+                className="text-sm"
+                dangerouslySetInnerHTML={{
+                  __html: comment.comment.replaceAll("\n", "<br/>"),
+                }}
+              />
             </div>
           ))}
 
