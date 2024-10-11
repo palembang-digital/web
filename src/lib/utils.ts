@@ -71,11 +71,11 @@ export function getYoutubeVideoId(url: string): string {
 }
 
 export function timeAgo(
-  date: Date,
+  date: string,
   zone: string = "Asia/Jakarta",
   locale: string = "id"
 ): string {
   return (
-    DateTime.fromJSDate(date).setZone(zone).setLocale(locale).toRelative() || ""
+    DateTime.fromISO(date).setZone(zone).setLocale(locale).toRelative() || ""
   );
 }
