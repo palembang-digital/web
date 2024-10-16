@@ -2,14 +2,15 @@
 
 import { Boxes } from "@/components/aceternityui/background-boxes";
 import ShimmerButton from "@/components/magicui/shimmer-button";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import { Skeleton } from "@/components/ui/skeleton";
 import { TypographyH1 } from "@/components/ui/typography";
 import { fetcher } from "@/lib/fetcher";
 import { Session } from "next-auth";
 import Link from "next/link";
 import useSWR from "swr";
-import { Skeleton } from "../ui/skeleton";
 
 export default function Hero({ session }: { session: Session | null }) {
   const { data, isLoading } = useSWR("/api/v1/stats", fetcher);
@@ -40,6 +41,13 @@ export default function Hero({ session }: { session: Session | null }) {
   return (
     <div className="relative flex flex-col items-center justify-center gap-4 py-8">
       <Boxes />
+
+      <Badge
+        className="z-10 px-4 py-2 bg-green-50 text-green-700 border-green-50 font-medium"
+        variant="outline"
+      >
+        Free Palestine&nbsp;&nbsp;🇵🇸
+      </Badge>
 
       <TypographyH1 className="z-10 whitespace-pre-wrap text-center text-neutral-900 lg:text-4xl">
         Dari wong kito, untuk wong kito!
