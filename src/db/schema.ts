@@ -147,36 +147,51 @@ export const eventLocationTypeEnum = pgEnum("event_location_type", [
   "hybrid",
 ]);
 
+export const eventStatusEnum = pgEnum("event_status", [
+  "draft",
+  "review",
+  "published",
+  "private",
+  "cancelled",
+  "completed",
+]);
+
 export const events = pgTable("events", {
   id: serial("id").primaryKey(),
   name: text("name").notNull(),
   imageUrl: text("image_url"),
-  registrationUrl: text("registration_url"),
   scheduledStart: timestamp("scheduled_start").notNull(),
   scheduledEnd: timestamp("scheduled_end").notNull(),
   createdAt: timestamp("created_at").notNull().defaultNow(),
   updatedAt: timestamp("updated_at").notNull().defaultNow(),
+  registrationUrlType: text("registration_url_type"),
+  registrationUrl: text("registration_url"),
   registrationFee: integer("registration_fee"),
   description: text("description"),
   attendeeLimit: integer("attendee_limit"),
   locationName: text("location_name"),
   locationUrl: text("location_url"),
   locationType: eventLocationTypeEnum("location_type"),
+  status: eventStatusEnum("status").notNull().default("draft"),
 });
 
 export const insertEventSchema = createInsertSchema(events, {
   registrationFee: z.coerce.number(),
+  attendeeLimit: z.coerce.number(),
   locationType: z.string().optional(),
 }).pick({
-  name: true,
   imageUrl: true,
-  registrationUrl: true,
+  name: true,
   scheduledStart: true,
   scheduledEnd: true,
+  registrationUrlType: true,
+  registrationUrl: true,
   registrationFee: true,
+  attendeeLimit: true,
   description: true,
-  locationName: true,
   locationType: true,
+  locationName: true,
+  status: true,
 });
 
 export const rsvpTypeEnum = pgEnum("rsvp_type", ["yes", "maybe", "no"]);

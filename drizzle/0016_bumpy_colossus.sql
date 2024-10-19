@@ -1,0 +1,1 @@
+ALTER TABLE "events" ADD COLUMN "registration_url_type" text;

@@ -154,6 +154,9 @@ export default function EventForm({
           locationType: {
             label: "Location Type (offline, online, or hybrid)",
           },
+          registrationUrlType: {
+            label: "Registration URL Type (internal or external)",
+          },
         }}
         onSubmit={async (data) => {
           const requestData = {

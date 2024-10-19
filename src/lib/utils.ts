@@ -63,6 +63,18 @@ export function localeTime(
     });
 }
 
+export function localeTimeFromString(
+  date: string,
+  zone: string = "Asia/Jakarta",
+  locale: string = "id"
+): string {
+  return DateTime.fromISO(date).setZone(zone).setLocale(locale).toLocaleString({
+    hour: "2-digit",
+    minute: "2-digit",
+    timeZoneName: "short",
+  });
+}
+
 export function getYoutubeVideoId(url: string): string {
   if (!url) return "";
 

@@ -5,7 +5,7 @@ import {
   TypographyH4,
   TypographyLead,
 } from "@/components/ui/typography";
-import { getDay, localeDate, localeTime } from "@/lib/utils";
+import { getDay, localeDate, localeTimeFromString } from "@/lib/utils";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -26,7 +26,7 @@ export default function UpcomingEvents({ events }: { events: any[] }) {
                 <div className="absolute w-3 h-3 bg-slate-400 rounded-full -start-[0.4rem] border border-slate-400"></div>
 
                 <div className="flex-1 my-auto">
-                  <div className="flex gap-2">
+                  <div className="flex gap-2 items-center">
                     <TypographyH4 className=" text-neutral-50">
                       {localeDate(new Date(event.scheduledStart))}
                     </TypographyH4>
@@ -43,8 +43,8 @@ export default function UpcomingEvents({ events }: { events: any[] }) {
                     {event.locationName}
                   </TypographyLead>
                   <p className="text-base font-normal text-gray-500 mt-4">
-                    {localeTime(new Date(event.scheduledStart))} -{" "}
-                    {localeTime(new Date(event.scheduledEnd))}
+                    {localeTimeFromString(event.scheduledStart)} -{" "}
+                    {localeTimeFromString(event.scheduledEnd)}
                   </p>
 
                   <EventLocationType type={event.locationType} />

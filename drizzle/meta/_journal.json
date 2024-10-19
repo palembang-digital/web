@@ -113,6 +113,20 @@
       "when": 1728662535977,
       "tag": "0015_spicy_cloak",
       "breakpoints": true
+    },
+    {
+      "idx": 16,
+      "version": "7",
+      "when": 1729098136310,
+      "tag": "0016_bumpy_colossus",
+      "breakpoints": true
+    },
+    {
+      "idx": 17,
+      "version": "7",
+      "when": 1729099091569,
+      "tag": "0017_workable_excalibur",
+      "breakpoints": true
     }
   ]
 }

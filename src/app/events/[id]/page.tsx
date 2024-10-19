@@ -230,7 +230,7 @@ export default async function Page({ params }: { params: { id: number } }) {
                       </div>
                       <div>
                         <TypographyH2 className="text-md pb-0">
-                          {event.attendeeLimit} slot tersedia
+                          {event.attendeeLimit} kursi tersedia
                         </TypographyH2>
                         <p className="text-xs text-neutral-500">
                           dari {event.attendeeLimit} kuota
@@ -240,25 +240,33 @@ export default async function Page({ params }: { params: { id: number } }) {
                   )}
 
                   {/* Registration component */}
-                  {event.scheduledStart < new Date() ? (
+                  {event.scheduledStart < new Date() && (
                     <div>
                       <Button className="text-xs bg-green-600 hover:bg-green-600 hover:cursor-default">
                         <CircleCheckBigIcon className="mr-2 h-3 w-3" /> Kegiatan
                         ini telah berakhir
                       </Button>
                     </div>
-                  ) : event.registrationUrl ? (
-                    <Link href={event.registrationUrl || ""} className="w-full">
-                      <ShimmerButton>
-                        <TicketIcon className="mr-2 h-4 w-4" />
-                        <span className="whitespace-pre-wrap text-center text-sm font-medium leading-none tracking-tight text-white dark:from-white dark:to-slate-900/10">
-                          Daftar sekarang!
-                        </span>
-                      </ShimmerButton>
-                    </Link>
-                  ) : (
-                    <></>
                   )}
+
+                  {event.scheduledStart >= new Date() &&
+                    (event.registrationUrlType || event.registrationUrl) && (
+                      <Link
+                        href={
+                          event.registrationUrlType === "internal"
+                            ? `/events/${event.id}/register`
+                            : event.registrationUrl || ""
+                        }
+                        className="w-full"
+                      >
+                        <ShimmerButton>
+                          <TicketIcon className="mr-2 h-4 w-4" />
+                          <span className="whitespace-pre-wrap text-center text-sm font-medium leading-none tracking-tight text-white dark:from-white dark:to-slate-900/10">
+                            Daftar sekarang!
+                          </span>
+                        </ShimmerButton>
+                      </Link>
+                    )}
                 </div>
 
                 {event.description &&

@@ -22,7 +22,11 @@ export default function EventList({
 
   const upcomingEvents =
     data &&
-    data.filter((event: any) => new Date(event.scheduledStart) >= new Date());
+    data.filter(
+      (event: any) =>
+        new Date(event.scheduledStart) >= new Date() &&
+        event.status === "published"
+    );
   const pastEvents =
     data &&
     data.filter((event: any) => new Date(event.scheduledStart) < new Date());
