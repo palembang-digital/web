@@ -1,6 +1,5 @@
 "use client";
 
-import { Boxes } from "@/components/aceternityui/background-boxes";
 import ShimmerButton from "@/components/magicui/shimmer-button";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -10,7 +9,14 @@ import { TypographyH1 } from "@/components/ui/typography";
 import { fetcher } from "@/lib/fetcher";
 import { Session } from "next-auth";
 import Link from "next/link";
+import { Suspense, lazy } from "react";
 import useSWR from "swr";
+
+const Boxes = lazy(() =>
+  import("@/components/aceternityui/background-boxes").then((module) => ({
+    default: module.Boxes,
+  }))
+);
 
 export default function Hero({ session }: { session: Session | null }) {
   const { data, isLoading } = useSWR("/api/v1/stats", fetcher);
@@ -40,7 +46,9 @@ export default function Hero({ session }: { session: Session | null }) {
 
   return (
     <div className="relative flex flex-col items-center justify-center gap-4 py-8">
-      <Boxes />
+      <Suspense>
+        <Boxes className="hidden md:flex" />
+      </Suspense>
 
       <Badge
         className="z-10 px-4 py-2 bg-green-50 text-green-700 border-green-50 font-medium"
