@@ -1,16 +1,20 @@
 import Loading from "@/app/loading";
-import EventList from "@/components/events/event-list";
 import { FloatingHeader } from "@/components/floating-header";
-import Hero from "@/components/landing/hero";
-import LandingAboutUs from "@/components/landing/landing-about-us";
-import LandingContactUs from "@/components/landing/landing-contact-us";
-import LandingFAQ from "@/components/landing/landing-faq";
 import { ScrollArea } from "@/components/scroll-area";
-import Videos from "@/components/videos/videos";
 import { getSession } from "@/services/auth";
 import { Suspense, lazy } from "react";
 
 const LandingFooter = lazy(() => import("@/components/landing/landing-footer"));
+const EventList = lazy(() => import("@/components/events/event-list"));
+const Hero = lazy(() => import("@/components/landing/hero"));
+const LandingAboutUs = lazy(
+  () => import("@/components/landing/landing-about-us")
+);
+const LandingContactUs = lazy(
+  () => import("@/components/landing/landing-contact-us")
+);
+const LandingFAQ = lazy(() => import("@/components/landing/landing-faq"));
+const Videos = lazy(() => import("@/components/videos/videos"));
 
 export default async function Page() {
   const session = await getSession();
