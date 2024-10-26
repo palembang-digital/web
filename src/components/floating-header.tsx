@@ -59,6 +59,8 @@ function Cmp({ scrollTitle, title, session, children }: FloatingHeaderProps) {
       <div className="flex size-full items-center px-4">
         <div className="flex w-full items-center justify-between gap-2">
           <div className="flex flex-1 items-center gap-1">
+            <MobileDrawer session={session} />
+
             <Link href="/">
               <Image
                 src="/logo-black-bg.png"
@@ -91,8 +93,6 @@ function Cmp({ scrollTitle, title, session, children }: FloatingHeaderProps) {
                 </Balancer>
               )}
             </div>
-
-            <MobileDrawer session={session} />
           </div>
         </div>
       </div>

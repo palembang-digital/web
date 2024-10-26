@@ -11,7 +11,7 @@ export default function PastEvents({
   showSeeMoreButton?: boolean;
 }) {
   return (
-    <div className="p-6">
+    <div className="p-2 sm:p-6">
       <p className="italic text-neutral-400">Past events</p>
       <TypographyH2 className="text-neutral-800">
         Kegiatan sebelumnya

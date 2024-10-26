@@ -72,7 +72,7 @@ export default function LandingFAQ() {
     },
   ];
   return (
-    <div className="rounded-lg p-6 mt-20">
+    <div className="rounded-lg p-2 sm:p-6 mt-20">
       <p className="italic text-neutral-400">FAQ</p>
       <TypographyH2 className="text-neutral-800">
         Get to know us more!

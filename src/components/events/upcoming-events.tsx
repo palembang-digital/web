@@ -11,7 +11,7 @@ import Link from "next/link";
 
 export default function UpcomingEvents({ events }: { events: any[] }) {
   return (
-    <div className="rounded-lg p-6 bg-neutral-900">
+    <div className="rounded-lg p-2 sm:p-6 bg-neutral-900">
       <p className="italic text-neutral-400">Upcoming events</p>
       <TypographyH2 className="text-white">Kegiatan Patal</TypographyH2>
 

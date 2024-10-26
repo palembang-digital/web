@@ -21,7 +21,7 @@ export default function Videos({
   }
 
   return (
-    <div className="p-6">
+    <div className="p-2 sm:p-6">
       <p className="italic text-neutral-400">Videos</p>
       <TypographyH2 className="text-neutral-800 mb-2">Galeri</TypographyH2>
 
