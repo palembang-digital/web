@@ -185,6 +185,21 @@ table feeds_likes {
   }
 }
 
+table jobs {
+  id serial [pk, not null, increment]
+  title text [not null]
+  position text [not null]
+  company text [not null]
+  location text [not null]
+  description text [not null]
+  start_date date [not null]
+  end_date date [not null]
+  created_at timestamp [not null, default: `now()`]
+  updated_at timestamp [not null, default: `now()`]
+  created_by text [not null]
+  updated_by text [not null]
+}
+
 table organizations {
   id serial [pk, not null, increment]
   name text [not null]

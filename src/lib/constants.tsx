@@ -35,6 +35,11 @@ export const MENU_LINKS: MenuLink[] = [
     label: "Galeri",
     icon: <ImagePlayIcon size={24} />,
   },
+  // {
+  //   href: "/jobs",
+  //   label: "Pekerjaan",
+  //   icon: <BriefcaseIcon size={24} />,
+  // },
   {
     href: "/ecosystem",
     label: "Ekosistem",

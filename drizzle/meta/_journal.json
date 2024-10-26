@@ -127,6 +127,20 @@
       "when": 1729099091569,
       "tag": "0017_workable_excalibur",
       "breakpoints": true
+    },
+    {
+      "idx": 18,
+      "version": "7",
+      "when": 1729967860433,
+      "tag": "0018_stale_sue_storm",
+      "breakpoints": true
+    },
+    {
+      "idx": 19,
+      "version": "7",
+      "when": 1729967899411,
+      "tag": "0019_yielding_colossus",
+      "breakpoints": true
     }
   ]
 }
