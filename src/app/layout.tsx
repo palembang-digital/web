@@ -1,5 +1,6 @@
 import "@/app/globals.css";
 import Loading from "@/app/loading";
+import GoogleAdsense from "@/components/google-adsense";
 import { MenuContent } from "@/components/menu-content";
 import { SideMenu } from "@/components/side-menu";
 import { Toaster } from "@/components/ui/sonner";
@@ -61,6 +62,8 @@ export default async function RootLayout({
 }>) {
   const session = await getSession();
 
+  const googleAdsenseClientId = process.env.GOOGLE_ADSENSE_CLIENT_ID;
+
   return (
     <html lang="en" suppressHydrationWarning>
       <body
@@ -93,6 +96,9 @@ export default async function RootLayout({
         <SpeedInsights />
       </body>
       <GoogleAnalytics gaId="UA-169186060-1" />
+      {googleAdsenseClientId && (
+        <GoogleAdsense clientId={googleAdsenseClientId} />
+      )}
     </html>
   );
 }
