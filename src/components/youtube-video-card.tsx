@@ -1,5 +1,5 @@
 import { AnimatedTooltip } from "@/components/ui/animated-tooltip";
-import { DateTime } from "luxon";
+import { localeDate } from "@/lib/utils";
 import Image from "next/image";
 import Link from "next/link";
 import { TypographyH3 } from "./ui/typography";
@@ -32,9 +32,7 @@ export default function YouTubeVideoCard({
         />
         <div className="p-4 pb-3">
           <p className="text-muted-foreground text-xs">
-            {DateTime.fromJSDate(video.publishedAt)
-              .setLocale("id")
-              .toLocaleString(DateTime.DATE_FULL)}
+            {localeDate(new Date(video.publishedAt))}
           </p>
           <TypographyH3 className="text-foreground text-sm font-semibold">
             {video.title}
