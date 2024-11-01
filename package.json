@@ -15,7 +15,7 @@
     "db:all": "npm run db:generate && npm run db:migrate && npm run db:erd"
   },
   "dependencies": {
-    "@auth/drizzle-adapter": "^1.4.1",
+    "@auth/drizzle-adapter": "^1.7.2",
     "@googleapis/youtube": "^19.0.0",
     "@hookform/resolvers": "^3.9.0",
     "@instantdb/react": "^0.14.5",
@@ -71,7 +71,7 @@
     "lucide-react": "^0.400.0",
     "luxon": "^3.4.4",
     "next": "^14.2.14",
-    "next-auth": "^5.0.0-beta.19",
+    "next-auth": "^5.0.0-beta.25",
     "next-cloudinary": "^6.6.2",
     "next-themes": "^0.3.0",
     "nextjs-toploader": "^3.6.15",
