@@ -92,6 +92,15 @@ export default function PostCard({
 
   const commentedBy = feed.comments;
 
+  const formatContent = (content: string) => {
+    let output = content.replaceAll("\n", "<br/>");
+    output = output.replaceAll(
+      /@([a-zA-Z0-9_-]+)/g,
+      '<a class="font-medium hover:underline" href="/$1">@$1</a>'
+    );
+    return output;
+  };
+
   return (
     <Sheet onOpenChange={() => setShouldFetch(!shouldFetch)}>
       <div className="flex flex-col border-b pb-6 gap-4">
@@ -116,7 +125,7 @@ export default function PostCard({
         <p
           className="text-sm"
           dangerouslySetInnerHTML={{
-            __html: feed.content.replaceAll("\n", "<br/>"),
+            __html: formatContent(feed.content),
           }}
         />
 
@@ -202,7 +211,7 @@ export default function PostCard({
           <p
             className="text-sm"
             dangerouslySetInnerHTML={{
-              __html: feed.content.replaceAll("\n", "<br/>"),
+              __html: formatContent(feed.content),
             }}
           />
 
@@ -260,7 +269,7 @@ export default function PostCard({
               <p
                 className="text-sm"
                 dangerouslySetInnerHTML={{
-                  __html: comment.comment.replaceAll("\n", "<br/>"),
+                  __html: formatContent(comment.comment),
                 }}
               />
             </div>
