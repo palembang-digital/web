@@ -2,7 +2,6 @@
 
 import ShimmerButton from "@/components/magicui/shimmer-button";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { TypographyH1 } from "@/components/ui/typography";
@@ -95,7 +94,11 @@ export default function Hero({ session }: { session: Session | null }) {
 
       {session ? (
         <Link href="/events" className="z-10">
-          <Button>Explore our events!</Button>
+          <ShimmerButton>
+            <span className="whitespace-pre-wrap text-center text-sm font-medium leading-none tracking-tight text-white dark:from-white dark:to-slate-900/10">
+              Explore our cool events!
+            </span>
+          </ShimmerButton>
         </Link>
       ) : (
         <Link href="/api/auth/signin" className="z-10">
