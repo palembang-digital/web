@@ -28,7 +28,7 @@ export default async function Layout({
   const session = await auth();
   // @ts-ignore
   if (!session) {
-    return <p>Not authenticated</p>;
+    return <p>Not authenticated. Please log in first.</p>;
   }
 
   return (

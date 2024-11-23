@@ -8,8 +8,8 @@ export default async function Page() {
   const session = await auth();
 
   // @ts-ignore
-  if (!session || session.user?.role !== "administrator") {
-    return <p>Not authenticated</p>;
+  if (!session) {
+    return <p>Not authenticated. Please log in first.</p>;
   }
 
   return (

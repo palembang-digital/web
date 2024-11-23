@@ -1,6 +1,7 @@
 import { FloatingHeader } from "@/components/floating-header";
 import JobDescription from "@/components/jobs/job-description";
 import { ScrollArea } from "@/components/scroll-area";
+import { SignIn } from "@/components/sign-in";
 import { Button } from "@/components/ui/button";
 import { TypographyH2, TypographyH3 } from "@/components/ui/typography";
 import { getJob } from "@/services";
@@ -44,11 +45,15 @@ export default async function Page({ params }: { params: { id: number } }) {
                 </p>
               </div>
               <div>
-                <Link href={job.applicationUrl || ""} target="_blank">
-                  <Button className="mt-1 text-xs bg-green-600 hover:bg-green-500">
-                    Lamar <SquareArrowOutUpRightIcon className="w-4 ml-2" />
-                  </Button>
-                </Link>
+                {session ? (
+                  <Link href={job.applicationUrl || ""} target="_blank">
+                    <Button className="mt-1 text-xs bg-green-600 hover:bg-green-500">
+                      Lamar <SquareArrowOutUpRightIcon className="w-4 ml-2" />
+                    </Button>
+                  </Link>
+                ) : (
+                  <SignIn text="Masuk untuk melamar" className="mt-1 text-xs" />
+                )}
               </div>
             </div>
 

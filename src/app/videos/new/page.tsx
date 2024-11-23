@@ -9,7 +9,7 @@ export default async function Page({ params }: { params: { id: number } }) {
 
   // @ts-ignore
   if (!session || session.user?.role !== "administrator") {
-    return <p>Not authenticated</p>;
+    return <p>Not authenticated. Please log in first.</p>;
   }
 
   return (

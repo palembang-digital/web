@@ -1,8 +1,11 @@
 import { auth } from "@/auth";
 import EventList from "@/components/events/event-list";
 import { FloatingHeader } from "@/components/floating-header";
+import ShimmerButton from "@/components/magicui/shimmer-button";
 import { ScrollArea } from "@/components/scroll-area";
+import { SignIn } from "@/components/sign-in";
 import type { Metadata } from "next";
+import Link from "next/link";
 
 export const metadata: Metadata = {
   title: "Kegiatan",
@@ -18,6 +21,22 @@ export default async function Page() {
       <FloatingHeader session={session} scrollTitle="Kegiatan Patal" />
       <div className="content-wrapper">
         <div className="content">
+          <div className="p-2 sm:p-6">
+            {session ? (
+              <Link href="/events/new">
+                <ShimmerButton>
+                  <span className="whitespace-pre-wrap text-center text-xs font-medium leading-none tracking-tight text-white dark:from-white dark:to-slate-900/10">
+                    Punya kegiatan seru? Tambahkan sekarang!
+                  </span>
+                </ShimmerButton>
+              </Link>
+            ) : (
+              <SignIn
+                className="text-xs"
+                text="Masuk untuk menambahkan kegiatan seru kamu"
+              />
+            )}
+          </div>
           <EventList />
         </div>
       </div>

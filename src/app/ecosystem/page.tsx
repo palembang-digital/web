@@ -45,13 +45,6 @@ export default async function Page() {
     orderBy: (organizations, { asc }) => [asc(organizations.name)],
   });
 
-  const defaultOrgType = "semua";
-  const orgTypes = orgs
-    .map((org) => org.organizationType)
-    .sort((a, b) => (a !== null && b !== null ? (a > b ? 1 : -1) : 0));
-  // @ts-ignore
-  const uniqueOrgTypes = [defaultOrgType, ...new Set(orgTypes)];
-
   return (
     <ScrollArea useScrollAreaId>
       <FloatingHeader session={session} scrollTitle="Ekosistem" />

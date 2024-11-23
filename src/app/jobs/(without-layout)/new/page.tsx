@@ -7,7 +7,7 @@ import { getSession } from "@/services/auth";
 export default async function Page() {
   const session = await getSession();
   if (!session) {
-    return <p>Not authenticated</p>;
+    return <p>Not authenticated. Please log in first.</p>;
   }
 
   return (

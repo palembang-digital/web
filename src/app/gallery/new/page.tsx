@@ -7,7 +7,7 @@ export default async function Page() {
 
   // @ts-ignore
   if (!session || session.user?.role !== "administrator") {
-    return <p>Not authenticated</p>;
+    return <p>Not authenticated. Please log in first.</p>;
   }
 
   const events = await db.query.events.findMany({

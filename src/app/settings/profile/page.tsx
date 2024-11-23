@@ -7,7 +7,7 @@ export default async function Page() {
 
   // @ts-ignore
   if (!session) {
-    return <p>Not authenticated</p>;
+    return <p>Not authenticated. Please log in first.</p>;
   }
 
   if (!session.user) {

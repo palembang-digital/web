@@ -8,7 +8,7 @@ import { getSession } from "@/services/auth";
 export default async function Page({ params }: { params: { id: number } }) {
   const session = await getSession();
   if (!session) {
-    return <p>Not authenticated</p>;
+    return <p>Not authenticated. Please log in first.</p>;
   }
 
   const job = await getJob(params.id);
