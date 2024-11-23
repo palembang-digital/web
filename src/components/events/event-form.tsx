@@ -240,7 +240,7 @@ export default function EventForm({
             </FormControl>
           </FormItem>
         </div>
-        <AutoFormSubmit>Save</AutoFormSubmit>
+        <AutoFormSubmit>Simpan</AutoFormSubmit>
       </AutoForm>
       <Button variant="link" onClick={() => router.push(`/events/${event.id}`)}>
         Cancel

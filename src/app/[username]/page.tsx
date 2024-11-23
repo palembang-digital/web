@@ -14,7 +14,11 @@ export async function generateMetadata({
 }: {
   params: { username: string };
 }): Promise<Metadata> {
-  const user = await getUser(params.username);
+  const username = params.username.startsWith("%40")
+    ? params.username.slice(3)
+    : params.username;
+
+  const user = await getUser(username);
   if (!user) {
     return {
       title: "User not found",
@@ -33,7 +37,13 @@ export default async function Page({
 }) {
   const session = await auth();
 
-  const user = await getUser(params.username);
+  const username = params.username.startsWith("%40")
+    ? params.username.slice(3)
+    : params.username;
+
+  console.log(username);
+
+  const user = await getUser(username);
   if (!user) {
     return (
       <ScrollArea useScrollAreaId>

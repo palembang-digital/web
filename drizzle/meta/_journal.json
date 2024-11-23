@@ -141,6 +141,34 @@
       "when": 1729967899411,
       "tag": "0019_yielding_colossus",
       "breakpoints": true
+    },
+    {
+      "idx": 20,
+      "version": "7",
+      "when": 1732326577022,
+      "tag": "0020_misty_mac_gargan",
+      "breakpoints": true
+    },
+    {
+      "idx": 21,
+      "version": "7",
+      "when": 1732326723079,
+      "tag": "0021_steep_george_stacy",
+      "breakpoints": true
+    },
+    {
+      "idx": 22,
+      "version": "7",
+      "when": 1732327569001,
+      "tag": "0022_elite_thunderbird",
+      "breakpoints": true
+    },
+    {
+      "idx": 23,
+      "version": "7",
+      "when": 1732327982119,
+      "tag": "0023_small_ezekiel_stane",
+      "breakpoints": true
     }
   ]
 }
