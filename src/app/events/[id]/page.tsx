@@ -240,7 +240,7 @@ export default async function Page({ params }: { params: { id: number } }) {
                   )}
 
                   {/* Registration component */}
-                  {event.scheduledStart < new Date() && (
+                  {event.scheduledEnd < new Date() && (
                     <div>
                       <Button className="text-xs bg-green-600 hover:bg-green-600 hover:cursor-default">
                         <CircleCheckBigIcon className="mr-2 h-3 w-3" /> Kegiatan
