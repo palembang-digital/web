@@ -24,7 +24,7 @@ export default function AutoFormRichTextarea({
       )}
       <FormControl>
         <MinimalTiptapEditor
-          autofocus={true}
+          autofocus={false}
           className="w-full"
           editable={true}
           editorClassName="focus:outline-none"

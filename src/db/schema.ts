@@ -1,7 +1,6 @@
 import { relations } from "drizzle-orm";
 import {
   boolean,
-  date,
   integer,
   json,
   pgEnum,
@@ -434,33 +433,47 @@ export const insertFeedCommentSchema = createInsertSchema(feedsComments, {
   comment: true,
 });
 
+export const workplaceTypeEnum = pgEnum("workplace_type", [
+  "on-site",
+  "hybrid",
+  "remote",
+]);
+
+export const jobTypeEnum = pgEnum("job_type", [
+  "full-time",
+  "part-time",
+  "contract",
+  "temporary",
+  "other",
+  "volunteer",
+  "internship",
+]);
+
 export const jobs = pgTable("jobs", {
   id: serial("id").primaryKey(),
   title: text("title").notNull(),
-  position: text("position").notNull(),
   company: text("company").notNull(),
   location: text("location").notNull(),
   description: text("description").notNull(),
-  startDate: date("start_date").notNull(),
-  endDate: date("end_date").notNull(),
+  workplaceType: workplaceTypeEnum("workplace_type")
+    .notNull()
+    .default("on-site"),
+  jobType: jobTypeEnum("job_type").notNull().default("full-time"),
+  salary: text("salary"),
   createdAt: timestamp("created_at").notNull().defaultNow(),
   updatedAt: timestamp("updated_at").notNull().defaultNow(),
   createdBy: text("created_by").notNull(),
   updatedBy: text("updated_by").notNull(),
 });
 
-export const jobsSchema = createInsertSchema(jobs, {
-  title: z.string().min(1).max(300),
-  description: z.string().min(1).max(300),
-  company: z.string().min(1).max(300),
-  location: z.string().min(1).max(300),
-  position: z.string().min(1).max(300),
-  startDate: z.coerce.date(),
-  endDate: z.coerce.date(),
-  createdAt: z.coerce.date(),
-  updatedAt: z.coerce.date(),
-  createdBy: z.string().min(1).max(300),
-  updatedBy: z.string().min(1).max(300),
+export const insertJobSchema = createInsertSchema(jobs).pick({
+  title: true,
+  company: true,
+  location: true,
+  workplaceType: true,
+  jobType: true,
+  description: true,
+  salary: true,
 });
 
 // ==================================================

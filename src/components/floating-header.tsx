@@ -2,20 +2,29 @@
 
 import { MobileDrawer } from "@/components/mobile-drawer";
 import { MOBILE_SCROLL_THRESHOLD, SCROLL_AREA_ID } from "@/lib/constants";
+import { ArrowLeftIcon } from "lucide-react";
 import { Session } from "next-auth";
 import Image from "next/image";
 import Link from "next/link";
 import { memo, useEffect, useState } from "react";
 import Balancer from "react-wrap-balancer";
+import { Button } from "./ui/button";
 
 interface FloatingHeaderProps {
   scrollTitle?: string;
   title?: string;
+  goBackLink?: string;
   session: Session | null;
   children?: React.ReactNode;
 }
 
-function Cmp({ scrollTitle, title, session, children }: FloatingHeaderProps) {
+function Cmp({
+  scrollTitle,
+  title,
+  goBackLink,
+  session,
+  children,
+}: FloatingHeaderProps) {
   const [transformValues, setTransformValues] = useState({
     translateY: 0,
     opacity: scrollTitle ? 0 : 1,
@@ -56,10 +65,18 @@ function Cmp({ scrollTitle, title, session, children }: FloatingHeaderProps) {
 
   return (
     <header className="sticky inset-x-0 top-0 z-10 mx-auto flex h-12 w-full shrink-0 items-center overflow-hidden border-b bg-white text-sm font-medium lg:hidden">
-      <div className="flex size-full items-center px-4">
+      <div className="flex size-full items-center px-2">
         <div className="flex w-full items-center justify-between gap-2">
           <div className="flex flex-1 items-center gap-1">
-            <MobileDrawer session={session} />
+            {goBackLink ? (
+              <Button variant="ghost" size="icon" className="shrink-0" asChild>
+                <Link href={goBackLink} title="Go back">
+                  <ArrowLeftIcon size={16} />
+                </Link>
+              </Button>
+            ) : (
+              <MobileDrawer session={session} />
+            )}
 
             <Link href="/">
               <Image
