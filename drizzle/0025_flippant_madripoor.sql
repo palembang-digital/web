@@ -1,0 +1,1 @@
+ALTER TABLE "jobs" ALTER COLUMN "application_url" SET NOT NULL;

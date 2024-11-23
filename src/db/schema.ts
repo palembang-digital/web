@@ -460,6 +460,7 @@ export const jobs = pgTable("jobs", {
     .default("on-site"),
   jobType: jobTypeEnum("job_type").notNull().default("full-time"),
   salary: text("salary"),
+  applicationUrl: text("application_url").notNull(),
   createdAt: timestamp("created_at").notNull().defaultNow(),
   updatedAt: timestamp("updated_at").notNull().defaultNow(),
   createdBy: text("created_by").notNull(),
@@ -474,6 +475,7 @@ export const insertJobSchema = createInsertSchema(jobs).pick({
   jobType: true,
   description: true,
   salary: true,
+  applicationUrl: true,
 });
 
 // ==================================================

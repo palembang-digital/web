@@ -51,6 +51,11 @@ export default function JobForm({
           description:
             "Opsional. Gaji atau range gaji yang ditawarkan. Contoh: Rp 5.000.000 atau Rp 5.000.000 - Rp 10.000.000",
         },
+        applicationUrl: {
+          label: "Link URL lamaran",
+          description:
+            "Link URL untuk melamar pekerjaan. Contoh: https://example.com/apply, https://wa.me/123456789",
+        },
       }}
     >
       <AutoFormSubmit>Simpan</AutoFormSubmit>

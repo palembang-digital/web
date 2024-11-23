@@ -169,6 +169,20 @@
       "when": 1732327982119,
       "tag": "0023_small_ezekiel_stane",
       "breakpoints": true
+    },
+    {
+      "idx": 24,
+      "version": "7",
+      "when": 1732331375968,
+      "tag": "0024_dear_toad",
+      "breakpoints": true
+    },
+    {
+      "idx": 25,
+      "version": "7",
+      "when": 1732337619450,
+      "tag": "0025_flippant_madripoor",
+      "breakpoints": true
     }
   ]
 }
