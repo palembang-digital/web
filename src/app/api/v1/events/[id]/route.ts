@@ -111,7 +111,7 @@ export async function PUT(
       )
   );
 
-  const deletedCommittees = currentSpeakers?.filter(
+  const deletedCommittees = currentCommittees?.filter(
     (currentCommittee) =>
       !inputCommittees.some(
         (inputCommittee: any) =>

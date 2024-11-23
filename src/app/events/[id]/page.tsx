@@ -176,7 +176,7 @@ export default async function Page({ params }: { params: { id: number } }) {
                       <Link
                         href={`/${user.user.username}`}
                         key={user.user.id}
-                        className="flex items-center my-4"
+                        className="flex items-center my-4 hover:underline"
                       >
                         <Image
                           src={user.user.image || ""}
@@ -215,7 +215,7 @@ export default async function Page({ params }: { params: { id: number } }) {
                       <Link
                         href={`/${user.user.username}`}
                         key={user.user.id}
-                        className="flex items-center my-4"
+                        className="flex items-center my-4 hover:underline"
                       >
                         <Image
                           src={user.user.image || ""}
