@@ -166,6 +166,24 @@ table events_speakers {
   }
 }
 
+table events_sponsors_organizations {
+  event_id integer [not null]
+  organization_id integer [not null]
+
+  indexes {
+    (event_id, organization_id) [pk]
+  }
+}
+
+table events_sponsors_users {
+  event_id integer [not null]
+  user_id text [not null]
+
+  indexes {
+    (event_id, user_id) [pk]
+  }
+}
+
 table events_videos {
   event_id integer [not null]
   video_id integer [not null]
@@ -307,6 +325,14 @@ ref: events_hosts_users.user_id > users.id
 ref: events_speakers.event_id > events.id
 
 ref: events_speakers.user_id > users.id
+
+ref: events_sponsors_organizations.event_id > events.id
+
+ref: events_sponsors_organizations.organization_id > organizations.id
+
+ref: events_sponsors_users.event_id > events.id
+
+ref: events_sponsors_users.user_id > users.id
 
 ref: events_videos.event_id > events.id
 

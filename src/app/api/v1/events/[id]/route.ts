@@ -6,6 +6,8 @@ import {
   eventsHostsOrganizations,
   eventsHostsUsers,
   eventsSpeakers,
+  eventsSponsorsOrganizations,
+  eventsSponsorsUsers,
   eventsVideos,
 } from "@/db/schema";
 import { getEvent } from "@/services";
@@ -30,6 +32,9 @@ export async function PUT(
   const currentCommittees = currentEvent?.eventsCommittees;
   const currentHostsOrganizations = currentEvent?.eventsHostsOrganizations;
   const currentHostsUsers = currentEvent?.eventsHostsUsers;
+  const currentSponsorsOrganizations =
+    currentEvent?.eventsSponsorsOrganizations;
+  const currentSponsorsUsers = currentEvent?.eventsSponsorsUsers;
   const currentVideos = currentEvent?.eventsVideos;
 
   const data = await req.json();
@@ -58,6 +63,18 @@ export async function PUT(
   );
 
   const inputHostsUsers = data.hostsUsers.map((user: any) => ({
+    eventId: currentEvent?.id,
+    userId: user.value,
+  }));
+
+  const inputSponsorsOrganizations = data.sponsorsOrganizations.map(
+    (organization: any) => ({
+      eventId: currentEvent?.id,
+      organizationId: organization.value,
+    })
+  );
+
+  const inputSponsorsUsers = data.sponsorsUsers.map((user: any) => ({
     eventId: currentEvent?.id,
     userId: user.value,
   }));
@@ -138,6 +155,46 @@ export async function PUT(
         (inputHostUser: any) =>
           currentHostUser.eventId === inputHostUser.eventId &&
           currentHostUser.userId === inputHostUser.userId
+      )
+  );
+
+  const newSponsorsOrganizations = inputSponsorsOrganizations?.filter(
+    (inputSponsorOrganization: any) =>
+      !currentSponsorsOrganizations?.some(
+        (currentSponsorOrganization: any) =>
+          currentSponsorOrganization.eventId ===
+            inputSponsorOrganization.eventId &&
+          currentSponsorOrganization.organizationId ===
+            inputSponsorOrganization.organizationId
+      )
+  );
+
+  const deletedSponsorsOrganizations = currentSponsorsOrganizations?.filter(
+    (currentSponsorOrganization) =>
+      !inputSponsorsOrganizations.some(
+        (inputSponsorOrganization: any) =>
+          currentSponsorOrganization.eventId ===
+            inputSponsorOrganization.eventId &&
+          currentSponsorOrganization.organizationId ===
+            inputSponsorOrganization.organizationId
+      )
+  );
+
+  const newSponsorsUsers = inputSponsorsUsers?.filter(
+    (inputSponsorUser: any) =>
+      !currentSponsorsUsers?.some(
+        (currentSponsorUser: any) =>
+          currentSponsorUser.eventId === inputSponsorUser.eventId &&
+          currentSponsorUser.userId === inputSponsorUser.userId
+      )
+  );
+
+  const deletedSponsorsUsers = currentSponsorsUsers?.filter(
+    (currentSponsorUser) =>
+      !inputSponsorsUsers.some(
+        (inputSponsorUser: any) =>
+          currentSponsorUser.eventId === inputSponsorUser.eventId &&
+          currentSponsorUser.userId === inputSponsorUser.userId
       )
   );
 
@@ -229,6 +286,51 @@ export async function PUT(
             and(
               eq(eventsHostsUsers.eventId, deletedHostUser.eventId),
               eq(eventsHostsUsers.userId, deletedHostUser.userId)
+            )
+          );
+      });
+    }
+
+    if (newSponsorsOrganizations && newSponsorsOrganizations.length > 0) {
+      await tx
+        .insert(eventsSponsorsOrganizations)
+        .values(newSponsorsOrganizations);
+    }
+    if (
+      deletedSponsorsOrganizations &&
+      deletedSponsorsOrganizations.length > 0
+    ) {
+      deletedSponsorsOrganizations.forEach(
+        async (deletedSponsorOrganization: any) => {
+          await tx
+            .delete(eventsSponsorsOrganizations)
+            .where(
+              and(
+                eq(
+                  eventsSponsorsOrganizations.eventId,
+                  deletedSponsorOrganization.eventId
+                ),
+                eq(
+                  eventsSponsorsOrganizations.organizationId,
+                  deletedSponsorOrganization.organizationId
+                )
+              )
+            );
+        }
+      );
+    }
+
+    if (newSponsorsUsers && newSponsorsUsers.length > 0) {
+      await tx.insert(eventsSponsorsUsers).values(newSponsorsUsers);
+    }
+    if (deletedSponsorsUsers && deletedSponsorsUsers.length > 0) {
+      deletedSponsorsUsers.forEach(async (deletedSponsorUser: any) => {
+        await tx
+          .delete(eventsSponsorsUsers)
+          .where(
+            and(
+              eq(eventsSponsorsUsers.eventId, deletedSponsorUser.eventId),
+              eq(eventsSponsorsUsers.userId, deletedSponsorUser.userId)
             )
           );
       });

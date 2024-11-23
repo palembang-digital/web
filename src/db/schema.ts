@@ -275,6 +275,36 @@ export const eventsHostsOrganizations = pgTable(
   })
 );
 
+export const eventsSponsorsUsers = pgTable(
+  "events_sponsors_users",
+  {
+    eventId: integer("event_id")
+      .notNull()
+      .references(() => events.id, { onDelete: "cascade" }),
+    userId: text("user_id")
+      .notNull()
+      .references(() => users.id, { onDelete: "cascade" }),
+  },
+  (t) => ({
+    pk: primaryKey({ columns: [t.eventId, t.userId] }),
+  })
+);
+
+export const eventsSponsorsOrganizations = pgTable(
+  "events_sponsors_organizations",
+  {
+    eventId: integer("event_id")
+      .notNull()
+      .references(() => events.id, { onDelete: "cascade" }),
+    organizationId: integer("organization_id")
+      .notNull()
+      .references(() => organizations.id, { onDelete: "cascade" }),
+  },
+  (t) => ({
+    pk: primaryKey({ columns: [t.eventId, t.organizationId] }),
+  })
+);
+
 export const eventsVideos = pgTable(
   "events_videos",
   {
@@ -489,6 +519,7 @@ export const usersRelations = relations(users, ({ many }) => ({
   eventsAttendees: many(eventsAttendees),
   eventsCommittees: many(eventsCommittees),
   eventsHostsUsers: many(eventsHostsUsers),
+  eventsSponsorsUsers: many(eventsSponsorsUsers),
   videosSpeakers: many(videosSpeakers),
   certificates: many(certificates),
   feeds: many(feeds),
@@ -498,6 +529,7 @@ export const usersRelations = relations(users, ({ many }) => ({
 
 export const organizationsRelations = relations(organizations, ({ many }) => ({
   eventsHostsOrganizations: many(eventsHostsOrganizations),
+  eventsSponsorsOrganizations: many(eventsSponsorsOrganizations),
 }));
 
 export const eventsRelations = relations(events, ({ many }) => ({
@@ -507,6 +539,8 @@ export const eventsRelations = relations(events, ({ many }) => ({
   eventsVideos: many(eventsVideos),
   eventsHostsUsers: many(eventsHostsUsers),
   eventsHostsOrganizations: many(eventsHostsOrganizations),
+  eventsSponsorsUsers: many(eventsSponsorsUsers),
+  eventsSponsorsOrganizations: many(eventsSponsorsOrganizations),
   certificates: many(certificates),
 }));
 
@@ -577,6 +611,34 @@ export const eventsHostsOrganizationsRelations = relations(
     }),
     organization: one(organizations, {
       fields: [eventsHostsOrganizations.organizationId],
+      references: [organizations.id],
+    }),
+  })
+);
+
+export const eventsSponsorsUsersRelations = relations(
+  eventsSponsorsUsers,
+  ({ one }) => ({
+    event: one(events, {
+      fields: [eventsSponsorsUsers.eventId],
+      references: [events.id],
+    }),
+    user: one(users, {
+      fields: [eventsSponsorsUsers.userId],
+      references: [users.id],
+    }),
+  })
+);
+
+export const eventsSponsorsOrganizationsRelations = relations(
+  eventsSponsorsOrganizations,
+  ({ one }) => ({
+    event: one(events, {
+      fields: [eventsSponsorsOrganizations.eventId],
+      references: [events.id],
+    }),
+    organization: one(organizations, {
+      fields: [eventsSponsorsOrganizations.organizationId],
       references: [organizations.id],
     }),
   })

@@ -172,20 +172,59 @@ export default async function Page({ params }: { params: { id: number } }) {
                         <p className="ml-2 text-sm">{organization.name}</p>
                       </div>
                     ))}
-                    {event.eventsHostsUsers.map((host) => (
+                    {event.eventsHostsUsers.map((user) => (
                       <Link
-                        href={`/${host.user.username}`}
-                        key={host.user.id}
+                        href={`/${user.user.username}`}
+                        key={user.user.id}
                         className="flex items-center my-4"
                       >
                         <Image
-                          src={host.user.image || ""}
-                          alt={host.user.name || ""}
+                          src={user.user.image || ""}
+                          alt={user.user.name || ""}
                           width={24}
                           height={24}
                           className="rounded-full"
                         />
-                        <p className="ml-2 text-sm">{host.user.name}</p>
+                        <p className="ml-2 text-sm">{user.user.name}</p>
+                      </Link>
+                    ))}
+                  </div>
+                )}
+                {(event.eventsSponsorsOrganizations.length > 0 ||
+                  event.eventsSponsorsUsers.length > 0) && (
+                  <div>
+                    <TypographyH4>Sponsors</TypographyH4>
+                    {event.eventsSponsorsOrganizations.map(
+                      ({ organization }) => (
+                        <div
+                          key={organization.id}
+                          className="flex items-center my-4"
+                        >
+                          <Image
+                            src={organization.image || ""}
+                            alt={organization.name || ""}
+                            width={24}
+                            height={24}
+                            className="rounded-lg"
+                          />
+                          <p className="ml-2 text-sm">{organization.name}</p>
+                        </div>
+                      )
+                    )}
+                    {event.eventsSponsorsUsers.map((user) => (
+                      <Link
+                        href={`/${user.user.username}`}
+                        key={user.user.id}
+                        className="flex items-center my-4"
+                      >
+                        <Image
+                          src={user.user.image || ""}
+                          alt={user.user.name || ""}
+                          width={24}
+                          height={24}
+                          className="rounded-full"
+                        />
+                        <p className="ml-2 text-sm">{user.user.name}</p>
                       </Link>
                     ))}
                   </div>

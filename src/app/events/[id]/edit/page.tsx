@@ -2,7 +2,7 @@ import { auth } from "@/auth";
 import EditEventForm from "@/components/events/edit-event-form";
 import { FloatingHeader } from "@/components/floating-header";
 import { ScrollArea } from "@/components/scroll-area";
-import { db } from "@/db";
+import { getEvent } from "@/services";
 
 export default async function Page({ params }: { params: { id: number } }) {
   const session = await auth();
@@ -12,31 +12,7 @@ export default async function Page({ params }: { params: { id: number } }) {
     return <p>Not authenticated. Please log in first.</p>;
   }
 
-  const event = await db.query.events.findFirst({
-    where: (events, { eq }) => eq(events.id, params.id),
-    with: {
-      eventsSpeakers: {
-        with: {
-          user: true,
-        },
-      },
-      eventsHostsUsers: {
-        with: {
-          user: true,
-        },
-      },
-      eventsHostsOrganizations: {
-        with: {
-          organization: true,
-        },
-      },
-      eventsVideos: {
-        with: {
-          video: true,
-        },
-      },
-    },
-  });
+  const event = await getEvent(params.id);
 
   return (
     <ScrollArea useScrollAreaId>

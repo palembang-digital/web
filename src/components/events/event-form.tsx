@@ -23,7 +23,9 @@ export default function EventForm({
 
   const [speakers, setSpeakers] = useState([]);
   const [committees, setCommittees] = useState([]);
+
   const [hostsUsers, setHostsUsers] = useState([]);
+  const [sponsorsUsers, setSponsorsUsers] = useState([]);
   useEffect(() => {
     fetch("/api/v1/users")
       .then((res) => res.json())
@@ -36,20 +38,23 @@ export default function EventForm({
         setSpeakers(users);
         setCommittees(users);
         setHostsUsers(users);
+        setSponsorsUsers(users);
       });
   }, []);
 
   const [hostsOrganizations, setHostsOrganizations] = useState([]);
+  const [sponsorsOrganizations, setSponsorsOrganizations] = useState([]);
   useEffect(() => {
     fetch("/api/v1/organizations")
       .then((res) => res.json())
       .then((data) => {
-        setHostsOrganizations(
-          data.map((org: any) => ({
-            value: org.id,
-            label: org.name,
-          }))
-        );
+        const hosts = data.map((org: any) => ({
+          value: org.id,
+          label: org.name,
+        }));
+
+        setHostsOrganizations(hosts);
+        setSponsorsOrganizations(hosts);
       });
   }, []);
 
@@ -75,6 +80,17 @@ export default function EventForm({
       : []
   );
 
+  const [selectedHostsUsers, setSelectedHostsUsers] = useState(
+    event.eventsHostsUsers
+      ? event.eventsHostsUsers
+          .map((es: any) => ({
+            value: es.userId,
+            label: es.user.name,
+          }))
+          .sort((a: any, b: any) => a.label.localeCompare(b.label))
+      : []
+  );
+
   const [selectedHostsOrganizations, setSelectedHostsOrganizations] = useState(
     event.eventsHostsOrganizations
       ? event.eventsHostsOrganizations
@@ -86,9 +102,9 @@ export default function EventForm({
       : []
   );
 
-  const [selectedHostsUsers, setSelectedHostsUsers] = useState(
-    event.eventsHostsUsers
-      ? event.eventsHostsUsers
+  const [selectedSponsorsUsers, setSelectedSponsorsUsers] = useState(
+    event.eventsSponsorsUsers
+      ? event.eventsSponsorsUsers
           .map((es: any) => ({
             value: es.userId,
             label: es.user.name,
@@ -96,6 +112,18 @@ export default function EventForm({
           .sort((a: any, b: any) => a.label.localeCompare(b.label))
       : []
   );
+
+  const [selectedSponsorsOrganizations, setSelectedSponsorsOrganizations] =
+    useState(
+      event.eventsSponsorsOrganizations
+        ? event.eventsSponsorsOrganizations
+            .map((es: any) => ({
+              value: es.organizationId,
+              label: es.organization.name,
+            }))
+            .sort((a: any, b: any) => a.label.localeCompare(b.label))
+        : []
+    );
 
   const [videos, setVideos] = useState([]);
   const [selectedVideos, setSelectedVideos] = useState(
@@ -165,6 +193,8 @@ export default function EventForm({
             committees: selectedCommittees,
             hostsOrganizations: selectedHostsOrganizations,
             hostsUsers: selectedHostsUsers,
+            sponsorsOrganizations: selectedSponsorsOrganizations,
+            sponsorsUsers: selectedSponsorsUsers,
             videos: selectedVideos,
           };
 
@@ -222,6 +252,34 @@ export default function EventForm({
                 placeholder="Pilih member yang menjadi host"
                 selected={selectedHostsUsers}
                 setSelected={setSelectedHostsUsers}
+              />
+            </FormControl>
+          </FormItem>
+        </div>
+
+        <div className="flex flex-row  items-center space-x-2">
+          <FormItem className="flex w-full flex-col justify-start">
+            <FormLabel>Sponsors (Organizations)</FormLabel>
+            <FormControl>
+              <MultiSelect
+                options={sponsorsOrganizations}
+                placeholder="Pilih organisasi yang menjadi sponsor"
+                selected={selectedSponsorsOrganizations}
+                setSelected={setSelectedSponsorsOrganizations}
+              />
+            </FormControl>
+          </FormItem>
+        </div>
+
+        <div className="flex flex-row  items-center space-x-2">
+          <FormItem className="flex w-full flex-col justify-start">
+            <FormLabel>Sponsors (Users)</FormLabel>
+            <FormControl>
+              <MultiSelect
+                options={sponsorsUsers}
+                placeholder="Pilih member yang menjadi sponsor"
+                selected={selectedSponsorsUsers}
+                setSelected={setSelectedSponsorsUsers}
               />
             </FormControl>
           </FormItem>

@@ -120,6 +120,20 @@ export const getEvent = cache(async (id: number) => {
           },
         },
       },
+      eventsSponsorsUsers: {
+        with: {
+          user: {
+            columns: { id: true, name: true, username: true, image: true },
+          },
+        },
+      },
+      eventsSponsorsOrganizations: {
+        with: {
+          organization: {
+            columns: { id: true, name: true, slug: true, image: true },
+          },
+        },
+      },
       eventsVideos: {
         with: {
           video: {

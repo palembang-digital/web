@@ -6,6 +6,8 @@ import {
   eventsHostsOrganizations,
   eventsHostsUsers,
   eventsSpeakers,
+  eventsSponsorsOrganizations,
+  eventsSponsorsUsers,
   eventsVideos,
 } from "@/db/schema";
 import { getEvents } from "@/services";
@@ -83,6 +85,26 @@ export async function POST(req: Request) {
         userId: user.value,
       }));
       await tx.insert(eventsHostsUsers).values(hostsUsers);
+    }
+
+    if (data.sponsorsOrganizations && data.sponsorsOrganizations.length > 0) {
+      const sponsorsOrganizations = data.sponsorsOrganizations.map(
+        (organization: any) => ({
+          eventId: eventId,
+          organizationId: organization.value,
+        })
+      );
+      await tx
+        .insert(eventsSponsorsOrganizations)
+        .values(sponsorsOrganizations);
+    }
+
+    if (data.sponsorsUsers && data.sponsorsUsers.length > 0) {
+      const sponsorsUsers = data.sponsorsUsers.map((user: any) => ({
+        eventId: eventId,
+        userId: user.value,
+      }));
+      await tx.insert(eventsSponsorsUsers).values(sponsorsUsers);
     }
 
     if (data.videos && data.videos.length > 0) {
