@@ -24,12 +24,12 @@ export default function EventList({
     data &&
     data.filter(
       (event: any) =>
-        new Date(event.scheduledStart) >= new Date() &&
+        new Date(event.scheduledEnd) >= new Date() &&
         event.status === "published"
     );
   const pastEvents =
     data &&
-    data.filter((event: any) => new Date(event.scheduledStart) < new Date());
+    data.filter((event: any) => new Date(event.scheduledEnd) < new Date());
 
   return (
     <div>
