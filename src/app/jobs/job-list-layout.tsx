@@ -17,18 +17,22 @@ export default function JobListLayout({ isMobile }: { isMobile?: boolean }) {
 
   return (
     <div className={cn(!isMobile && "flex flex-col gap-1 text-sm")}>
-      {data.map((job: any) => {
-        const isActive = pathname === `/jobs/${job.id}`;
+      {data
+        .sort((a: { createdAt: number }, b: { createdAt: number }) =>
+          a.createdAt < b.createdAt ? 1 : -1
+        )
+        .map((job: any) => {
+          const isActive = pathname === `/jobs/${job.id}`;
 
-        return (
-          <JobLink
-            key={job.slug}
-            job={job}
-            isMobile={isMobile}
-            isActive={isActive}
-          />
-        );
-      })}
+          return (
+            <JobLink
+              key={job.slug}
+              job={job}
+              isMobile={isMobile}
+              isActive={isActive}
+            />
+          );
+        })}
     </div>
   );
 }
