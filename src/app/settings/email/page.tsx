@@ -1,4 +1,5 @@
 import { auth } from "@/auth";
+import NotAuthenticated from "@/components/not-authenticated";
 import { Separator } from "@/components/ui/separator";
 
 export default async function Email() {
@@ -6,7 +7,7 @@ export default async function Email() {
 
   // @ts-ignore
   if (!session) {
-    return <p>Not authenticated. Please log in first.</p>;
+    return <NotAuthenticated />;
   }
 
   if (!session.user) {

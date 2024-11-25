@@ -1,5 +1,6 @@
 import { auth } from "@/auth";
 import { FloatingHeader } from "@/components/floating-header";
+import NotAuthenticated from "@/components/not-authenticated";
 import NewOrganizationForm from "@/components/organizations/new-organization-form";
 import { ScrollArea } from "@/components/scroll-area";
 import { TypographyH4 } from "@/components/ui/typography";
@@ -9,7 +10,7 @@ export default async function Page() {
 
   // @ts-ignore
   if (!session) {
-    return <p>Not authenticated. Please log in first.</p>;
+    return <NotAuthenticated />;
   }
 
   return (

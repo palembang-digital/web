@@ -1,6 +1,7 @@
 import { auth } from "@/auth";
 import EventDescription from "@/components/events/event-description";
 import EventLocationType from "@/components/events/event-location-type";
+import EventRegistrationDialog from "@/components/events/event-registration-dialog";
 import { FloatingHeader } from "@/components/floating-header";
 import ShimmerButton from "@/components/magicui/shimmer-button";
 import { ScrollArea } from "@/components/scroll-area";
@@ -289,7 +290,13 @@ export default async function Page({ params }: { params: { id: number } }) {
                   )}
 
                   {event.scheduledStart >= new Date() &&
-                    (event.registrationUrlType || event.registrationUrl) && (
+                  event.registrationUrlType === "internal" ? (
+                    <EventRegistrationDialog
+                      event={event}
+                      user={session?.user}
+                    />
+                  ) : (
+                    event.registrationUrl && (
                       <Link
                         href={
                           event.registrationUrlType === "internal"
@@ -305,7 +312,8 @@ export default async function Page({ params }: { params: { id: number } }) {
                           </span>
                         </ShimmerButton>
                       </Link>
-                    )}
+                    )
+                  )}
                 </div>
 
                 {event.description &&

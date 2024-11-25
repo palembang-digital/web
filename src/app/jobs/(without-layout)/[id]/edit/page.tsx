@@ -1,5 +1,6 @@
 import { FloatingHeader } from "@/components/floating-header";
 import EditJobForm from "@/components/jobs/edit-job-form";
+import NotAuthenticated from "@/components/not-authenticated";
 import { ScrollArea } from "@/components/scroll-area";
 import { TypographyH3 } from "@/components/ui/typography";
 import { getJob } from "@/services";
@@ -8,7 +9,7 @@ import { getSession } from "@/services/auth";
 export default async function Page({ params }: { params: { id: number } }) {
   const session = await getSession();
   if (!session) {
-    return <p>Not authenticated. Please log in first.</p>;
+    return <NotAuthenticated />;
   }
 
   const job = await getJob(params.id);

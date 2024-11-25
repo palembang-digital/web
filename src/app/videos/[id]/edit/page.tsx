@@ -1,5 +1,6 @@
 import { auth } from "@/auth";
 import { FloatingHeader } from "@/components/floating-header";
+import NotAuthenticated from "@/components/not-authenticated";
 import { ScrollArea } from "@/components/scroll-area";
 import EditVideoForm from "@/components/videos/edit-video-form";
 import { db } from "@/db";
@@ -9,7 +10,7 @@ export default async function Page({ params }: { params: { id: number } }) {
 
   // @ts-ignore
   if (!session || session.user?.role !== "administrator") {
-    return <p>Not authenticated. Please log in first.</p>;
+    return <NotAuthenticated />;
   }
 
   const video = await db.query.videos.findFirst({

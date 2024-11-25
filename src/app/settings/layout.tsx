@@ -1,6 +1,7 @@
 import { SidebarNav } from "@/app/settings/components/sidebar-nav";
 import { auth } from "@/auth";
 import { FloatingHeader } from "@/components/floating-header";
+import NotAuthenticated from "@/components/not-authenticated";
 import { ScrollArea } from "@/components/scroll-area";
 import { Separator } from "@/components/ui/separator";
 import type { Metadata } from "next";
@@ -28,7 +29,7 @@ export default async function Layout({
   const session = await auth();
   // @ts-ignore
   if (!session) {
-    return <p>Not authenticated. Please log in first.</p>;
+    return <NotAuthenticated />;
   }
 
   return (

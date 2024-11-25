@@ -1,6 +1,7 @@
 import { auth } from "@/auth";
 import NewEventForm from "@/components/events/new-event-form";
 import { FloatingHeader } from "@/components/floating-header";
+import NotAuthenticated from "@/components/not-authenticated";
 import { ScrollArea } from "@/components/scroll-area";
 
 export default async function Page() {
@@ -8,7 +9,7 @@ export default async function Page() {
 
   // @ts-ignore
   if (!session || session.user?.role !== "administrator") {
-    return <p>Not authenticated. Please log in first.</p>;
+    return <NotAuthenticated />;
   }
 
   return (

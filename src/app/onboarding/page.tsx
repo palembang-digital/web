@@ -1,5 +1,6 @@
 import { auth } from "@/auth";
 import { FloatingHeader } from "@/components/floating-header";
+import NotAuthenticated from "@/components/not-authenticated";
 import OnboardingForm from "@/components/onboarding/onboarding-form";
 import { ScrollArea } from "@/components/scroll-area";
 import { Metadata } from "next";
@@ -13,7 +14,7 @@ export default async function Page() {
 
   // @ts-ignore
   if (!session) {
-    return <p>Not authenticated. Please log in first.</p>;
+    return <NotAuthenticated />;
   }
 
   return (

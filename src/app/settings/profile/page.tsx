@@ -1,5 +1,6 @@
 import ProfileForm from "@/app/settings/profile/profile-form";
 import { auth } from "@/auth";
+import NotAuthenticated from "@/components/not-authenticated";
 import { Separator } from "@/components/ui/separator";
 
 export default async function Page() {
@@ -7,7 +8,7 @@ export default async function Page() {
 
   // @ts-ignore
   if (!session) {
-    return <p>Not authenticated. Please log in first.</p>;
+    return <NotAuthenticated />;
   }
 
   if (!session.user) {

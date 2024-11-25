@@ -1,6 +1,7 @@
 import { auth } from "@/auth";
 import EditEventForm from "@/components/events/edit-event-form";
 import { FloatingHeader } from "@/components/floating-header";
+import NotAuthenticated from "@/components/not-authenticated";
 import { ScrollArea } from "@/components/scroll-area";
 import { getEvent } from "@/services";
 
@@ -9,7 +10,7 @@ export default async function Page({ params }: { params: { id: number } }) {
 
   // @ts-ignore
   if (!session || session.user?.role !== "administrator") {
-    return <p>Not authenticated. Please log in first.</p>;
+    return <NotAuthenticated />;
   }
 
   const event = await getEvent(params.id);
