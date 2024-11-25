@@ -42,6 +42,12 @@ export default function LandingFAQ() {
       ),
     },
     {
+      question:
+        "Kapan Palembang Digital didirikan? Dan didirikan oleh siapa saja?",
+      answer:
+        "Palembang Digital didirkan pada tanggal 21 April 2020, bertepatan dengan Hari Kartini. Palembang Digital didirikan oleh sekelompok anak muda kelahiran Bumi Sriwijaya yang telah berpengalaman di dunia IT dan bekerja di berbagai perusahaan teknologi nasional maupun internastional. Beberapa pendiri utama Palembang Digital adalah Joneten Saputra, Sofian Hadiwijaya, Tommy Maulana, Arief Rahmansyah, Faisal Morensya, dan Roylisto Putra Pradana.",
+    },
+    {
       question: "Apa saja kegiatan yang diadakan oleh Palembang Digital?",
       answer:
         "Palembang Digital menyelenggarakan berbagai kegiatan seperti workshop teknologi, seminar bisnis, bootcamp startup, hackathon, dan acara networking untuk mempertemukan para profesional, pengusaha, dan pengembang teknologi.",
