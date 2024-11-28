@@ -56,12 +56,16 @@ export default function EventRegistrationDialog({
       });
 
       if (response.ok) {
-        toast.success("Event registration successful");
+        toast.success(
+          actionType === "register"
+            ? "Event registration successful"
+            : "RSVP updated"
+        );
         setLoading(false);
         router.refresh();
         mutate(`/api/v1/events/${event.id}`);
       } else {
-        toast.error("Failed to register to the event");
+        toast.error("Failed to update RSVP to the event");
         setLoading(false);
       }
     } catch (error) {

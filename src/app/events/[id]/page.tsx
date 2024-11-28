@@ -148,6 +148,10 @@ export default async function Page({ params }: { params: { id: number } }) {
     return <p>Event not found</p>;
   }
 
+  const totalAttendees = event.eventsAttendees.filter(
+    (a) => a.rsvp === "yes"
+  ).length;
+
   const isRegistered = isUserRegistered(event, session?.user);
 
   return (
@@ -290,7 +294,7 @@ export default async function Page({ params }: { params: { id: number } }) {
                       </div>
                       <div>
                         <TypographyH2 className="text-md pb-0">
-                          {event.attendeeLimit} kursi tersedia
+                          {event.attendeeLimit - totalAttendees} kursi tersedia
                         </TypographyH2>
                         <p className="text-xs text-neutral-500">
                           dari {event.attendeeLimit} kuota
@@ -430,6 +434,32 @@ export default async function Page({ params }: { params: { id: number } }) {
                 )}
               </div>
             </div>
+
+            {totalAttendees > 0 && (
+              <div className="col-span-1 sm:col-span-3">
+                <div className="flex flex-col gap-2">
+                  <TypographyH4>Peserta</TypographyH4>
+                  <div className="flex flex-wrap gap-2 mt-2">
+                    {event.eventsAttendees.map(
+                      ({ user, rsvp }) =>
+                        rsvp === "yes" && (
+                          <Link href={`/${user.username}`} key={user.id}>
+                            <div className="flex items-center gap-2">
+                              <Avatar>
+                                <AvatarImage
+                                  src={user.image || ""}
+                                  alt={user.name || ""}
+                                />
+                                <AvatarFallback>{user.name}</AvatarFallback>
+                              </Avatar>
+                            </div>
+                          </Link>
+                        )
+                    )}
+                  </div>
+                </div>
+              </div>
+            )}
 
             {event.eventsVideos.length > 0 && (
               <div className="col-span-1 sm:col-span-3">
