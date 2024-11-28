@@ -5,6 +5,7 @@ const {
 } = require("tailwindcss/lib/util/flattenColorPalette");
 
 const config = {
+  darkMode: ["class"],
   content: ["./src/app/**/*.{ts,tsx}", "./src/components/**/*.{ts,tsx}"],
   prefix: "",
   theme: {
@@ -23,6 +24,8 @@ const config = {
         slide: "slide var(--speed) ease-in-out infinite alternate",
         "spin-around": "spin-around calc(var(--speed) * 2) infinite linear",
         "spin-slow": "spin 2s linear infinite",
+        marquee: "marquee var(--duration) infinite linear",
+        "marquee-vertical": "marquee-vertical var(--duration) linear infinite",
       },
       fontFamily: {
         sans: ["var(--font-sans)", ...fontFamily.sans],
@@ -69,12 +72,20 @@ const config = {
       },
       keyframes: {
         "accordion-down": {
-          from: { height: "0" },
-          to: { height: "var(--radix-accordion-content-height)" },
+          from: {
+            height: "0",
+          },
+          to: {
+            height: "var(--radix-accordion-content-height)",
+          },
         },
         "accordion-up": {
-          from: { height: "var(--radix-accordion-content-height)" },
-          to: { height: "0" },
+          from: {
+            height: "var(--radix-accordion-content-height)",
+          },
+          to: {
+            height: "0",
+          },
         },
         reveal: {
           "0%": {
@@ -82,8 +93,15 @@ const config = {
             filter: "brightness(1) blur(15px)",
             scale: "1.0125",
           },
-          "10%": { opacity: "1", filter: "brightness(1.25) blur(10px)" },
-          "100%": { opacity: "1", filter: "brightness(1) blur(0)", scale: "1" },
+          "10%": {
+            opacity: "1",
+            filter: "brightness(1.25) blur(10px)",
+          },
+          "100%": {
+            opacity: "1",
+            filter: "brightness(1) blur(0)",
+            scale: "1",
+          },
         },
         slide: {
           to: {
@@ -102,6 +120,22 @@ const config = {
           },
           "100%": {
             transform: "translateZ(0) rotate(360deg)",
+          },
+        },
+        marquee: {
+          from: {
+            transform: "translateX(0)",
+          },
+          to: {
+            transform: "translateX(calc(-100% - var(--gap)))",
+          },
+        },
+        "marquee-vertical": {
+          from: {
+            transform: "translateY(0)",
+          },
+          to: {
+            transform: "translateY(calc(-100% - var(--gap)))",
           },
         },
       },
