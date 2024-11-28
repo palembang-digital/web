@@ -278,8 +278,10 @@ export default async function Page({ params }: { params: { id: number } }) {
                       </div>
                     </div>
                   )}
+                </div>
 
-                  {/* Registration component */}
+                {/* Registration component */}
+                <div className="border border-slate-200 rounded-lg p-4 flex flex-col gap-2">
                   {event.scheduledEnd < new Date() && (
                     <div>
                       <Button className="text-xs bg-green-600 hover:bg-green-600 hover:cursor-default">
