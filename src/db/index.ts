@@ -7,4 +7,4 @@ const enableLogger = process.env.NODE_ENV === "development";
 const connectionString = process.env.AUTH_DRIZZLE_URL || "";
 const pool = postgres(connectionString, { max: 1 });
 
-export const db = drizzle(pool, { logger: enableLogger, schema });
+export const db = drizzle(pool, { logger: false, schema });

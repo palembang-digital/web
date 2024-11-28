@@ -19,6 +19,7 @@ export function getDate(date: Date): string {
     .setLocale("id")
     .toFormat("dd");
 }
+
 export function getMonth(date: Date): string {
   return DateTime.fromJSDate(date)
     .setZone("Asia/Jakarta")
@@ -73,6 +74,10 @@ export function localeTimeFromString(
     minute: "2-digit",
     timeZoneName: "short",
   });
+}
+
+export function toGCalDate(date: Date): string {
+  return DateTime.fromJSDate(date).toFormat("yyyyMMdd'T'HHmmss");
 }
 
 export function getYoutubeVideoId(url: string): string {

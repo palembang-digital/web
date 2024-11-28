@@ -1,10 +1,10 @@
 "use client";
 
 import MemberCard from "@/components/members/member-card";
+import Marquee from "@/components/ui/marquee";
 import { TypographyH2 } from "@/components/ui/typography";
 import { fetcher } from "@/lib/fetcher";
 import useSWR from "swr";
-import Marquee from "../ui/marquee";
 
 export default function LandingMembers() {
   const { data, isLoading } = useSWR(`/api/v1/users?limit=99`, fetcher);

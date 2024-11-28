@@ -7,6 +7,7 @@ import ShimmerButton from "@/components/magicui/shimmer-button";
 import { ScrollArea } from "@/components/scroll-area";
 import SpeakersList from "@/components/speakers-list";
 import { AnimatedTooltip } from "@/components/ui/animated-tooltip";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import {
   TypographyH2,
@@ -14,7 +15,14 @@ import {
   TypographyH4,
 } from "@/components/ui/typography";
 import YouTubeVideoCard from "@/components/youtube-video-card";
-import { getDate, getMonthYear, localeDate, localeTime } from "@/lib/utils";
+import {
+  cn,
+  getDate,
+  getMonthYear,
+  localeDate,
+  localeTime,
+  toGCalDate,
+} from "@/lib/utils";
 import { getEvent } from "@/services";
 import { GoogleMapsEmbed } from "@next/third-parties/google";
 import {
@@ -122,6 +130,16 @@ function EventCommittees({ committees }: { committees: any[] }) {
   );
 }
 
+function isUserRegistered(event: any, user: any) {
+  if (!user) {
+    return false;
+  }
+
+  return event.eventsAttendees.some(
+    (attendee: any) => attendee.user.id === user.id && attendee.rsvp === "yes"
+  );
+}
+
 export default async function Page({ params }: { params: { id: number } }) {
   const session = await auth();
 
@@ -129,6 +147,8 @@ export default async function Page({ params }: { params: { id: number } }) {
   if (!event) {
     return <p>Event not found</p>;
   }
+
+  const isRegistered = isUserRegistered(event, session?.user);
 
   return (
     <ScrollArea useScrollAreaId>
@@ -281,8 +301,50 @@ export default async function Page({ params }: { params: { id: number } }) {
                 </div>
 
                 {/* Registration component */}
-                <div className="border border-slate-200 rounded-lg p-4 flex flex-col gap-2">
-                  {event.scheduledEnd < new Date() && (
+                <div
+                  className={cn(
+                    "border border-slate-200 rounded-lg p-4 flex flex-col gap-2"
+                  )}
+                >
+                  {isRegistered && (
+                    <div className="flex flex-col gap-2">
+                      <Avatar>
+                        <AvatarImage
+                          src={session?.user?.image || ""}
+                          alt={session?.user?.name || ""}
+                        />
+                        <AvatarFallback>
+                          {session?.user?.name || ""}
+                        </AvatarFallback>
+                      </Avatar>
+                      <p className="text-md font-medium">
+                        Hi {session?.user?.name}, kamu telah terdaftar!
+                      </p>
+                      <div>
+                        <Link
+                          href={`https://calendar.google.com/calendar/render?action=TEMPLATE&text=${
+                            event.name
+                          }&dates=${toGCalDate(
+                            event.scheduledStart
+                          )}/${toGCalDate(event.scheduledEnd)}&details=${
+                            event.description
+                          }&ctz=Asia/Jakarta&location=${event.locationName}`}
+                          target="_blank"
+                        >
+                          <Button className="text-xs" variant="outline">
+                            Tambahkan ke Google Calendar
+                          </Button>
+                        </Link>
+                      </div>
+                      <EventRegistrationDialog
+                        event={event}
+                        user={session?.user}
+                        actionType="update"
+                      />
+                    </div>
+                  )}
+
+                  {!isRegistered && event.scheduledEnd < new Date() && (
                     <div>
                       <Button className="text-xs bg-green-600 hover:bg-green-600 hover:cursor-default">
                         <CircleCheckBigIcon className="mr-2 h-3 w-3" /> Kegiatan
@@ -292,12 +354,15 @@ export default async function Page({ params }: { params: { id: number } }) {
                   )}
 
                   {event.scheduledStart >= new Date() &&
+                  !isRegistered &&
                   event.registrationUrlType === "internal" ? (
                     <EventRegistrationDialog
                       event={event}
                       user={session?.user}
+                      actionType="register"
                     />
                   ) : (
+                    !isRegistered &&
                     event.registrationUrl && (
                       <Link
                         href={
