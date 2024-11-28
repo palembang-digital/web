@@ -322,7 +322,7 @@ export default async function Page({ params }: { params: { id: number } }) {
                         </AvatarFallback>
                       </Avatar>
                       <p className="text-md font-medium">
-                        Hi {session?.user?.name}, kamu telah terdaftar!
+                        Hai {session?.user?.name}, kamu telah terdaftar!
                       </p>
                       <div>
                         <Link
