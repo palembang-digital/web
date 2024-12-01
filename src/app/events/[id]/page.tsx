@@ -2,11 +2,10 @@ import { auth } from "@/auth";
 import EventDescription from "@/components/events/event-description";
 import EventLocationType from "@/components/events/event-location-type";
 import EventRegistrationDialog from "@/components/events/event-registration-dialog";
+import EventSidebarInfo from "@/components/events/event-sidebar-info";
 import { FloatingHeader } from "@/components/floating-header";
 import ShimmerButton from "@/components/magicui/shimmer-button";
 import { ScrollArea } from "@/components/scroll-area";
-import SpeakersList from "@/components/speakers-list";
-import { AnimatedTooltip } from "@/components/ui/animated-tooltip";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import {
@@ -109,26 +108,6 @@ function EventSchedule({ event }: { event: any }) {
   );
 }
 
-function EventCommittees({ committees }: { committees: any[] }) {
-  const items = committees.map(({ user }) => ({
-    id: user.id,
-    label: user.name,
-    image: user.image,
-    href: `/${user.username}`,
-  }));
-
-  return (
-    <div>
-      <TypographyH4>Panitia</TypographyH4>
-      <div className="flex flex-wrap">
-        {items.map((item, index) => (
-          <AnimatedTooltip key={`committees-${index}`} items={[item]} />
-        ))}
-      </div>
-    </div>
-  );
-}
-
 function isUserRegistered(event: any, user: any) {
   if (!user) {
     return false;
@@ -174,88 +153,10 @@ export default async function Page({ params }: { params: { id: number } }) {
                   height={300}
                   className="rounded-lg"
                 />
-                {event.eventsSpeakers.length > 0 && (
-                  <SpeakersList speakers={event.eventsSpeakers} />
-                )}
-                {(event.eventsHostsOrganizations.length > 0 ||
-                  event.eventsHostsUsers.length > 0) && (
-                  <div>
-                    <TypographyH4>Hosts</TypographyH4>
-                    {event.eventsHostsOrganizations.map(({ organization }) => (
-                      <div
-                        key={organization.id}
-                        className="flex items-center my-4"
-                      >
-                        <Image
-                          src={organization.image || ""}
-                          alt={organization.name || ""}
-                          width={24}
-                          height={24}
-                          className="rounded-lg"
-                        />
-                        <p className="ml-2 text-sm">{organization.name}</p>
-                      </div>
-                    ))}
-                    {event.eventsHostsUsers.map((user) => (
-                      <Link
-                        href={`/${user.user.username}`}
-                        key={user.user.id}
-                        className="flex items-center my-4 hover:underline"
-                      >
-                        <Image
-                          src={user.user.image || ""}
-                          alt={user.user.name || ""}
-                          width={24}
-                          height={24}
-                          className="rounded-full"
-                        />
-                        <p className="ml-2 text-sm">{user.user.name}</p>
-                      </Link>
-                    ))}
-                  </div>
-                )}
-                {(event.eventsSponsorsOrganizations.length > 0 ||
-                  event.eventsSponsorsUsers.length > 0) && (
-                  <div>
-                    <TypographyH4>Sponsors</TypographyH4>
-                    {event.eventsSponsorsOrganizations.map(
-                      ({ organization }) => (
-                        <div
-                          key={organization.id}
-                          className="flex items-center my-4"
-                        >
-                          <Image
-                            src={organization.image || ""}
-                            alt={organization.name || ""}
-                            width={24}
-                            height={24}
-                            className="rounded-lg"
-                          />
-                          <p className="ml-2 text-sm">{organization.name}</p>
-                        </div>
-                      )
-                    )}
-                    {event.eventsSponsorsUsers.map((user) => (
-                      <Link
-                        href={`/${user.user.username}`}
-                        key={user.user.id}
-                        className="flex items-center my-4 hover:underline"
-                      >
-                        <Image
-                          src={user.user.image || ""}
-                          alt={user.user.name || ""}
-                          width={24}
-                          height={24}
-                          className="rounded-full"
-                        />
-                        <p className="ml-2 text-sm">{user.user.name}</p>
-                      </Link>
-                    ))}
-                  </div>
-                )}
-                {event.eventsCommittees.length > 0 && (
-                  <EventCommittees committees={event.eventsCommittees} />
-                )}
+                <EventSidebarInfo
+                  event={event}
+                  className="hidden lg:flex lg:flex-col"
+                />
               </div>
             </div>
 
@@ -433,6 +334,11 @@ export default async function Page({ params }: { params: { id: number } }) {
                 )} */}
               </div>
             </div>
+
+            <EventSidebarInfo
+              event={event}
+              className="lg:hidden flex flex-col"
+            />
 
             {totalAttendees > 0 && (
               <div className="col-span-1 sm:col-span-3">
