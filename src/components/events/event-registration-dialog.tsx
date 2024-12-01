@@ -1,7 +1,6 @@
 "use client";
 
 import ShimmerButton from "@/components/magicui/shimmer-button";
-import { SignIn } from "@/components/sign-in";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import {
@@ -16,7 +15,8 @@ import {
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Separator } from "@/components/ui/separator";
-import { TicketIcon } from "lucide-react";
+import { LogInIcon, TicketIcon } from "lucide-react";
+import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "sonner";
@@ -153,6 +153,11 @@ export default function EventRegistrationDialog({
       </DialogContent>
     </Dialog>
   ) : (
-    <SignIn text="Masuk untuk mendaftar kegiatan" className="mt-1 text-xs" />
+    <ShimmerButton onClick={() => signIn()}>
+      <span className="whitespace-pre-wrap text-center text-sm font-medium leading-none tracking-tight text-white dark:from-white dark:to-slate-900/10">
+        Masuk untuk mendaftar kegiatan
+      </span>
+      <LogInIcon className="ml-2 h-4 w-4" />
+    </ShimmerButton>
   );
 }
