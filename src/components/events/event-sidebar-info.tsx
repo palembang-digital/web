@@ -1,6 +1,7 @@
 import EventCommittees from "@/components/events/event-committees";
 import SpeakersList from "@/components/speakers-list";
 import { TypographyH4 } from "@/components/ui/typography";
+import { cn } from "@/lib/utils";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -12,7 +13,7 @@ function EventSidebarInfo({
   className?: string;
 }) {
   return (
-    <div className={className}>
+    <div className={cn("gap-4", className)}>
       {event.eventsSpeakers.length > 0 && (
         <SpeakersList speakers={event.eventsSpeakers} />
       )}
