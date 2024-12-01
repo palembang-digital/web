@@ -15,7 +15,7 @@ interface NavigationLinkProps {
 
 function Cmp({ href, label, icon, shortcutNumber }: NavigationLinkProps) {
   const pathname = usePathname();
-  const iconCmp = icon ?? <AtSignIcon size={16} />;
+  const iconCmp = icon ?? <AtSignIcon size={12} />;
 
   const isInternal = href.startsWith("/");
   if (!isInternal) {

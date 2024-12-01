@@ -24,7 +24,7 @@ export function MenuContent({ session }: { session: Session | null }) {
           </div>
         </Link>
 
-        <div className="flex flex-col gap-2">
+        <div className="flex flex-col gap-1">
           {MENU_LINKS.map((link) => (
             <NavigationLink
               key={link.href}
@@ -41,8 +41,8 @@ export function MenuContent({ session }: { session: Session | null }) {
               icon={
                 <Image
                   src={session.user?.image || ""}
-                  width={24}
-                  height={24}
+                  width={18}
+                  height={18}
                   alt={session.user?.name || "Profile Picture"}
                   className="rounded-full"
                 />
