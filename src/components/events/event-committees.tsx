@@ -2,12 +2,14 @@ import { AnimatedTooltip } from "@/components/ui/animated-tooltip";
 import { TypographyH4 } from "@/components/ui/typography";
 
 function EventCommittees({ committees }: { committees: any[] }) {
-  const items = committees.map(({ user }) => ({
-    id: user.id,
-    label: user.name,
-    image: user.image,
-    href: `/${user.username}`,
-  }));
+  const items = committees
+    .sort((a: any, b: any) => a.user.name.localeCompare(b.user.name))
+    .map(({ user }) => ({
+      id: user.id,
+      label: user.name,
+      image: user.image,
+      href: `/${user.username}`,
+    }));
 
   return (
     <div>
