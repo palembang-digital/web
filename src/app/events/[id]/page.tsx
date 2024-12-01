@@ -331,7 +331,7 @@ export default async function Page({ params }: { params: { id: number } }) {
                             event.scheduledStart
                           )}/${toGCalDate(event.scheduledEnd)}&details=${
                             event.description
-                          }&ctz=Europe/London&location=${event.locationName}`}
+                          }&ctz=Asia/Jakarta&location=${event.locationName}`}
                           target="_blank"
                         >
                           <Button className="text-xs" variant="outline">
