@@ -6,6 +6,7 @@ import {
   HouseIcon,
   ImageIcon,
   InstagramIcon,
+  NewspaperIcon,
   UsersIcon,
 } from "lucide-react";
 
@@ -35,6 +36,11 @@ export const MENU_LINKS: MenuLink[] = [
     href: "/jobs",
     label: "Pekerjaan",
     icon: <BriefcaseIcon size={18} />,
+  },
+  {
+    href: "/articles",
+    label: "Artikel",
+    icon: <NewspaperIcon size={18} />,
   },
   {
     href: "/ecosystem",
