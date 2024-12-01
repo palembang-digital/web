@@ -439,22 +439,26 @@ export default async function Page({ params }: { params: { id: number } }) {
                 <div className="flex flex-col gap-2">
                   <TypographyH4>Peserta ({totalAttendees})</TypographyH4>
                   <div className="flex flex-wrap gap-2 mt-2">
-                    {event.eventsAttendees.map(
-                      ({ user, rsvp }) =>
-                        rsvp === "yes" && (
-                          <Link href={`/${user.username}`} key={user.id}>
-                            <div className="flex items-center gap-2">
-                              <Avatar>
-                                <AvatarImage
-                                  src={user.image || ""}
-                                  alt={user.name || ""}
-                                />
-                                <AvatarFallback>{user.name}</AvatarFallback>
-                              </Avatar>
-                            </div>
-                          </Link>
-                        )
-                    )}
+                    {event.eventsAttendees
+                      .sort((a: any, b: any) =>
+                        a.user.name.localeCompare(b.user.name)
+                      )
+                      .map(
+                        ({ user, rsvp }) =>
+                          rsvp === "yes" && (
+                            <Link href={`/${user.username}`} key={user.id}>
+                              <div className="flex items-center gap-2">
+                                <Avatar>
+                                  <AvatarImage
+                                    src={user.image || ""}
+                                    alt={user.name || ""}
+                                  />
+                                  <AvatarFallback>{user.name}</AvatarFallback>
+                                </Avatar>
+                              </div>
+                            </Link>
+                          )
+                      )}
                   </div>
                 </div>
               </div>
