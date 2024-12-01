@@ -24,7 +24,6 @@ import {
   toGCalDate,
 } from "@/lib/utils";
 import { getEvent } from "@/services";
-import { GoogleMapsEmbed } from "@next/third-parties/google";
 import {
   CircleCheckBigIcon,
   MapPinIcon,
@@ -402,7 +401,7 @@ export default async function Page({ params }: { params: { id: number } }) {
                     </div>
                   )}
 
-                {event.locationType === "offline" && (
+                {/* {event.locationType === "offline" && (
                   <div className="border border-slate-200 rounded-lg p-4">
                     <div className="flex flex-col gap-2">
                       <div className="flex flex-row gap-3 items-center">
@@ -431,7 +430,7 @@ export default async function Page({ params }: { params: { id: number } }) {
                       />
                     </div>
                   </div>
-                )}
+                )} */}
               </div>
             </div>
 
