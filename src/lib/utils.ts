@@ -76,8 +76,8 @@ export function localeTimeFromString(
   });
 }
 
-export function toGCalDate(date: Date): string {
-  return DateTime.fromJSDate(date).toFormat("yyyyMMdd'T'HHmmss");
+export function toGCalDate(date: Date, zone: string = "Asia/Jakarta"): string {
+  return DateTime.fromJSDate(date).setZone(zone).toFormat("yyyyMMdd'T'HHmmss");
 }
 
 export function getYoutubeVideoId(url: string): string {
