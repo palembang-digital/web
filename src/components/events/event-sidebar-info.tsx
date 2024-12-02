@@ -57,8 +57,11 @@ function EventSidebarInfo({
         event.eventsSponsorsUsers.length > 0) && (
         <div>
           <TypographyH4>Sponsors</TypographyH4>
-          {event.eventsSponsorsOrganizations.map(
-            ({ organization }: { organization: any }) => (
+          {event.eventsSponsorsOrganizations
+            .sort((a: any, b: any) =>
+              a.organization.name.localeCompare(b.organization.name)
+            )
+            .map(({ organization }: { organization: any }) => (
               <div key={organization.id} className="flex items-center my-4">
                 <Image
                   src={organization.image || ""}
@@ -69,8 +72,7 @@ function EventSidebarInfo({
                 />
                 <p className="ml-2 text-sm">{organization.name}</p>
               </div>
-            )
-          )}
+            ))}
           {event.eventsSponsorsUsers.map((user: any) => (
             <Link
               href={`/${user.user.username}`}
