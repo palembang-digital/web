@@ -22,7 +22,7 @@ export default function UpcomingEvents({ events }: { events: any[] }) {
           )
           .map((event) => (
             <Link href={`/events/${event.id}`} key={event.id}>
-              <li className="flex flex-col sm:flex-row gap-4 mt-6 ps-6 hover:bg-neutral-800">
+              <li className="flex flex-col sm:flex-row gap-4 mt-6 ps-6 hover:bg-neutral-800 hover:rounded-e-lg">
                 <div className="absolute w-3 h-3 bg-slate-400 rounded-full -start-[0.4rem] border border-slate-400"></div>
 
                 <div className="flex-1 my-auto">
