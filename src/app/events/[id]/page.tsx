@@ -50,13 +50,11 @@ export async function generateMetadata({
     title: event.name,
     openGraph: {
       title: `${event.name} · Palembang Digital`,
-      description: `🗓️ ${localeDate(event.scheduledStart)}${
-        event.scheduledEnd &&
-        localeDate(event.scheduledStart) !== localeDate(event.scheduledEnd)
-          ? " - " + localeDate(event.scheduledEnd)
-          : ""
-      }`,
+      description: `Segera daftarkan diri kamu di kegiatan ${
+        event.name
+      } yang akan diselenggarakan pada ${localeDate(event.scheduledStart)}`,
       images: `/events/${params.id}/og.png`,
+      type: "article",
     },
   };
 }
