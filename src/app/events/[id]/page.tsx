@@ -49,9 +49,7 @@ export async function generateMetadata({
   return {
     title: event.name,
     openGraph: {
-      title: event.name,
-      description: `${event.name} · 🗓️ ${event.scheduledStart} · 📍 ${event.locationName}`,
-      images: `${event.imageUrl}`,
+      title: `${event.name} · Palembang Digital`,
     },
   };
 }
