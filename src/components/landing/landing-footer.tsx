@@ -19,6 +19,7 @@ export default function LandingFooter() {
           <TypographyLarge className="text-white mt-2">
             Palembang Digital
           </TypographyLarge>
+          <p className="text-white text-xs mt-2">Made with ❤️ in Palembang</p>
         </div>
 
         <div className="flex flex-col gap-4">
