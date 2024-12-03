@@ -23,6 +23,18 @@ export async function POST(
     return Response.json({ message: "Event not found" }, { status: 404 });
   }
 
+  const totalAttendees = event.eventsAttendees.filter(
+    (a: any) => a.rsvp === "yes"
+  ).length;
+
+  if (
+    data.rsvp === "yes" &&
+    event.attendeeLimit &&
+    totalAttendees >= event.attendeeLimit
+  ) {
+    return Response.json({ message: "Kuota sudah penuh" }, { status: 400 });
+  }
+
   await db.transaction(async (tx) => {
     await tx
       .insert(eventsAttendees)
