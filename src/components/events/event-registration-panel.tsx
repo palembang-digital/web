@@ -3,7 +3,12 @@ import ShimmerButton from "@/components/magicui/shimmer-button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { toGCalDate } from "@/lib/utils";
-import { CircleCheckBigIcon, TicketIcon, TicketXIcon } from "lucide-react";
+import {
+  CircleCheckBigIcon,
+  LogInIcon,
+  TicketIcon,
+  TicketXIcon,
+} from "lucide-react";
 import Link from "next/link";
 
 function isUserRegistered(event: any, user: any) {
@@ -47,7 +52,14 @@ export default function EventRegistrationPanel({
           <p className="text-md font-medium">
             Hai {session?.user?.name}, kamu telah terdaftar!
           </p>
-          <div>
+          <div className="flex flex-col sm:flex-row gap-2">
+            {event.whatsappGroupUrl && (
+              <Link href={event.whatsappGroupUrl} target="_blank">
+                <Button className="text-xs bg-green-600 hover:bg-green-700">
+                  Gabung ke grup WhatsApp <LogInIcon className="ml-2 h-4 w-4" />
+                </Button>
+              </Link>
+            )}
             <Link
               href={`https://calendar.google.com/calendar/render?action=TEMPLATE&text=${
                 event.name

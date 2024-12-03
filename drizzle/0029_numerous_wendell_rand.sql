@@ -1,0 +1,1 @@
+ALTER TABLE "events" ADD COLUMN "whatsapp_group_url" text;
