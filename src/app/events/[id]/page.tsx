@@ -310,6 +310,53 @@ export default async function Page({ params }: { params: { id: number } }) {
                     </div>
                   )}
 
+                {/* Sponsors component */}
+                {(event.eventsSponsorsOrganizations.length > 0 ||
+                  event.eventsSponsorsUsers.length > 0) && (
+                  <div className="border border-slate-200 rounded-lg p-4">
+                    <div className="flex flex-col gap-2">
+                      <TypographyH4>Sponsors</TypographyH4>
+                      <div className="flex flex-wrap gap-2">
+                        {event.eventsSponsorsOrganizations
+                          .sort((a: any, b: any) =>
+                            a.organization.name.localeCompare(
+                              b.organization.name
+                            )
+                          )
+                          .map(({ organization }: { organization: any }) => (
+                            <div
+                              key={organization.id}
+                              className="flex items-center my-4"
+                            >
+                              <Image
+                                src={organization.image || ""}
+                                alt={organization.name || ""}
+                                width={40}
+                                height={40}
+                                className="rounded-lg"
+                              />
+                            </div>
+                          ))}
+                        {event.eventsSponsorsUsers.map((user: any) => (
+                          <Link
+                            href={`/${user.user.username}`}
+                            key={user.user.id}
+                            className="flex items-center my-4 hover:underline"
+                          >
+                            <Image
+                              src={user.user.image || ""}
+                              alt={user.user.name || ""}
+                              width={40}
+                              height={40}
+                              className="rounded-full"
+                            />
+                          </Link>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                )}
+
                 {/* {event.locationType === "offline" && (
                   <div className="border border-slate-200 rounded-lg p-4">
                     <div className="flex flex-col gap-2">
