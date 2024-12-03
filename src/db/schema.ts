@@ -36,6 +36,7 @@ export const users = pgTable("users", {
   occupation: text("occupation"),
   institution: text("institution"),
   bio: text("bio"),
+  createdAt: timestamp("created_at").defaultNow(),
 });
 
 export const onboardingSchema = createInsertSchema(users, {

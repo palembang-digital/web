@@ -269,6 +269,7 @@ table users {
   occupation text
   institution text
   bio text
+  created_at timestamp [default: `now()`]
 }
 
 table verificationTokens {
