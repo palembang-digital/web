@@ -208,6 +208,7 @@ export const eventsAttendees = pgTable(
       .references(() => users.id, { onDelete: "cascade" }),
     rsvp: rsvpTypeEnum("rsvp").notNull().default("yes"),
     attended: boolean("attended").notNull().default(false),
+    createdAt: timestamp("created_at").defaultNow(),
   },
   (t) => ({
     pk: primaryKey({ columns: [t.eventId, t.userId] }),
