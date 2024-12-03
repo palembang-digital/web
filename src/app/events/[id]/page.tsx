@@ -351,7 +351,9 @@ export default async function Page({ params }: { params: { id: number } }) {
             {totalAttendees > 0 && (
               <div className="col-span-1 sm:col-span-3">
                 <div className="flex flex-col gap-2">
-                  <TypographyH4>Peserta ({totalAttendees})</TypographyH4>
+                  <Link href={`/events/${event.id}/attendees`}>
+                    <TypographyH4>Peserta ({totalAttendees})</TypographyH4>
+                  </Link>
                   <div className="flex flex-wrap gap-2 mt-2">
                     {event.eventsAttendees
                       .sort((a: any, b: any) =>
