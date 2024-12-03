@@ -53,6 +53,23 @@ export const updateAttendance = async (
   }
 };
 
+export function AttendanceSwitch({ row }: { row: any }) {
+  const data = row.original;
+  const [isAttending, setIsAttending] = useState(data.attended);
+
+  return (
+    <Switch
+      id="is-attending"
+      disabled={!data.canUpdateAttendance}
+      checked={isAttending}
+      onCheckedChange={(e) => {
+        updateAttendance(data.eventId, data.id, data.name, data.rsvp, e);
+        setIsAttending(e);
+      }}
+    />
+  );
+}
+
 export const columns: ColumnDef<attendeeSchema>[] = [
   {
     accessorKey: "name",
@@ -93,21 +110,6 @@ export const columns: ColumnDef<attendeeSchema>[] = [
         showHideColumn={false}
       />
     ),
-    cell: ({ row }) => {
-      const data = row.original;
-      const [isAttending, setIsAttending] = useState(data.attended);
-
-      return (
-        <Switch
-          id="is-attending"
-          disabled={!data.canUpdateAttendance}
-          checked={isAttending}
-          onCheckedChange={(e) => {
-            updateAttendance(data.eventId, data.id, data.name, data.rsvp, e);
-            setIsAttending(e);
-          }}
-        />
-      );
-    },
+    cell: ({ row }) => <AttendanceSwitch row={row} />,
   },
 ];
