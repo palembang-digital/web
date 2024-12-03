@@ -122,6 +122,7 @@ table events_attendees {
   user_id text [not null]
   rsvp rsvp_type [not null, default: 'yes']
   attended boolean [not null, default: false]
+  created_at timestamp [default: `now()`]
 
   indexes {
     (event_id, user_id) [pk]

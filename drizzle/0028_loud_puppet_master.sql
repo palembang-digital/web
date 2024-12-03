@@ -1,0 +1,1 @@
+ALTER TABLE "events_attendees" ADD COLUMN "created_at" timestamp DEFAULT now();
