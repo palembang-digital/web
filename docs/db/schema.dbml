@@ -115,6 +115,7 @@ table events {
   location_url text
   location_type event_location_type
   status event_status [not null, default: 'draft']
+  whatsapp_group_url text
 }
 
 table events_attendees {
