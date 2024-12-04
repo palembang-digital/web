@@ -18,6 +18,7 @@ export default function JobListLayout({ isMobile }: { isMobile?: boolean }) {
   return (
     <div className={cn(!isMobile && "flex flex-col gap-1 text-sm")}>
       {data
+        .filter((job: any) => job.status === "published")
         .sort((a: { createdAt: number }, b: { createdAt: number }) =>
           a.createdAt < b.createdAt ? 1 : -1
         )

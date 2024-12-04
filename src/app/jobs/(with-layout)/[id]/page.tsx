@@ -57,10 +57,12 @@ export default async function Page({ params }: { params: { id: number } }) {
               </div>
             </div>
 
-            <div className="border border-slate-200 rounded-lg p-4 flex flex-col gap-2 mt-4">
-              <TypographyH3 className="text-md">Deskripsi</TypographyH3>
-              <JobDescription description={job.description} />
-            </div>
+            {job.description && (
+              <div className="border border-slate-200 rounded-lg p-4 flex flex-col gap-2 mt-4">
+                <TypographyH3 className="text-md">Deskripsi</TypographyH3>
+                <JobDescription description={job.description} />
+              </div>
+            )}
 
             {job.salary && (
               <div className="border border-slate-200 rounded-lg p-4 flex flex-col gap-2 mt-4">

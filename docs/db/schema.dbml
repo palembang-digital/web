@@ -13,6 +13,12 @@ enum event_status {
   completed
 }
 
+enum job_opening_status {
+  draft
+  published
+  closed
+}
+
 enum job_type {
   "full-time"
   "part-time"
@@ -231,6 +237,7 @@ table jobs {
   job_type job_type [not null, default: 'full-time']
   salary text
   application_url text [not null]
+  status job_opening_status [not null, default: 'draft']
   created_at timestamp [not null, default: `now()`]
   updated_at timestamp [not null, default: `now()`]
   created_by text [not null]

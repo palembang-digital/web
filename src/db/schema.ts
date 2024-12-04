@@ -483,6 +483,12 @@ export const jobTypeEnum = pgEnum("job_type", [
   "internship",
 ]);
 
+export const jobStatusEnum = pgEnum("job_opening_status", [
+  "draft",
+  "published",
+  "closed",
+]);
+
 export const jobs = pgTable("jobs", {
   id: serial("id").primaryKey(),
   title: text("title").notNull(),
@@ -495,6 +501,7 @@ export const jobs = pgTable("jobs", {
   jobType: jobTypeEnum("job_type").notNull().default("full-time"),
   salary: text("salary"),
   applicationUrl: text("application_url").notNull(),
+  status: jobStatusEnum("status").notNull().default("draft"),
   createdAt: timestamp("created_at").notNull().defaultNow(),
   updatedAt: timestamp("updated_at").notNull().defaultNow(),
   createdBy: text("created_by").notNull(),
