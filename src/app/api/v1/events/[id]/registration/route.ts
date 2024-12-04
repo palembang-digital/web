@@ -2,6 +2,7 @@ import { auth } from "@/auth";
 import { db } from "@/db";
 import { eventsAttendees } from "@/db/schema";
 import { getEvent } from "@/services";
+import { tasks } from "@trigger.dev/sdk/v3";
 
 export async function POST(
   req: Request,
@@ -48,6 +49,18 @@ export async function POST(
         set: { rsvp: data.rsvp },
       });
   });
+
+  if (data.rsvp === "yes") {
+    await tasks.trigger("send-email", {
+      to: session.user.email,
+      subject: `Konfirmasi pendaftaran ${event.name}`,
+      body: {
+        event: event,
+        user: session.user,
+      },
+      emailTemplate: "event-registration",
+    });
+  }
 
   return Response.json({ message: "Registration created" });
 }
