@@ -20,7 +20,7 @@ export const sendEmail = task({
     }
 
     const { data, error } = await resend.emails.send({
-      from: "Palembang Digital <event@palembangdigital.org>",
+      from: "Palembang Digital <events@palembangdigital.org>",
       to: [to],
       subject: subject,
       react: template({ event: body.event, user: body.user }),

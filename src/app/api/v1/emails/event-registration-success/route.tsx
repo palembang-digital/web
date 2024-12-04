@@ -54,7 +54,7 @@ export async function POST(req: Request) {
 
   try {
     const { data, error } = await resend.emails.send({
-      from: "Palembang Digital <event@palembangdigital.org>",
+      from: "Palembang Digital <events@palembangdigital.org>",
       to: [user.email],
       subject: `Konfirmasi pendaftaran ${event.name}`,
       react: EventRegistrationSuccess({ event, user }),
