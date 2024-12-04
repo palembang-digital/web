@@ -9,3 +9,21 @@ Palembang Digital is a community-driven initiative aimed at fostering innovation
 ## Development
 
 To get started with the Palembang Digital website development, please refer to our [local development guide](./docs/local_development.md).
+
+### Tech Stack
+
+The Palembang Digital website is built using the following technologies:
+
+- [Next.js](https://nextjs.org)
+- [Vercel](https://vercel.com)
+- [PostgreSQL](https://www.postgresql.org)
+- [Drizzle ORM](https://orm.drizzle.team)
+- [Neon](https://neon.tech)
+- [shadcn/ui](https://ui.shadcn.com)
+- [Tailwind CSS](https://tailwindcss.com)
+- [Cloudinary](https://cloudinary.com)
+- [InstantDB](https://www.instantdb.com)
+- [Resend](https://resend.com)
+- [Sentry](https://sentry.io)
+- [Trigger](https://trigger.dev)
+- [OpenRouter](https://openrouter.ai)
