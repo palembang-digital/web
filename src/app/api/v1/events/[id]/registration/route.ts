@@ -53,7 +53,7 @@ export async function POST(
   if (data.rsvp === "yes") {
     await tasks.trigger("send-email", {
       to: session.user.email,
-      subject: `Pendaftaran berhasil untuk kegiatan ${event.name}`,
+      subject: `Konfirmasi pendaftaran ${event.name}`,
       body: {
         event: event,
         user: session.user,
