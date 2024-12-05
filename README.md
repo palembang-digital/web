@@ -27,3 +27,7 @@ The Palembang Digital website is built using the following technologies:
 - [Sentry](https://sentry.io)
 - [Trigger](https://trigger.dev)
 - [OpenRouter](https://openrouter.ai)
+
+---
+
+Made with ❤️ in Palembang

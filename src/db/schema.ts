@@ -309,6 +309,19 @@ export const eventsSponsorsOrganizations = pgTable(
   })
 );
 
+export const eventsDiscussions = pgTable("events_discussions", {
+  id: serial("id").primaryKey(),
+  eventId: integer("event_id")
+    .notNull()
+    .references(() => events.id, { onDelete: "cascade" }),
+  userId: text("user_id")
+    .notNull()
+    .references(() => users.id, { onDelete: "cascade" }),
+  content: text("content").notNull(),
+  createdAt: timestamp("created_at").notNull().defaultNow(),
+  updatedAt: timestamp("updated_at").notNull().defaultNow(),
+});
+
 export const eventsVideos = pgTable(
   "events_videos",
   {
@@ -531,6 +544,7 @@ export const usersRelations = relations(users, ({ many }) => ({
   eventsCommittees: many(eventsCommittees),
   eventsHostsUsers: many(eventsHostsUsers),
   eventsSponsorsUsers: many(eventsSponsorsUsers),
+  eventsDiscussions: many(eventsDiscussions),
   videosSpeakers: many(videosSpeakers),
   certificates: many(certificates),
   feeds: many(feeds),
@@ -552,6 +566,7 @@ export const eventsRelations = relations(events, ({ many }) => ({
   eventsHostsOrganizations: many(eventsHostsOrganizations),
   eventsSponsorsUsers: many(eventsSponsorsUsers),
   eventsSponsorsOrganizations: many(eventsSponsorsOrganizations),
+  eventsDiscussions: many(eventsDiscussions),
   certificates: many(certificates),
 }));
 
@@ -651,6 +666,20 @@ export const eventsSponsorsOrganizationsRelations = relations(
     organization: one(organizations, {
       fields: [eventsSponsorsOrganizations.organizationId],
       references: [organizations.id],
+    }),
+  })
+);
+
+export const eventsDiscussionsRelations = relations(
+  eventsDiscussions,
+  ({ one }) => ({
+    event: one(events, {
+      fields: [eventsDiscussions.eventId],
+      references: [events.id],
+    }),
+    user: one(users, {
+      fields: [eventsDiscussions.userId],
+      references: [users.id],
     }),
   })
 );

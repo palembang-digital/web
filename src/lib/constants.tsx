@@ -9,9 +9,7 @@ import {
   UsersIcon,
 } from "lucide-react";
 
-export const BASE_URL = process.env.VERCEL_URL
-  ? `https://${process.env.VERCEL_URL}`
-  : "https://www.palembangdigital.org";
+export const BASE_URL = "https://www.palembangdigital.org";
 
 interface MenuLink {
   href: string;

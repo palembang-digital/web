@@ -1,5 +1,6 @@
 import { auth } from "@/auth";
 import EventDescription from "@/components/events/event-description";
+import EventDiscussionPanel from "@/components/events/event-discussion-panel";
 import EventLocationType from "@/components/events/event-location-type";
 import EventRegistrationPanel from "@/components/events/event-registration-panel";
 import EventSidebarInfo from "@/components/events/event-sidebar-info";
@@ -304,12 +305,14 @@ export default async function Page({ params }: { params: { id: number } }) {
                           rsvp === "yes" && (
                             <Link href={`/${user.username}`} key={user.id}>
                               <div className="flex items-center gap-2">
-                                <Avatar>
+                                <Avatar className="rounded-full h-6 w-6">
                                   <AvatarImage
                                     src={user.image || ""}
                                     alt={user.name || ""}
                                   />
-                                  <AvatarFallback>{user.name}</AvatarFallback>
+                                  <AvatarFallback>
+                                    {user.name || ""}
+                                  </AvatarFallback>
                                 </Avatar>
                               </div>
                             </Link>
@@ -345,6 +348,8 @@ export default async function Page({ params }: { params: { id: number } }) {
                 </div>
               </div>
             )}
+
+            <EventDiscussionPanel event={event} />
           </div>
         </div>
       </div>
