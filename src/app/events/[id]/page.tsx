@@ -322,7 +322,9 @@ export default async function Page({ params }: { params: { id: number } }) {
             {event.eventsVideos.length > 0 && (
               <div className="col-span-1 sm:col-span-3">
                 <div className="flex flex-col gap-2">
-                  <TypographyH4>Dokumentasi Kegiatan</TypographyH4>
+                  <TypographyH4>
+                    Dokumentasi Kegiatan ({event.eventsVideos.length})
+                  </TypographyH4>
                   <div className="grid grid-cols-1 sm:grid-cols-3 gap-x-4 gap-y-6">
                     {event.eventsVideos
                       .sort((a, b) =>
