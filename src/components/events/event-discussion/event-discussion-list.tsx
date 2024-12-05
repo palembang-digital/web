@@ -30,7 +30,7 @@ export default function EventDiscussionList({
             />
           ))
       ) : (
-        <div className="text-neutral-500">Belum ada diskusi</div>
+        <div className="text-neutral-500 text-sm">Belum ada diskusi</div>
       )}
     </div>
   );
