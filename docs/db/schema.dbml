@@ -147,6 +147,16 @@ table events_committees {
   }
 }
 
+table events_discussions {
+  id serial [pk, not null, increment]
+  event_id integer [not null]
+  user_id text [not null]
+  parent_id integer
+  content text [not null]
+  created_at timestamp [not null, default: `now()`]
+  updated_at timestamp [not null, default: `now()`]
+}
+
 table events_hosts_organizations {
   event_id integer [not null]
   organization_id integer [not null]
@@ -323,6 +333,10 @@ ref: events_attendees.user_id > users.id
 ref: events_committees.event_id > events.id
 
 ref: events_committees.user_id > users.id
+
+ref: events_discussions.event_id > events.id
+
+ref: events_discussions.user_id > users.id
 
 ref: events_hosts_organizations.event_id > events.id
 

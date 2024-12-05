@@ -1,7 +1,7 @@
 import { auth } from "@/auth";
 import { db } from "@/db";
 import { feedsComments } from "@/db/schema";
-import { getFeedComments } from "@/services/feed_comments";
+import { getFeedComments } from "@/services/feed-comments";
 import { answerQuestionTask } from "@/trigger/patal-bot";
 import { tasks } from "@trigger.dev/sdk/v3";
 import { NextRequest, NextResponse } from "next/server";

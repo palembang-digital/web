@@ -263,7 +263,7 @@ export default function PostCard({
                 </Link>
                 <p className="text-xs text-neutral-500">·</p>
                 <p className="text-xs text-neutral-500">
-                  {timeAgo(feed.createdAt)}
+                  {timeAgo(comment.createdAt)}
                 </p>
               </div>
               <p

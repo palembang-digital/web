@@ -1,0 +1,1 @@
+ALTER TABLE "events_discussions" ADD COLUMN "parent_id" integer;

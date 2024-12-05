@@ -7,7 +7,13 @@ import { useState } from "react";
 import { toast } from "sonner";
 import { useSWRConfig } from "swr";
 
-export default function NewPostForm() {
+export default function NewPostForm({
+  session,
+  event,
+}: {
+  session: any;
+  event: any;
+}) {
   const { mutate } = useSWRConfig();
   const router = useRouter();
 
@@ -23,7 +29,8 @@ export default function NewPostForm() {
         content: {
           fieldType: "textarea",
           inputProps: {
-            placeholder: "How's your day?",
+            placeholder:
+              "Ada pertanyaan? Diskusikan dengan panitia atau peserta lain",
             showLabel: false,
           },
         },
@@ -32,37 +39,38 @@ export default function NewPostForm() {
         setLoading(true);
 
         const requestData = {
-          feed: data,
+          user: session.user,
+          content: data.content,
         };
 
         try {
-          const response = await fetch(`/api/v1/feeds`, {
-            method: "POST",
-            body: JSON.stringify(requestData),
-            headers: {
-              "content-type": "application/json",
-            },
-          });
+          const response = await fetch(
+            `/api/v1/events/${event.id}/discussion`,
+            {
+              method: "POST",
+              body: JSON.stringify(requestData),
+              headers: {
+                "content-type": "application/json",
+              },
+            }
+          );
 
           if (response.ok) {
-            toast.success("Post created!");
-            router.push(`/for-you`);
+            toast.success("Discussion posted!");
+            router.push(`/events/${event.id}`);
+            setLoading(false);
             setValues({ content: undefined });
-            mutate("/api/v1/feeds");
+            mutate(`/api/v1/events/${event.id}/discussion`);
           } else {
-            toast.error("Failed to post");
+            setLoading(false);
+            toast.error("Failed to post discussion");
           }
         } catch (error) {
           console.error(error);
         }
-
-        setLoading(false);
       }}
     >
-      <p className="text-xs text-neutral-500 mt-2">
-        Tips: Mention @patal-bot agar pertanyaan kamu dijawab oleh AI kami. 🤖
-      </p>
-      <AutoFormSubmit disabled={loading}>Post</AutoFormSubmit>
+      <AutoFormSubmit disabled={loading}>Kirim</AutoFormSubmit>
     </AutoForm>
   );
 }

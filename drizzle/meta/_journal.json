@@ -218,6 +218,20 @@
       "when": 1733333173700,
       "tag": "0030_true_diamondback",
       "breakpoints": true
+    },
+    {
+      "idx": 31,
+      "version": "7",
+      "when": 1733380645525,
+      "tag": "0031_ambiguous_mephistopheles",
+      "breakpoints": true
+    },
+    {
+      "idx": 32,
+      "version": "7",
+      "when": 1733414830730,
+      "tag": "0032_flaky_butterfly",
+      "breakpoints": true
     }
   ]
 }

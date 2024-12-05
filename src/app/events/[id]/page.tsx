@@ -1,6 +1,6 @@
 import { auth } from "@/auth";
 import EventDescription from "@/components/events/event-description";
-import EventDiscussionPanel from "@/components/events/event-discussion-panel";
+import EventDiscussionPanel from "@/components/events/event-discussion/event-discussion-panel";
 import EventLocationType from "@/components/events/event-location-type";
 import EventRegistrationPanel from "@/components/events/event-registration-panel";
 import EventSidebarInfo from "@/components/events/event-sidebar-info";
@@ -297,27 +297,23 @@ export default async function Page({ params }: { params: { id: number } }) {
                   </Link>
                   <div className="flex flex-wrap gap-2 mt-2">
                     {event.eventsAttendees
+                      .filter((a) => a.rsvp === "yes")
                       .sort((a: any, b: any) =>
                         a.user.name.localeCompare(b.user.name)
                       )
-                      .map(
-                        ({ user, rsvp }) =>
-                          rsvp === "yes" && (
-                            <Link href={`/${user.username}`} key={user.id}>
-                              <div className="flex items-center gap-2">
-                                <Avatar className="rounded-full h-6 w-6">
-                                  <AvatarImage
-                                    src={user.image || ""}
-                                    alt={user.name || ""}
-                                  />
-                                  <AvatarFallback>
-                                    {user.name || ""}
-                                  </AvatarFallback>
-                                </Avatar>
-                              </div>
-                            </Link>
-                          )
-                      )}
+                      .map(({ user }) => (
+                        <Link href={`/${user.username}`} key={user.id}>
+                          <div className="flex items-center gap-2">
+                            <Avatar className="rounded-full h-6 w-6">
+                              <AvatarImage
+                                src={user.image || ""}
+                                alt={user.name || ""}
+                              />
+                              <AvatarFallback>{user.name || ""}</AvatarFallback>
+                            </Avatar>
+                          </div>
+                        </Link>
+                      ))}
                   </div>
                 </div>
               </div>
@@ -349,7 +345,7 @@ export default async function Page({ params }: { params: { id: number } }) {
               </div>
             )}
 
-            <EventDiscussionPanel event={event} />
+            <EventDiscussionPanel session={session} event={event} />
           </div>
         </div>
       </div>
