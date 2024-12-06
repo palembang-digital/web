@@ -24,7 +24,7 @@ export default function EventDiscussionPanel({
   }
 
   return (
-    <div className="col-span-1 sm:col-span-3 mt-4">
+    <div id="discussion" className="col-span-1 sm:col-span-3 mt-4">
       <div className="flex flex-col gap-4">
         <TypographyH4>
           Diskusi{discussions.length > 0 && ` (${discussions.length})`}

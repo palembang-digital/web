@@ -156,7 +156,7 @@ export default function EventDiscussionCard({
 
         <div className="flex items-center gap-2 w-full">
           <Avatar className="h-6 w-6">
-            <AvatarImage src={discussion.user.image || ""} />
+            <AvatarImage src={session.user.image || ""} />
           </Avatar>
           <div className="flex w-full space-x-2">
             <Input
