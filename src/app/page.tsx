@@ -22,7 +22,7 @@ export default async function Page() {
           <Hero session={session} />
 
           <div className="mt-16">
-            <EventList pastEventsLimit={6} showSeeMoreButton />
+            <EventList limit={20} pastEventsLimit={6} showSeeMoreButton />
           </div>
 
           <div className="mt-16">
