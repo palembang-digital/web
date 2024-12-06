@@ -286,7 +286,7 @@ export default async function Page({ params }: { params: { id: number } }) {
 
             <EventSidebarInfo
               event={event}
-              className="lg:hidden flex flex-col"
+              className="lg:hidden flex flex-col col-span-1 sm:col-span-3"
             />
 
             {totalAttendees > 0 && (
