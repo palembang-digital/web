@@ -231,21 +231,25 @@ export default async function Page({ params }: { params: { id: number } }) {
                               />
                             </div>
                           ))}
-                        {event.eventsSponsorsUsers.map((user: any) => (
-                          <Link
-                            href={`/${user.user.username}`}
-                            key={user.user.id}
-                            className="flex items-center my-4 hover:underline"
-                          >
-                            <Image
-                              src={user.user.image || ""}
-                              alt={user.user.name || ""}
-                              width={40}
-                              height={40}
-                              className="rounded-full"
-                            />
-                          </Link>
-                        ))}
+                        {event.eventsSponsorsUsers
+                          .sort((a: any, b: any) =>
+                            a.user.name.localeCompare(b.user.name)
+                          )
+                          .map((user: any) => (
+                            <Link
+                              href={`/${user.user.username}`}
+                              key={user.user.id}
+                              className="flex items-center my-4 hover:underline"
+                            >
+                              <Image
+                                src={user.user.image || ""}
+                                alt={user.user.name || ""}
+                                width={40}
+                                height={40}
+                                className="rounded-full"
+                              />
+                            </Link>
+                          ))}
                       </div>
                     </div>
                   </div>
