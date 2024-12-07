@@ -1,3 +1,4 @@
+import AdUnit from "@/components/ad-unit";
 import EventList from "@/components/events/event-list";
 import { FloatingHeader } from "@/components/floating-header";
 import Hero from "@/components/landing/hero";
@@ -35,6 +36,11 @@ export default async function Page() {
 
           <LandingAboutUs />
           <LandingFAQ />
+
+          <div className="mt-16 p-2 sm:p-6">
+            <AdUnit />
+          </div>
+
           <LandingContactUs />
         </div>
       </div>
