@@ -75,12 +75,12 @@ export default function EventDiscussionCard({
     <div className="flex flex-col border rounded-lg">
       <div className="flex flex-col p-4 gap-2">
         <div className="flex items-center gap-2">
-          <Link href={discussion.user.username}>
+          <Link href={`/${discussion.user.username}`}>
             <Avatar className="h-6 w-6">
               <AvatarImage src={discussion.user.image || ""} />
             </Avatar>
           </Link>
-          <Link href={discussion.user.username}>
+          <Link href={`/${discussion.user.username}`}>
             <p className="text-xs font-semibold">{discussion.user.name}</p>
           </Link>
           <p className="text-xs text-neutral-500">·</p>
@@ -116,12 +116,12 @@ export default function EventDiscussionCard({
           .map((comment) => (
             <div key={comment.id} className="flex flex-col gap-2">
               <div className="flex items-center gap-2">
-                <Link href={comment.user.username}>
+                <Link href={`/${comment.user.username}`}>
                   <Avatar className="h-6 w-6">
                     <AvatarImage src={comment.user.image || ""} />
                   </Avatar>
                 </Link>
-                <Link href={comment.user.username}>
+                <Link href={`/${comment.user.username}`}>
                   <p className="text-xs font-semibold">{comment.user.name}</p>
                 </Link>
                 <p className="text-xs text-neutral-500">·</p>
