@@ -56,7 +56,7 @@ export default function AdUnit({
     <div className="flex flex-col gap-1">
       <p className="text-xs text-neutral-400">Iklan</p>
       <ins
-        className={cn("adsbygoogle w-full h-[100px] border", className)}
+        className={cn("adsbygoogle w-full h-full border", className)}
         style={style}
         data-ad-client={client}
         data-ad-slot={slot}
