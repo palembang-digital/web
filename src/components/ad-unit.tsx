@@ -1,7 +1,10 @@
 "use client";
 
 import { cn } from "@/lib/utils";
+import { InfoCircledIcon } from "@radix-ui/react-icons";
+import { PopoverContent } from "@radix-ui/react-popover";
 import React, { useEffect } from "react";
+import { Popover, PopoverTrigger } from "./ui/popover";
 
 interface Props {
   readonly className?: string;
@@ -54,9 +57,27 @@ export default function AdUnit({
 
   return (
     <div className="flex flex-col gap-1">
-      <p className="text-xs text-neutral-400">Iklan</p>
+      <div className="flex gap-1">
+        <p className="text-xs text-neutral-400">Iklan</p>
+        <Popover>
+          <PopoverTrigger>
+            <InfoCircledIcon className="h-3 w-3 text-neutral-400" />
+          </PopoverTrigger>
+          <PopoverContent className="w-80">
+            <div className="border rounded-lg p-2 gap-1">
+              <p className="text-xs text-neutral-500">
+                Kami memuat iklan untuk mebiayai pengembangan dan operasional
+                platform Palembang Digital.
+              </p>
+              <p className="text-xs text-neutral-500">
+                Terima kasih atas pengertiannya ☺️
+              </p>
+            </div>
+          </PopoverContent>
+        </Popover>
+      </div>
       <ins
-        className={cn("adsbygoogle w-full h-full border", className)}
+        className={cn("adsbygoogle w-full h-[100px]", className)}
         style={style}
         data-ad-client={client}
         data-ad-slot={slot}
