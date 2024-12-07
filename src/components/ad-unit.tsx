@@ -63,7 +63,7 @@ export default function AdUnit({
           <PopoverTrigger>
             <InfoCircledIcon className="h-3 w-3 text-neutral-400" />
           </PopoverTrigger>
-          <PopoverContent className="w-80">
+          <PopoverContent className="w-80" side="top">
             <div className="border rounded-lg p-2 gap-1">
               <p className="text-xs text-neutral-500">
                 Kami memuat iklan untuk mebiayai pengembangan dan operasional
@@ -77,7 +77,7 @@ export default function AdUnit({
         </Popover>
       </div>
       <ins
-        className={cn("adsbygoogle w-full h-[100px]", className)}
+        className={cn("adsbygoogle", className)}
         style={style}
         data-ad-client={client}
         data-ad-slot={slot}
