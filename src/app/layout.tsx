@@ -12,7 +12,6 @@ import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import type { Metadata, Viewport } from "next";
 import { Inter as FontSans } from "next/font/google";
-import Head from "next/head";
 import NextTopLoader from "nextjs-toploader";
 import { Suspense } from "react";
 
@@ -67,11 +66,6 @@ export default async function RootLayout({
 
   return (
     <html lang="en" suppressHydrationWarning>
-      <Head>
-        {googleAdsenseClientId && (
-          <GoogleAdsense clientId={googleAdsenseClientId} />
-        )}
-      </Head>
       <body
         className={cn(
           "min-h-screen bg-background font-sans antialiased",
@@ -102,6 +96,9 @@ export default async function RootLayout({
         <SpeedInsights />
       </body>
       <GoogleAnalytics gaId="UA-169186060-1" />
+      {googleAdsenseClientId && (
+        <GoogleAdsense clientId={googleAdsenseClientId} />
+      )}
     </html>
   );
 }
