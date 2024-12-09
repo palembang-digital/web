@@ -41,8 +41,6 @@ export default async function Page({
     ? params.username.slice(3)
     : params.username;
 
-  console.log(username);
-
   const user = await getUser(username);
   if (!user) {
     return (

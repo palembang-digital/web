@@ -3,8 +3,8 @@
 import "@/components/minimal-tiptap/styles/index.css";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
+import { Textarea } from "@/components/ui/textarea";
 import { timeAgo } from "@/lib/utils";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -154,12 +154,12 @@ export default function EventDiscussionCard({
             </div>
           ))}
 
-        <div className="flex items-center gap-2 w-full">
+        <div className="flex gap-2 w-full">
           <Avatar className="h-6 w-6">
             <AvatarImage src={session.user.image || ""} />
           </Avatar>
           <div className="flex w-full space-x-2">
-            <Input
+            <Textarea
               className="bg-white"
               placeholder="Tulis komentar di sini"
               value={comment}
