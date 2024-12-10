@@ -27,7 +27,7 @@ export default function EventDiscussionPanel({
     <div id="discussion" className="col-span-1 sm:col-span-3 mt-4">
       <div className="flex flex-col gap-4">
         <TypographyH4>
-          Diskusi{discussions.length > 0 && ` (${discussions.length})`}
+          Diskusi{discussions?.length > 0 && ` (${discussions?.length})`}
         </TypographyH4>
         {session && <NewPostForm session={session} event={event} />}
         <EventDiscussionList
