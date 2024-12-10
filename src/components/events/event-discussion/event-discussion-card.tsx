@@ -42,7 +42,7 @@ export default function EventDiscussionCard({
     setLoading(true);
 
     const requestData = {
-      user: session.user,
+      user: session?.user,
       content: comment,
       parentId: discussion.id,
     };
@@ -154,27 +154,29 @@ export default function EventDiscussionCard({
             </div>
           ))}
 
-        <div className="flex gap-2 w-full">
-          <Avatar className="h-6 w-6">
-            <AvatarImage src={session.user.image || ""} />
-          </Avatar>
-          <div className="flex w-full space-x-2">
-            <Textarea
-              className="bg-white"
-              placeholder="Tulis komentar di sini"
-              value={comment}
-              onChange={(e) => setComment(e.target.value)}
-              disabled={loading}
-            />
-            <Button
-              onClick={() => postComment()}
-              disabled={loading || comment.length === 0}
-              variant="outline"
-            >
-              Kirim
-            </Button>
+        {session && (
+          <div className="flex gap-2 w-full">
+            <Avatar className="h-6 w-6">
+              <AvatarImage src={session?.user.image || ""} />
+            </Avatar>
+            <div className="flex w-full space-x-2">
+              <Textarea
+                className="bg-white"
+                placeholder="Tulis komentar di sini"
+                value={comment}
+                onChange={(e) => setComment(e.target.value)}
+                disabled={loading}
+              />
+              <Button
+                onClick={() => postComment()}
+                disabled={loading || comment.length === 0}
+                variant="outline"
+              >
+                Kirim
+              </Button>
+            </div>
           </div>
-        </div>
+        )}
       </div>
     </div>
   );
