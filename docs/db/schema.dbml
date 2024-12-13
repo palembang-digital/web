@@ -1,3 +1,10 @@
+enum article_status {
+  draft
+  published
+  reviewed
+  deleted
+}
+
 enum event_location_type {
   offline
   online
@@ -66,6 +73,29 @@ table accounts {
 
   indexes {
     (provider, providerAccountId) [pk]
+  }
+}
+
+table articles {
+  id serial [pk, not null, increment]
+  title text [not null]
+  slug text [not null, unique]
+  cover_image text
+  category text
+  content text [not null]
+  status article_status [not null, default: 'draft']
+  created_at timestamp [not null, default: `now()`]
+  updated_at timestamp [not null, default: `now()`]
+  created_by text [not null]
+  updated_by text [not null]
+}
+
+table articles_authors {
+  article_id integer [not null]
+  user_id text [not null]
+
+  indexes {
+    (article_id, user_id) [pk]
   }
 }
 
@@ -321,6 +351,10 @@ table videos_speakers {
     (video_id, user_id) [pk]
   }
 }
+
+ref: articles_authors.article_id - articles.id
+
+ref: articles_authors.user_id > users.id
 
 ref: certificates.event_id > events.id
 

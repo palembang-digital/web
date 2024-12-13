@@ -14,7 +14,7 @@ export default function EventCard({ event }: { event: any }) {
           </h3>
           <TypographyH3 className="text-sm">{event.name}</TypographyH3>
           {event.locationName && (
-            <p className="text-xs">{event.locationName}</p>
+            <p className="text-xs mt-1">{event.locationName}</p>
           )}
           {event.locationType && (
             <EventLocationType type={event.locationType} className="mt-2" />

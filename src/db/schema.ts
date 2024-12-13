@@ -533,6 +533,50 @@ export const insertJobSchema = createInsertSchema(jobs).pick({
   applicationUrl: true,
 });
 
+export const articleStatusEnum = pgEnum("article_status", [
+  "draft",
+  "published",
+  "reviewed",
+  "deleted",
+]);
+
+export const articles = pgTable("articles", {
+  id: serial("id").primaryKey(),
+  title: text("title").notNull(),
+  slug: text("slug").notNull().unique(),
+  coverImage: text("cover_image"),
+  category: text("category"),
+  content: text("content").notNull(),
+  status: articleStatusEnum("status").notNull().default("draft"),
+  createdAt: timestamp("created_at").notNull().defaultNow(),
+  updatedAt: timestamp("updated_at").notNull().defaultNow(),
+  createdBy: text("created_by").notNull(),
+  updatedBy: text("updated_by").notNull(),
+});
+
+export const insertArticleSchema = createInsertSchema(articles).pick({
+  title: true,
+  slug: true,
+  coverImage: true,
+  category: true,
+  content: true,
+});
+
+export const articlesAuthors = pgTable(
+  "articles_authors",
+  {
+    articleId: integer("article_id")
+      .notNull()
+      .references(() => articles.id, { onDelete: "cascade" }),
+    userId: text("user_id")
+      .notNull()
+      .references(() => users.id, { onDelete: "cascade" }),
+  },
+  (t) => ({
+    pk: primaryKey({ columns: [t.articleId, t.userId] }),
+  })
+);
+
 // ==================================================
 //
 // RELATIONS
@@ -551,6 +595,7 @@ export const usersRelations = relations(users, ({ many }) => ({
   feeds: many(feeds),
   feedsLikes: many(feedsLikes),
   feedsComments: many(feedsComments),
+  articles: many(articlesAuthors),
 }));
 
 export const organizationsRelations = relations(organizations, ({ many }) => ({
@@ -574,6 +619,10 @@ export const eventsRelations = relations(events, ({ many }) => ({
 export const videosRelations = relations(videos, ({ many }) => ({
   eventsVideos: many(eventsVideos),
   videosSpeakers: many(videosSpeakers),
+}));
+
+export const articlesRelations = relations(articles, ({ many }) => ({
+  authors: many(articlesAuthors),
 }));
 
 export const eventsSpeakersRelations = relations(eventsSpeakers, ({ one }) => ({
@@ -746,5 +795,16 @@ export const feedsCommentsRelations = relations(feedsComments, ({ one }) => ({
   feed: one(feeds, {
     fields: [feedsComments.feedId],
     references: [feeds.id],
+  }),
+}));
+
+export const authorsUsersRelations = relations(articlesAuthors, ({ one }) => ({
+  article: one(articles, {
+    fields: [articlesAuthors.articleId],
+    references: [articles.id],
+  }),
+  user: one(users, {
+    fields: [articlesAuthors.userId],
+    references: [users.id],
   }),
 }));

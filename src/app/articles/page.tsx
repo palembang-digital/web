@@ -1,5 +1,7 @@
 import { auth } from "@/auth";
+import ArticleList from "@/components/articles/article-list";
 import { FloatingHeader } from "@/components/floating-header";
+import { GradientBg3 } from "@/components/gradient-bg";
 import { ScrollArea } from "@/components/scroll-area";
 import type { Metadata } from "next";
 
@@ -14,9 +16,12 @@ export default async function Page() {
 
   return (
     <ScrollArea useScrollAreaId>
+      <GradientBg3 />
       <FloatingHeader session={session} scrollTitle="Artikel" />
       <div className="content-wrapper">
-        <div className="content"></div>
+        <div className="content">
+          <ArticleList />
+        </div>
       </div>
     </ScrollArea>
   );

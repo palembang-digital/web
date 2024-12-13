@@ -1,0 +1,30 @@
+"use client";
+
+import { TypographyH2 } from "@/components/ui/typography";
+import { fetcher } from "@/lib/fetcher";
+import useSWR from "swr";
+import ArticleCard from "./article-card";
+
+export default function ArticleList({ limit = 10 }) {
+  const { data, isLoading } = useSWR(
+    `/api/v1/articles?limit=${limit}`,
+    fetcher
+  );
+
+  if (isLoading) {
+    return <div className="p-6">Loading our thoughtful writings...</div>;
+  }
+
+  return (
+    <div>
+      <p className="italic text-neutral-400">Our writings</p>
+      <TypographyH2>Artikel</TypographyH2>
+      <div className="grid gap-6 md:grid-cols-2 mt-6">
+        {data &&
+          data.map((article: any) => (
+            <ArticleCard key={article.id} article={article} />
+          ))}
+      </div>
+    </div>
+  );
+}
