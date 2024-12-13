@@ -22,7 +22,7 @@ export default function ArticlePage({ article }: { article: any }) {
   const author = article.authors.length > 0 ? article.authors[0] : null;
 
   return (
-    <div className="flex flex-col gap-6 my-4">
+    <div className="flex flex-col gap-4 my-4">
       <TypographyH1 className="text-center text-lg lg:text-3xl font-medium">
         {article.title}
       </TypographyH1>
@@ -48,7 +48,7 @@ export default function ArticlePage({ article }: { article: any }) {
         </time>
       </div>
 
-      <div className="flex items-center justify-center">
+      <div className="flex items-center justify-center mt-2">
         {article.coverImage && (
           <Image
             src={article.coverImage}
@@ -61,7 +61,7 @@ export default function ArticlePage({ article }: { article: any }) {
         )}
       </div>
 
-      <div className="mx-auto max-w-screen-md mt-2">
+      <div className="mx-auto max-w-screen-md mt-4">
         <ArticleContent content={article.content} />
       </div>
     </div>

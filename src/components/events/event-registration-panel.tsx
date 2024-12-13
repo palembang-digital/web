@@ -21,6 +21,44 @@ function isUserRegistered(event: any, user: any) {
   );
 }
 
+function isUserAttended(event: any, user: any) {
+  if (!user) {
+    return false;
+  }
+
+  return event.eventsAttendees.some(
+    (attendee: any) => attendee.user.id === user.id && attendee.attended
+  );
+}
+
+function UserAttendedPanel({ session, event }: { session: any; event: any }) {
+  return (
+    <div className="border border-slate-200 rounded-lg p-4 flex flex-col gap-2">
+      <div className="flex flex-col gap-2">
+        <Avatar>
+          <AvatarImage
+            src={session?.user?.image || ""}
+            alt={session?.user?.name || ""}
+          />
+          <AvatarFallback>{session?.user?.name || ""}</AvatarFallback>
+        </Avatar>
+        <p className="text-sm font-medium">
+          Hai {session?.user?.name}, terima kasih telah mengikuti kegiatan ini!
+        </p>
+        <div className="flex flex-col sm:flex-row gap-2">
+          {event.feedbackUrl && (
+            <Link href={event.feedbackUrl} target="_blank">
+              <Button className="text-xs" variant="outline">
+                Berikan feedback
+              </Button>
+            </Link>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export default function EventRegistrationPanel({
   session,
   event,
@@ -28,6 +66,11 @@ export default function EventRegistrationPanel({
   session: any;
   event: any;
 }) {
+  const isAttended = isUserAttended(event, session?.user);
+  if (isAttended) {
+    return <UserAttendedPanel session={session} event={event} />;
+  }
+
   if (event.scheduledEnd < new Date()) {
     return (
       <Button className="text-xs bg-green-600 hover:bg-green-600 hover:cursor-default">

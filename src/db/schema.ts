@@ -175,6 +175,7 @@ export const events = pgTable("events", {
   locationType: eventLocationTypeEnum("location_type"),
   status: eventStatusEnum("status").notNull().default("draft"),
   whatsappGroupUrl: text("whatsapp_group_url"),
+  feedbackUrl: text("feedback_url"),
 });
 
 export const insertEventSchema = createInsertSchema(events, {

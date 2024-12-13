@@ -239,6 +239,13 @@
       "when": 1733829406245,
       "tag": "0033_large_doctor_doom",
       "breakpoints": true
+    },
+    {
+      "idx": 34,
+      "version": "7",
+      "when": 1734098939836,
+      "tag": "0034_safe_machine_man",
+      "breakpoints": true
     }
   ]
 }

@@ -152,6 +152,7 @@ table events {
   location_type event_location_type
   status event_status [not null, default: 'draft']
   whatsapp_group_url text
+  feedback_url text
 }
 
 table events_attendees {
@@ -352,7 +353,7 @@ table videos_speakers {
   }
 }
 
-ref: articles_authors.article_id - articles.id
+ref: articles_authors.article_id > articles.id
 
 ref: articles_authors.user_id > users.id
 
