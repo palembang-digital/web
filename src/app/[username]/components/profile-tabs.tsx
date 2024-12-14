@@ -5,6 +5,10 @@ import EventCard from "@/components/events/event-card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import YouTubeVideoCard from "@/components/youtube-video-card";
 import { localeDate } from "@/lib/utils";
+import { DownloadIcon } from "@radix-ui/react-icons";
+import { saveAs } from "file-saver";
+import Image from "next/image";
+import Link from "next/link";
 import { parseAsString, useQueryState } from "nuqs";
 
 export default function ProfileTabs({
@@ -22,6 +26,10 @@ export default function ProfileTabs({
     "tab",
     parseAsString.withDefault("events")
   );
+
+  const downloadCertificate = (cert: any) => {
+    saveAs(`/certificates/${cert.id}`, `${name} - ${cert.event.name}.png`);
+  };
 
   return (
     <Tabs
@@ -60,21 +68,44 @@ export default function ProfileTabs({
                 a.event.scheduledStart < b.event.scheduledStart ? 1 : -1
               )
               .map((certificate) => (
-                <div key={certificate.id} className="bg-background p-4">
-                  <CerticateDownload
-                    eventName={certificate.event.name}
-                    recipientName={name || ""}
-                    role={certificate.role || "Peserta"}
-                    startDate={certificate.event.scheduledStart}
-                    endDate={
-                      localeDate(certificate.event.scheduledStart) !==
-                      localeDate(certificate.event.scheduledEnd)
-                        ? certificate.event.scheduledEnd
-                        : undefined
-                    }
-                    certificateCode={certificate.id}
-                    certificateTitle="Sertifikat Apresiasi"
-                  />
+                <div key={certificate.id} className="bg-background">
+                  {certificate.template === "sdc-2024" ? (
+                    <div className="bg-accent rounded-t-lg">
+                      <div className="flex p-4 items-center justify-between">
+                        <Link
+                          href={`/events/${certificate.event.id}`}
+                          className="text-xs hover:underline text-gray-600 hover:text-gray-900"
+                        >
+                          {certificate.event.name}
+                        </Link>
+                        <DownloadIcon
+                          className="w-4 h-4 hover:cursor-pointer text-gray-600 hover:text-gray-900"
+                          onClick={() => downloadCertificate(certificate)}
+                        />
+                      </div>
+                      <Image
+                        src={`/certificates/${certificate.id}`}
+                        width={1123}
+                        height={794}
+                        alt={certificate.event.name}
+                      />
+                    </div>
+                  ) : (
+                    <CerticateDownload
+                      eventName={certificate.event.name}
+                      recipientName={name || ""}
+                      role={certificate.role || "Peserta"}
+                      startDate={certificate.event.scheduledStart}
+                      endDate={
+                        localeDate(certificate.event.scheduledStart) !==
+                        localeDate(certificate.event.scheduledEnd)
+                          ? certificate.event.scheduledEnd
+                          : undefined
+                      }
+                      certificateCode={certificate.id}
+                      certificateTitle="Sertifikat Apresiasi"
+                    />
+                  )}
                 </div>
               ))}
           </div>

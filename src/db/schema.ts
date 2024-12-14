@@ -438,6 +438,12 @@ export const insertContactFormSchema = createInsertSchema(contactForm, {
   message: true,
 });
 
+export const certificateStatusEnum = pgEnum("certificate_status", [
+  "pending",
+  "approved",
+  "rejected",
+]);
+
 export const certificates = pgTable(
   "certificates",
   {
@@ -451,6 +457,8 @@ export const certificates = pgTable(
       .notNull()
       .references(() => users.id, { onDelete: "cascade" }),
     role: text("role").notNull().default("Peserta"),
+    template: text("template"),
+    status: certificateStatusEnum("status").notNull().default("pending"),
     createdAt: timestamp("created_at").notNull().defaultNow(),
   },
   (t) => ({

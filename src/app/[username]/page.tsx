@@ -100,7 +100,9 @@ export default async function Page({
               <ProfileTabs
                 name={user.name || ""}
                 events={events}
-                certificates={user.certificates}
+                certificates={user.certificates.filter(
+                  (cert) => cert.status === "approved"
+                )}
                 videos={user.videosSpeakers}
               />
             </div>

@@ -116,6 +116,7 @@ export const getUser = cache(async (username: string) => {
         with: {
           event: {
             columns: {
+              id: true,
               name: true,
               scheduledStart: true,
               scheduledEnd: true,

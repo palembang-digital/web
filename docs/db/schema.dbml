@@ -5,6 +5,12 @@ enum article_status {
   deleted
 }
 
+enum certificate_status {
+  pending
+  approved
+  rejected
+}
+
 enum event_location_type {
   offline
   online
@@ -119,6 +125,8 @@ table certificates {
   event_id integer [not null]
   user_id text [not null]
   role text [not null, default: 'Peserta']
+  template text
+  status certificate_status [not null, default: 'pending']
   created_at timestamp [not null, default: `now()`]
 
   indexes {
