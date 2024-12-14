@@ -324,6 +324,32 @@ export const eventsDiscussions = pgTable("events_discussions", {
   updatedAt: timestamp("updated_at").notNull().defaultNow(),
 });
 
+export const eventsPhotos = pgTable(
+  "events_photos",
+  {
+    eventId: integer("event_id")
+      .notNull()
+      .references(() => events.id, { onDelete: "cascade" }),
+    photoId: integer("photo_id")
+      .notNull()
+      .references(() => photos.id, { onDelete: "cascade" }),
+  },
+  (t) => ({
+    pk: primaryKey({ columns: [t.eventId, t.photoId] }),
+  })
+);
+
+export const photos = pgTable("photos", {
+  id: serial("id").primaryKey(),
+  imageUrl: text("image_url").notNull(),
+  caption: text("caption"),
+  createdBy: text("created_by")
+    .notNull()
+    .references(() => users.id, { onDelete: "cascade" }),
+  createdAt: timestamp("created_at").notNull().defaultNow(),
+  updatedAt: timestamp("updated_at").notNull().defaultNow(),
+});
+
 export const eventsVideos = pgTable(
   "events_videos",
   {
@@ -608,6 +634,7 @@ export const eventsRelations = relations(events, ({ many }) => ({
   eventsSpeakers: many(eventsSpeakers),
   eventsAttendees: many(eventsAttendees),
   eventsCommittees: many(eventsCommittees),
+  eventsPhotos: many(eventsPhotos),
   eventsVideos: many(eventsVideos),
   eventsHostsUsers: many(eventsHostsUsers),
   eventsHostsOrganizations: many(eventsHostsOrganizations),
@@ -615,6 +642,10 @@ export const eventsRelations = relations(events, ({ many }) => ({
   eventsSponsorsOrganizations: many(eventsSponsorsOrganizations),
   eventsDiscussions: many(eventsDiscussions),
   certificates: many(certificates),
+}));
+
+export const photosRelations = relations(photos, ({ many }) => ({
+  eventsPhotos: many(eventsPhotos),
 }));
 
 export const videosRelations = relations(videos, ({ many }) => ({
@@ -734,6 +765,17 @@ export const eventsDiscussionsRelations = relations(
     }),
   })
 );
+
+export const eventsPhotosRelations = relations(eventsPhotos, ({ one }) => ({
+  event: one(events, {
+    fields: [eventsPhotos.eventId],
+    references: [events.id],
+  }),
+  photo: one(photos, {
+    fields: [eventsPhotos.photoId],
+    references: [photos.id],
+  }),
+}));
 
 export const eventsVideosRelations = relations(eventsVideos, ({ one }) => ({
   event: one(events, {

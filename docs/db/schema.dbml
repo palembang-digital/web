@@ -206,6 +206,15 @@ table events_hosts_users {
   }
 }
 
+table events_photos {
+  event_id integer [not null]
+  photo_id integer [not null]
+
+  indexes {
+    (event_id, photo_id) [pk]
+  }
+}
+
 table events_speakers {
   event_id integer [not null]
   user_id text [not null]
@@ -300,6 +309,15 @@ table organizations {
   updated_at timestamp [not null, default: `now()`]
 }
 
+table photos {
+  id serial [pk, not null, increment]
+  image_url text [not null]
+  caption text
+  created_by text [not null]
+  created_at timestamp [not null, default: `now()`]
+  updated_at timestamp [not null, default: `now()`]
+}
+
 table sessions {
   sessionToken text [pk, not null]
   userId text [not null]
@@ -380,6 +398,10 @@ ref: events_hosts_organizations.organization_id > organizations.id
 ref: events_hosts_users.event_id > events.id
 
 ref: events_hosts_users.user_id > users.id
+
+ref: events_photos.event_id > events.id
+
+ref: events_photos.photo_id > photos.id
 
 ref: events_speakers.event_id > events.id
 

@@ -42,6 +42,17 @@ export const getEvents = cache(
             },
           },
         },
+        eventsPhotos: {
+          with: {
+            photo: {
+              columns: {
+                id: true,
+                imageUrl: true,
+                caption: true,
+              },
+            },
+          },
+        },
         eventsVideos: {
           with: {
             video: {

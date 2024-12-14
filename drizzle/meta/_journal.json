@@ -246,6 +246,20 @@
       "when": 1734098939836,
       "tag": "0034_safe_machine_man",
       "breakpoints": true
+    },
+    {
+      "idx": 35,
+      "version": "7",
+      "when": 1734188768666,
+      "tag": "0035_clean_santa_claus",
+      "breakpoints": true
+    },
+    {
+      "idx": 36,
+      "version": "7",
+      "when": 1734188802307,
+      "tag": "0036_romantic_valeria_richards",
+      "breakpoints": true
     }
   ]
 }
