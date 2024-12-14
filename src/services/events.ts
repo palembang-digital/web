@@ -145,6 +145,18 @@ export const getEvent = cache(async (id: number) => {
           },
         },
       },
+      eventsPhotos: {
+        with: {
+          photo: {
+            columns: {
+              id: true,
+              imageUrl: true,
+              caption: true,
+              createdAt: true,
+            },
+          },
+        },
+      },
       eventsVideos: {
         with: {
           video: {

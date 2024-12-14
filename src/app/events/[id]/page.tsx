@@ -323,29 +323,51 @@ export default async function Page({ params }: { params: { id: number } }) {
               </div>
             )}
 
-            {event.eventsVideos.length > 0 && (
-              <div className="col-span-1 sm:col-span-3">
+            {(event.eventsPhotos.length > 0 ||
+              event.eventsVideos.length > 0) && (
+              <div className="col-span-1 sm:col-span-3 mt-4">
                 <div className="flex flex-col gap-2">
                   <TypographyH4>
-                    Dokumentasi Kegiatan ({event.eventsVideos.length})
+                    Dokumentasi Kegiatan (
+                    {event.eventsPhotos.length + event.eventsVideos.length})
                   </TypographyH4>
                   <div className="grid grid-cols-1 sm:grid-cols-3 gap-x-4 gap-y-6">
-                    {event.eventsVideos
-                      .sort((a, b) =>
-                        a.video.publishedAt > b.video.publishedAt ? 1 : -1
-                      )
-                      .map(({ video }) => (
-                        <div
-                          key={video.id}
-                          className="bg-background hover:bg-accent hover:cursor-pointer shadow-sm flex h-full border rounded-lg"
-                        >
-                          {video.videoType === "youtube" ? (
-                            <YouTubeVideoCard video={video} />
-                          ) : (
-                            <video src={video.videoUrl || ""} controls />
-                          )}
-                        </div>
-                      ))}
+                    {event.eventsPhotos.length > 0 &&
+                      event.eventsPhotos
+                        .sort((a, b) =>
+                          a.photo.createdAt > b.photo.createdAt ? 1 : -1
+                        )
+                        .map(({ photo }) => (
+                          <div
+                            key={photo.id}
+                            className="bg-background shadow-sm flex h-full border rounded-lg"
+                          >
+                            <Image
+                              className="rounded-lg"
+                              src={photo.imageUrl}
+                              alt={photo.caption || photo.imageUrl}
+                              width={300}
+                              height={100}
+                            />
+                          </div>
+                        ))}
+                    {event.eventsVideos.length > 0 &&
+                      event.eventsVideos
+                        .sort((a, b) =>
+                          a.video.publishedAt > b.video.publishedAt ? 1 : -1
+                        )
+                        .map(({ video }) => (
+                          <div
+                            key={video.id}
+                            className="bg-background hover:bg-accent hover:cursor-pointer shadow-sm flex h-full border rounded-lg"
+                          >
+                            {video.videoType === "youtube" ? (
+                              <YouTubeVideoCard video={video} />
+                            ) : (
+                              <video src={video.videoUrl || ""} controls />
+                            )}
+                          </div>
+                        ))}
                   </div>
                 </div>
               </div>
