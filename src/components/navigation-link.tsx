@@ -53,7 +53,9 @@ function Cmp({ href, label, icon, shortcutNumber }: NavigationLinkProps) {
     >
       <span className="flex items-center gap-3">
         {iconCmp}
-        <span className={cn("font-medium", isActive && "text-white")}>
+        <span
+          className={cn("font-medium", isActive && "text-white font-semibold")}
+        >
           {label}
         </span>
       </span>
