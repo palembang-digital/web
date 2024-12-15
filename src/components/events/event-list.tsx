@@ -38,10 +38,12 @@ export default function EventList({
           <UpcomingEvents events={upcomingEvents} />
         </div>
       )}
-      <PastEvents
-        events={pastEvents.slice(0, pastEventsLimit)}
-        showSeeMoreButton={showSeeMoreButton}
-      />
+      {pastEvents && pastEvents.length > 0 && (
+        <PastEvents
+          events={pastEvents.slice(0, pastEventsLimit)}
+          showSeeMoreButton={showSeeMoreButton}
+        />
+      )}
     </div>
   );
 }
