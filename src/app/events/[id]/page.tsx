@@ -331,7 +331,7 @@ export default async function Page({ params }: { params: { id: number } }) {
                     Dokumentasi Kegiatan (
                     {event.eventsPhotos.length + event.eventsVideos.length})
                   </TypographyH4>
-                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-x-4 gap-y-6">
+                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
                     {event.eventsPhotos.length > 0 &&
                       event.eventsPhotos
                         .sort((a, b) =>
@@ -340,7 +340,7 @@ export default async function Page({ params }: { params: { id: number } }) {
                         .map(({ photo }) => (
                           <div
                             key={photo.id}
-                            className="bg-background shadow-sm flex h-full border rounded-lg"
+                            className="bg-background flex h-full rounded-lg"
                           >
                             <Image
                               className="rounded-lg"
@@ -359,7 +359,7 @@ export default async function Page({ params }: { params: { id: number } }) {
                         .map(({ video }) => (
                           <div
                             key={video.id}
-                            className="bg-background hover:bg-accent hover:cursor-pointer shadow-sm flex h-full border rounded-lg"
+                            className="border bg-background hover:bg-accent hover:cursor-pointer flex h-full rounded-lg"
                           >
                             {video.videoType === "youtube" ? (
                               <YouTubeVideoCard video={video} />

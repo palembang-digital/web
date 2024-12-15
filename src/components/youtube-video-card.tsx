@@ -1,8 +1,6 @@
 import { AnimatedTooltip } from "@/components/ui/animated-tooltip";
-import { localeDate } from "@/lib/utils";
 import Image from "next/image";
 import Link from "next/link";
-import { TypographyH3 } from "./ui/typography";
 
 export default function YouTubeVideoCard({
   video,
@@ -30,18 +28,15 @@ export default function YouTubeVideoCard({
           height={video.thumbnails?.medium.height}
           alt={video.title}
         />
-        <div className="p-4 pb-3">
-          <p className="text-muted-foreground text-xs">
-            {localeDate(new Date(video.publishedAt))}
-          </p>
-          <TypographyH3 className="text-foreground text-sm font-semibold">
-            {video.title}
-          </TypographyH3>
+        <div className="p-3">
+          <p className="text-xs">{video.title}</p>
         </div>
       </Link>
-      <div className="flex items-center p-4 pt-0">
-        <AnimatedTooltip items={items} />
-      </div>
+      {items.length > 0 && (
+        <div className="flex items-center p-4 pt-0">
+          <AnimatedTooltip items={items} />
+        </div>
+      )}
     </div>
   );
 }
