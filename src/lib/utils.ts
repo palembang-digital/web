@@ -96,3 +96,12 @@ export function timeAgo(
     DateTime.fromISO(date).setZone(zone).setLocale(locale).toRelative() || ""
   );
 }
+
+export function formatContent(content: string) {
+  let output = content.replaceAll("\n", "<br/>");
+  output = output.replaceAll(
+    /@([a-zA-Z0-9_-]+)/g,
+    '<a class="font-medium hover:underline" href="/$1">@$1</a>'
+  );
+  return output;
+}

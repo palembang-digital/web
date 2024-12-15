@@ -1,7 +1,7 @@
 "use client";
 
-import PostCard from "@/app/for-you/post-card";
 import Loading from "@/app/loading";
+import PostCard from "@/components/feeds/post-card";
 import { fetcher } from "@/lib/fetcher";
 import useSWR from "swr";
 

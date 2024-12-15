@@ -26,3 +26,29 @@ export const getFeeds = cache(async () => {
 
   return feeds;
 });
+
+export const getPost = cache(async (id: number) => {
+  const post = await db.query.feeds.findFirst({
+    where: (feeds, { eq }) => eq(feeds.id, id),
+    with: {
+      user: {
+        columns: {
+          id: true,
+          name: true,
+          username: true,
+          image: true,
+        },
+      },
+      likes: {
+        with: {
+          user: {
+            columns: { id: true, name: true, username: true, image: true },
+          },
+        },
+      },
+      comments: true,
+    },
+  });
+
+  return post;
+});
