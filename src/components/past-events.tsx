@@ -2,6 +2,7 @@ import EventCard from "@/components/events/event-card";
 import { Button } from "@/components/ui/button";
 import { TypographyH2 } from "@/components/ui/typography";
 import Link from "next/link";
+import AdUnit from "./ad-unit";
 
 export default function PastEvents({
   events,
@@ -18,8 +19,15 @@ export default function PastEvents({
       </TypographyH2>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        {events.map((event) => (
-          <EventCard key={event.id} event={event} />
+        {events.map((event, index) => (
+          <>
+            <EventCard key={event.id} event={event} />
+            {index > 0 && index % Math.ceil(events.length / 18) === 0 && (
+              <div key={index} className="border rounded-md p-2">
+                <AdUnit />
+              </div>
+            )}
+          </>
         ))}
       </div>
 

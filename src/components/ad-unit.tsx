@@ -64,7 +64,7 @@ export default function AdUnit({
             <InfoCircledIcon className="h-3 w-3 text-neutral-400" />
           </PopoverTrigger>
           <PopoverContent className="w-80" side="top">
-            <div className="border rounded-lg p-2 gap-1">
+            <div className="bg-background border rounded-lg p-2 gap-1">
               <p className="text-xs text-neutral-500">
                 Kami memuat iklan untuk mebiayai pengembangan dan operasional
                 platform Palembang Digital.
