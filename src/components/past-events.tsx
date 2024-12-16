@@ -22,9 +22,13 @@ export default function PastEvents({
         {events.map((event, index) => (
           <>
             <EventCard key={event.id} event={event} />
-            {index > 0 && index % Math.ceil(events.length / 18) === 0 && (
+            {index > 0 && index % Math.ceil(events.length / 8) === 0 && (
               <div key={index} className="border rounded-md p-2">
-                <AdUnit />
+                <AdUnit
+                  format="fluid"
+                  layoutKey="-gv+3t+5c-8s-m"
+                  slot="3788208989"
+                />
               </div>
             )}
           </>
