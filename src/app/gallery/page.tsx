@@ -16,7 +16,7 @@ export default async function Page() {
       <FloatingHeader session={session} scrollTitle="Galeri" />
       <div className="content-wrapper">
         <div className="content">
-          <Videos hideSeeMoreButton />
+          <Videos hideSeeMoreButton showAds />
         </div>
       </div>
     </ScrollArea>
