@@ -9,10 +9,12 @@ export default function EventList({
   showSeeMoreButton,
   limit = 1000,
   pastEventsLimit = -1,
+  showAds = false,
 }: {
   showSeeMoreButton?: boolean;
   limit?: number;
   pastEventsLimit?: number;
+  showAds?: boolean;
 }) {
   const { data, isLoading } = useSWR(`/api/v1/events?limit=${limit}`, fetcher);
 
@@ -42,6 +44,7 @@ export default function EventList({
         <PastEvents
           events={pastEvents.slice(0, pastEventsLimit)}
           showSeeMoreButton={showSeeMoreButton}
+          showAds={showAds}
         />
       )}
     </div>

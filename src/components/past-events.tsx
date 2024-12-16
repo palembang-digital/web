@@ -7,9 +7,11 @@ import AdUnit from "./ad-unit";
 export default function PastEvents({
   events,
   showSeeMoreButton,
+  showAds = false,
 }: {
   events: any[];
   showSeeMoreButton?: boolean;
+  showAds?: boolean;
 }) {
   return (
     <div className="p-2 sm:p-6">
@@ -22,15 +24,17 @@ export default function PastEvents({
         {events.map((event, index) => (
           <>
             <EventCard key={event.id} event={event} />
-            {index > 0 && index % Math.ceil(events.length / 8) === 0 && (
-              <div key={index} className="border rounded-md p-2">
-                <AdUnit
-                  format="fluid"
-                  layoutKey="-gv+3t+5c-8s-m"
-                  slot="3788208989"
-                />
-              </div>
-            )}
+            {showAds &&
+              index > 0 &&
+              index % Math.ceil(events.length / 8) === 0 && (
+                <div key={index} className="border rounded-md p-2">
+                  <AdUnit
+                    format="fluid"
+                    layoutKey="-gv+3t+5c-8s-m"
+                    slot="3788208989"
+                  />
+                </div>
+              )}
           </>
         ))}
       </div>

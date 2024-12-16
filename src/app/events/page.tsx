@@ -37,7 +37,7 @@ export default async function Page() {
               />
             )}
           </div>
-          <EventList />
+          <EventList showAds={true} />
         </div>
       </div>
     </ScrollArea>
