@@ -6,7 +6,6 @@ import { SideMenu } from "@/components/side-menu";
 import { Toaster } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { cn } from "@/lib/utils";
-import { getSession } from "@/services/auth";
 import { GoogleAnalytics } from "@next/third-parties/google";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
@@ -14,6 +13,7 @@ import type { Metadata, Viewport } from "next";
 import { Inter as FontSans } from "next/font/google";
 import NextTopLoader from "nextjs-toploader";
 import { Suspense } from "react";
+import { AuthProvider } from "./auth-provider";
 
 const fontSans = FontSans({
   subsets: ["latin"],
@@ -66,8 +66,6 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const session = await getSession();
-
   const googleAdsenseClientId = process.env.GOOGLE_ADSENSE_CLIENT_ID;
 
   return (
@@ -85,18 +83,20 @@ export default async function RootLayout({
           shadow="0 0 10px #0f172a,0 0 5px #0f172a"
           showSpinner={false}
         />
-        <TooltipProvider>
-          <main vaul-drawer-wrapper="" className="min-h-screen bg-white">
-            <div className="lg:flex">
-              <SideMenu className="relative hidden lg:flex">
-                <MenuContent session={session} />
-              </SideMenu>
-              <div className="flex flex-1">
-                <Suspense fallback={<Loading />}>{children}</Suspense>
+        <AuthProvider>
+          <TooltipProvider>
+            <main vaul-drawer-wrapper="" className="min-h-screen bg-white">
+              <div className="lg:flex">
+                <SideMenu className="relative hidden lg:flex">
+                  <MenuContent />
+                </SideMenu>
+                <div className="flex flex-1">
+                  <Suspense fallback={<Loading />}>{children}</Suspense>
+                </div>
               </div>
-            </div>
-          </main>
-        </TooltipProvider>
+            </main>
+          </TooltipProvider>
+        </AuthProvider>
         <Toaster richColors />
         <Analytics />
         <SpeedInsights />
