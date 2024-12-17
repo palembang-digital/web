@@ -1,6 +1,7 @@
 import { ContactForm } from "@/components/landing/contact-form";
 import { Button } from "@/components/ui/button";
 import { TypographyH3 } from "@/components/ui/typography";
+import Link from "next/link";
 
 export default function LandingContactUs() {
   return (
@@ -44,6 +45,20 @@ export default function LandingContactUs() {
             <Button className="mt-4">Kirim feedback</Button>
           </a>
         </div>
+      </div>
+
+      <div className="rounded-lg p-6 mt-4 border bg-white">
+        <TypographyH3>Beri dukungan 🫶🏻</TypographyH3>
+        <p className="text-sm text-neutral-600 mt-2">
+          Dukunganmu sangat berarti bagi kami untuk terus mengadakan
+          kegiatan-kegiatan bertemakan digital dan tekonologi yang bermanfaat
+          bagi kota Palembang.
+        </p>
+        <Link href="https://saweria.co/palembangdigital" target="_blank">
+          <Button className="mt-4 bg-pink-500 hover:bg-pink-500/90">
+            Dukung kami
+          </Button>
+        </Link>
       </div>
     </>
   );

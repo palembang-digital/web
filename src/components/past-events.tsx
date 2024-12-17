@@ -27,6 +27,7 @@ export default function PastEvents({
             {showAds && index > 0 && index % 25 === 0 && (
               <div key={index} className="border rounded-md p-2 h-full">
                 <AdUnit
+                  className="h-full"
                   format="fluid"
                   layoutKey="-gv+3t+5c-8s-m"
                   slot="3788208989"

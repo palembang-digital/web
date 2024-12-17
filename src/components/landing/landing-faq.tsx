@@ -12,7 +12,7 @@ export default function LandingFAQ() {
     {
       question: "Apa itu Palembang Digital?",
       answer:
-        "Palembang Digital adalah komunitas dan inisiatif yang berfokus pada pengembangan ekosistem digital di Palembang. Mereka menyelenggarakan berbagai kegiatan seperti workshop, seminar, dan networking untuk mendukung pertumbuhan startup dan teknologi di kota ini.",
+        "Palembang Digital adalah komunitas yang berfokus pada pengembangan ekosistem digital di Palembang. Kami menyelenggarakan berbagai kegiatan seperti workshop, seminar, dan networking untuk mendukung pertumbuhan startup dan teknologi di Palembang.",
     },
     {
       question: "Apa visi dan misi Palembang Digital?",
@@ -45,12 +45,12 @@ export default function LandingFAQ() {
       question:
         "Kapan Palembang Digital didirikan? Dan didirikan oleh siapa saja?",
       answer:
-        "Palembang Digital didirkan pada tanggal 21 April 2020, bertepatan dengan Hari Kartini. Palembang Digital didirikan oleh sekelompok anak muda kelahiran Bumi Sriwijaya yang telah berpengalaman di dunia IT dan bekerja di berbagai perusahaan teknologi nasional maupun internastional. Beberapa pendiri utama Palembang Digital adalah Joneten Saputra, Sofian Hadiwijaya, Tommy Maulana, Arief Rahmansyah, Faisal Morensya, dan Roylisto Putra Pradana.",
+        "Palembang Digital didirkan pada tanggal 21 April 2020, bertepatan dengan Hari Kartini. Palembang Digital didirikan oleh sekelompok anak muda kelahiran Bumi Sriwijaya yang telah berpengalaman di dunia IT dan bekerja di berbagai perusahaan teknologi nasional maupun internasional. Beberapa pendiri utama Palembang Digital adalah Joneten Saputra, Sofian Hadiwijaya, Tommy Maulana, Arief Rahmansyah, Faisal Morensya, dan Roylisto Putra Pradana.",
     },
     {
       question: "Apa saja kegiatan yang diadakan oleh Palembang Digital?",
       answer:
-        "Palembang Digital menyelenggarakan berbagai kegiatan seperti workshop teknologi, seminar bisnis, bootcamp startup, hackathon, dan acara networking untuk mempertemukan para profesional, pengusaha, dan pengembang teknologi.",
+        "Palembang Digital menyelenggarakan berbagai kegiatan seperti workshop teknologi, seminar bisnis, bootcamp startup, hackathon, konferensi teknologi, serta acara networking untuk mempertemukan para pelajar, profesional, pengusaha, dan pengembang teknologi.",
     },
     {
       question: "Apa manfaat bergabung dengan Palembang Digital?",
@@ -63,13 +63,28 @@ export default function LandingFAQ() {
         "Palembang Digital terbuka untuk semua orang yang tertarik dengan dunia digital dan teknologi, mulai dari pelajar, mahasiswa, profesional, hingga pengusaha. Tidak ada batasan usia atau latar belakang pendidikan untuk bergabung.",
     },
     {
+      question:
+        "Institusi saya ingin berkolaborasi dengan Palembang Digital, bagimana caranya?",
+      answer: (
+        <p>
+          Untuk berkolaborasi dengan Palembang Digital, kamu dapat mengisi
+          formulir kerjasama di situs resmi Palembang Digital (
+          <Link href="https://www.palembangdigital.org" className="underline">
+            palembangdigital.org
+          </Link>
+          ). Kami akan segera menghubungi kamu untuk membicarakan lebih lanjut
+          tentang kerjasama yang bisa dilakukan.
+        </p>
+      ),
+    },
+    {
       question: "Bagaimana cara bergabung dengan komunitas Palembang Digital?",
       answer: (
         <p>
           Untuk bergabung, kamu dapat mendaftar melalui situs resmi Palembang
           Digital (
-          <Link href="https://palembangdigital.org" className="underline">
-            https://palembangdigital.org
+          <Link href="https://www.palembangdigital.org" className="underline">
+            palembangdigital.org
           </Link>
           ). Kamu juga dapat mengikuti media sosial kami untuk mendapatkan
           informasi terbaru tentang kegiatan dan acara kami.

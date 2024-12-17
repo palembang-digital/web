@@ -66,7 +66,7 @@ export default function AdUnit({
           <PopoverContent className="w-80" side="top">
             <div className="bg-background border rounded-lg p-2 gap-1">
               <p className="text-xs text-neutral-500">
-                Kami memuat iklan untuk mebiayai pengembangan dan operasional
+                Kami memuat iklan untuk membiayai pengembangan dan operasional
                 platform Palembang Digital.
               </p>
               <p className="text-xs text-neutral-500">
