@@ -63,6 +63,20 @@ export default function LandingFAQ() {
         "Palembang Digital terbuka untuk semua orang yang tertarik dengan dunia digital dan teknologi, mulai dari pelajar, mahasiswa, profesional, hingga pengusaha. Tidak ada batasan usia atau latar belakang pendidikan untuk bergabung.",
     },
     {
+      question: "Bagaimana cara bergabung dengan komunitas Palembang Digital?",
+      answer: (
+        <p>
+          Untuk bergabung, kamu dapat mendaftar melalui situs resmi Palembang
+          Digital (
+          <Link href="https://www.palembangdigital.org" className="underline">
+            palembangdigital.org
+          </Link>
+          ). Kamu juga dapat mengikuti media sosial kami untuk mendapatkan
+          informasi terbaru tentang kegiatan dan acara kami.
+        </p>
+      ),
+    },
+    {
       question:
         "Institusi saya ingin berkolaborasi dengan Palembang Digital, bagimana caranya?",
       answer: (
@@ -74,20 +88,6 @@ export default function LandingFAQ() {
           </Link>
           ). Kami akan segera menghubungi kamu untuk membicarakan lebih lanjut
           tentang kerjasama yang bisa dilakukan.
-        </p>
-      ),
-    },
-    {
-      question: "Bagaimana cara bergabung dengan komunitas Palembang Digital?",
-      answer: (
-        <p>
-          Untuk bergabung, kamu dapat mendaftar melalui situs resmi Palembang
-          Digital (
-          <Link href="https://www.palembangdigital.org" className="underline">
-            palembangdigital.org
-          </Link>
-          ). Kamu juga dapat mengikuti media sosial kami untuk mendapatkan
-          informasi terbaru tentang kegiatan dan acara kami.
         </p>
       ),
     },
