@@ -58,7 +58,7 @@ export const OpenGraphImage = ({
           width: "80%",
         }}
       >
-        <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
+        <div style={{ display: "flex", alignItems: "center", gap: "1.5rem" }}>
           {icon}
           <span
             style={{
@@ -70,6 +70,7 @@ export const OpenGraphImage = ({
             {title}
           </span>
         </div>
+
         {description && (
           <span
             style={{

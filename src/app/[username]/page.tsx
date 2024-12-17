@@ -27,6 +27,15 @@ export async function generateMetadata({
 
   return {
     title: `${user.username} (${user.name})`,
+    description: user.bio
+      ? user.bio
+      : `Lihat profil ${user.username} (${user.name}) di Palembang Digital`,
+    openGraph: {
+      title: `${user.username} (${user.name})`,
+      description: user.bio ? user.bio : undefined,
+      images: `/${user.username}/og.png`,
+      type: "profile",
+    },
   };
 }
 

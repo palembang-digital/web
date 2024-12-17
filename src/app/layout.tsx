@@ -46,6 +46,12 @@ export const metadata: Metadata = {
     "Tech",
     "Community",
   ],
+  openGraph: {
+    title: `Palembang Digital`,
+    description: `Komunitas kolaborasi · Dari wong kito, untuk wong kito!`,
+    images: `/og.png`,
+    type: "website",
+  },
 };
 
 export const viewport: Viewport = {
