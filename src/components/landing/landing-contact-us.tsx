@@ -31,7 +31,7 @@ export default function LandingContactUs() {
             Jika kamu bingung, jangan ragu untuk bertanya! Kami akan dengan
             senang hati menjawabnya.
           </p>
-          <a href="mailto:palembangdigital01@gmail.com">
+          <a href="mailto:hi@palembangdigital.org">
             <Button className="mt-4">Hubungi kami</Button>
           </a>
         </div>
@@ -41,7 +41,7 @@ export default function LandingContactUs() {
             Kirim feedback apapun untuk kami agar kami bisa terus berkembang
             menjadi lebih baik!
           </p>
-          <a href="mailto:palembangdigital01@gmail.com">
+          <a href="mailto:hi@palembangdigital.org">
             <Button className="mt-4">Kirim feedback</Button>
           </a>
         </div>
@@ -50,7 +50,9 @@ export default function LandingContactUs() {
       <div className="rounded-lg p-6 mt-4 border bg-white">
         <TypographyH3>Beri dukungan 🫶🏻</TypographyH3>
         <p className="text-sm text-neutral-600 mt-2">
-          Dukunganmu sangat berarti bagi kami untuk terus mengadakan
+          Apakah kamu mendapatkan manfaat dari Palembang Digital? Apakah kamu
+          merasa beresonansi dengan visi & misi kami? Jika iya, kamu bisa
+          memberikan dukunganmu agar kami bisa terus mengadakan
           kegiatan-kegiatan bertemakan digital dan tekonologi yang bermanfaat
           bagi kota Palembang.
         </p>

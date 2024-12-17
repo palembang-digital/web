@@ -91,6 +91,33 @@ export default function LandingFAQ() {
         </p>
       ),
     },
+    {
+      question:
+        "Saya ingin menjadi sponsor Palembang Digital, bagaimana caranya?",
+      answer: (
+        <p>
+          Terima kasih atas minat kamu untuk menjadi sponsor Palembang Digital!
+          Kamu dapat memberikan one-time donation dengan mengunjungi halaman
+          Saweria kami di{" "}
+          <Link
+            href="https://saweria.co/palembangdigital"
+            className="underline"
+            target="_blank"
+          >
+            saweria.co/palembangdigital
+          </Link>
+          . Untuk sponsorship atau partnership lainnya, kamu bisa menghubungi
+          kami di{" "}
+          <a
+            href="mailto:sponsorship@palembangdigital.org"
+            className="underline"
+          >
+            sponsorship@palembangdigital.org
+          </a>
+          .
+        </p>
+      ),
+    },
   ];
   return (
     <div className="rounded-lg p-2 sm:p-6 mt-20">

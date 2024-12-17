@@ -22,7 +22,6 @@ The Palembang Digital website is built using the following technologies:
 - [shadcn/ui](https://ui.shadcn.com)
 - [Tailwind CSS](https://tailwindcss.com)
 - [Cloudinary](https://cloudinary.com)
-- [InstantDB](https://www.instantdb.com)
 - [Resend](https://resend.com)
 - [Sentry](https://sentry.io)
 - [Trigger](https://trigger.dev)

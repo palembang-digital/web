@@ -1,33 +1,10 @@
 "use client";
 
-import { room } from "@/instantdb";
 import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
-import React, { useEffect } from "react";
+import React from "react";
 
 export const BoxesCore = ({ className, ...rest }: { className?: string }) => {
-  const { user: myPresence, peers, publishPresence } = room.usePresence();
-
-  const [boxesColor, setBoxesColor] = React.useState<Record<string, string>>(
-    {}
-  );
-  useEffect(() => {
-    let boxes = {};
-    for (const peerId in peers) {
-      const peer = peers[peerId];
-      if (peerId === myPresence?.peerId) {
-        continue;
-      }
-      if (peer.color) {
-        boxes = {
-          ...boxes,
-          [`${peer.row}-${peer.col}`]: peer.color,
-        };
-      }
-    }
-    setBoxesColor(boxes);
-  }, [peers, myPresence?.peerId]);
-
   const rows = new Array(150).fill(1);
   const cols = new Array(21).fill(1);
   let colors = [
@@ -73,22 +50,7 @@ export const BoxesCore = ({ className, ...rest }: { className?: string }) => {
                   zIndex: 1,
                 }}
                 animate={{
-                  backgroundColor: boxesColor[`${i}-${j}`] || "rgba(0 0 0 0)",
-                  transition: { duration: 0.3 },
-                }}
-                onHoverStart={() => {
-                  publishPresence({
-                    row: i,
-                    col: j,
-                    color: `var(${getRandomColor()})`,
-                  });
-                }}
-                onHoverEnd={() => {
-                  publishPresence({
-                    row: i,
-                    col: j,
-                    color: "rgba(0 0 0 0)",
-                  });
+                  transition: { duration: 2 },
                 }}
                 key={`col` + j}
                 className="w-16 h-8 border-r border-t border-slate-200 relative"
