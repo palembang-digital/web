@@ -1,40 +1,90 @@
 "use client";
 
+import { useEffect, useState } from "react";
+import { useSession } from "next-auth/react";
+import Image from "next/image";
+import { toast } from "sonner";
+import { CloudinaryUploadWidgetInfo } from "next-cloudinary";
+
+import { UploadWidget } from "@/components/cloudinary/upload-widget";
 import AutoForm, { AutoFormSubmit } from "@/components/ui/auto-form";
 import { insertUserSchema } from "@/db/schema";
-import { toast } from "sonner";
 
 export default function ProfileForm({ user }: { user: any }) {
-  return (
-    <AutoForm
-      values={user}
-      formSchema={insertUserSchema}
-      fieldConfig={{
-        bio: {
-          fieldType: "textarea",
-        },
-      }}
-      onSubmit={async (data) => {
-        try {
-          const response = await fetch(`/api/v1/users/${user.id}`, {
-            method: "PUT",
-            body: JSON.stringify(data),
-            headers: {
-              "content-type": "application/json",
-            },
-          });
+  const { update } = useSession();
+  const [imageUrl, setImageUrl] = useState(user.image);
 
-          if (response.ok) {
-            toast.success("Profile updated!");
-          } else {
-            toast.error("Failed to update profile data");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  useEffect(() => {
+    setImageUrl(user.image);
+  }, [user.image]);
+
+  return (
+    <div>
+      <div className="mb-5 flex flex-col gap-4">
+        <Image
+          src={imageUrl}
+          alt={user.username}
+          width={80}
+          height={80}
+          className="rounded-full w-24 h-24"
+        />
+        <div className="w-max">
+          <UploadWidget
+            label="Change Photo"
+            uploadPreset="patal-v2-events"
+            onSuccess={(results) => {
+              const uploadedImageUrl = (
+                results.info as CloudinaryUploadWidgetInfo
+              ).secure_url;
+              setImageUrl(uploadedImageUrl);
+            }}
+          />
+        </div>
+      </div>
+      <AutoForm
+        values={user}
+        formSchema={insertUserSchema}
+        fieldConfig={{
+          bio: {
+            fieldType: "textarea",
+          },
+        }}
+        onSubmit={async (data) => {
+          try {
+            setIsSubmitting(true);
+            const response = await fetch(`/api/v1/users/${user.id}`, {
+              method: "PUT",
+              body: JSON.stringify({ ...data, image: imageUrl }),
+              headers: {
+                "content-type": "application/json",
+              },
+            });
+
+            if (response.ok) {
+              toast.success("Profile updated!");
+              update({ user: { ...user, image: imageUrl } });
+            } else {
+              toast.error("Failed to update profile data");
+            }
+          } catch (error) {
+            console.error(error);
+          } finally {
+            setIsSubmitting(false);
           }
-        } catch (error) {
-          console.error(error);
-        }
-      }}
-    >
-      <AutoFormSubmit>Simpan</AutoFormSubmit>
-    </AutoForm>
+        }}
+      >
+        {(formState) => (
+          <AutoFormSubmit
+            disabled={
+              formState.isSubmitting || formState.isLoading || isSubmitting
+            }
+          >
+            Simpan
+          </AutoFormSubmit>
+        )}
+      </AutoForm>
+    </div>
   );
 }
