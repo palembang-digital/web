@@ -16,19 +16,19 @@ export default function SDC2024({
       }}
     >
       <img
-        src="https://www.palembangdigital.org/images/sdc-2024/songket-pattern.png"
+        src="https://www.palembangdigital.org/images/certificates/sdc-2024/songket-pattern.png"
         style={{
           position: "absolute",
         }}
       />
       <img
-        src="https://www.palembangdigital.org/images/sdc-2024/radial.png"
+        src="https://www.palembangdigital.org/images/certificates/sdc-2024/radial.png"
         style={{
           position: "absolute",
         }}
       />
       <img
-        src="https://www.palembangdigital.org/images/sdc-2024/circuit-pattern.png"
+        src="https://www.palembangdigital.org/images/certificates/sdc-2024/circuit-pattern.png"
         style={{
           position: "absolute",
           bottom: 0,
@@ -36,7 +36,7 @@ export default function SDC2024({
       />
       <img
         width="240"
-        src="https://www.palembangdigital.org/images/sdc-2024/organizers-logo.png"
+        src="https://www.palembangdigital.org/images/certificates/sdc-2024/organizers-logo.png"
         style={{
           position: "absolute",
           left: 441,
@@ -46,7 +46,7 @@ export default function SDC2024({
 
       <img
         width="850"
-        src="https://www.palembangdigital.org/images/sdc-2024/certificate-title.png"
+        src="https://www.palembangdigital.org/images/certificates/sdc-2024/certificate-title.png"
         style={{
           position: "absolute",
           left: 136,
@@ -104,7 +104,7 @@ export default function SDC2024({
 
       <img
         width="700"
-        src="https://www.palembangdigital.org/images/sdc-2024/sdc-2024.png"
+        src="https://www.palembangdigital.org/images/certificates/sdc-2024/sdc-2024.png"
         style={{
           position: "absolute",
           left: 211,
@@ -146,7 +146,7 @@ export default function SDC2024({
 
       <img
         width="600"
-        src="https://www.palembangdigital.org/images/sdc-2024/signatures.png"
+        src="https://www.palembangdigital.org/images/certificates/sdc-2024/signatures.png"
         style={{
           position: "absolute",
           left: 261,
@@ -156,7 +156,7 @@ export default function SDC2024({
 
       <img
         width="600"
-        src="https://www.palembangdigital.org/images/sdc-2024/edge-top-left.png"
+        src="https://www.palembangdigital.org/images/certificates/sdc-2024/edge-top-left.png"
         style={{
           position: "absolute",
         }}
@@ -164,7 +164,7 @@ export default function SDC2024({
 
       <img
         width="600"
-        src="https://www.palembangdigital.org/images/sdc-2024/edge-bottom-right.png"
+        src="https://www.palembangdigital.org/images/certificates/sdc-2024/edge-bottom-right.png"
         style={{
           position: "absolute",
           right: -1,
