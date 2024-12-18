@@ -22,7 +22,7 @@ export function MobileDrawer({ session }: { session: Session | null }) {
       </DrawerTrigger>
       <DrawerContent className="h-4/5">
         <div className="overflow-y-auto p-4">
-          <MenuContent session={session} />
+          <MenuContent />
         </div>
       </DrawerContent>
     </Drawer>
