@@ -16,18 +16,21 @@ export default function SDC2024({
       }}
     >
       <img
+        width="1123"
         src="https://www.palembangdigital.org/images/certificates/sdc-2024/songket-pattern.png"
         style={{
           position: "absolute",
         }}
       />
       <img
+        width="1123"
         src="https://www.palembangdigital.org/images/certificates/sdc-2024/radial.png"
         style={{
           position: "absolute",
         }}
       />
       <img
+        width="1123"
         src="https://www.palembangdigital.org/images/certificates/sdc-2024/circuit-pattern.png"
         style={{
           position: "absolute",

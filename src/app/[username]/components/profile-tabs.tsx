@@ -88,6 +88,9 @@ export default function ProfileTabs({
                         width={561}
                         height={397}
                         alt={certificate.event.name}
+                        quality={50}
+                        priority={true}
+                        loading="eager"
                       />
                     </div>
                   ) : (
