@@ -70,7 +70,7 @@ export default function ProfileTabs({
               .map((certificate) => (
                 <div key={certificate.id} className="bg-background">
                   {certificate.template === "sdc-2024" ? (
-                    <div className="bg-accent rounded-t-lg">
+                    <div className="bg-accent rounded-t-lg border border-accent">
                       <div className="flex p-4 items-center justify-between">
                         <Link
                           href={`/events/${certificate.event.id}`}
@@ -85,8 +85,8 @@ export default function ProfileTabs({
                       </div>
                       <Image
                         src={`/certificates/${certificate.id}`}
-                        width={1123}
-                        height={794}
+                        width={561}
+                        height={397}
                         alt={certificate.event.name}
                       />
                     </div>
