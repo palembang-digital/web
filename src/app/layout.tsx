@@ -6,7 +6,6 @@ import { SideMenu } from "@/components/side-menu";
 import { Toaster } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { cn } from "@/lib/utils";
-import { getSession } from "@/services/auth";
 import { GoogleAnalytics } from "@next/third-parties/google";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
@@ -14,6 +13,7 @@ import type { Metadata, Viewport } from "next";
 import { Inter as FontSans } from "next/font/google";
 import NextTopLoader from "nextjs-toploader";
 import { Suspense } from "react";
+import { getSession } from "@/services/auth";
 
 const fontSans = FontSans({
   subsets: ["latin"],
@@ -67,7 +67,6 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   const session = await getSession();
-
   const googleAdsenseClientId = process.env.GOOGLE_ADSENSE_CLIENT_ID;
 
   return (
