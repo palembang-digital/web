@@ -1,10 +1,16 @@
-import { NavigationLink } from "@/components/navigation-link";
-import { MENU_LINKS } from "@/lib/constants";
 import Image from "next/image";
 import Link from "next/link";
-import { AuthButton } from "./auth-button";
+import { Session } from "next-auth";
 
-export function MenuContent() {
+import { NavigationLink } from "@/components/navigation-link";
+import { MENU_LINKS } from "@/lib/constants";
+import { SignIn } from "@/components/sign-in";
+
+interface MenuContentProps {
+  session: Session | null;
+}
+
+export function MenuContent({ session }: MenuContentProps) {
   return (
     <div className="flex w-full flex-col text-sm">
       <div className="flex flex-col gap-4">
@@ -32,7 +38,25 @@ export function MenuContent() {
               icon={link.icon}
             />
           ))}
-          <AuthButton />
+          {session ? (
+            <NavigationLink
+              // @ts-ignore
+              href={`/${session.user?.username}`}
+              label={session.user?.name || "Profil"}
+              icon={
+                <div className="relative size-6">
+                  <Image
+                    src={session.user?.image || ""}
+                    fill
+                    alt={session.user?.name || "Profile Picture"}
+                    className="rounded-full size-full object-cover"
+                  />
+                </div>
+              }
+            />
+          ) : (
+            <SignIn />
+          )}
         </div>
       </div>
     </div>
