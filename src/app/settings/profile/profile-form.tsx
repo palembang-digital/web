@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useSession } from "next-auth/react";
 import Image from "next/image";
 import { toast } from "sonner";
 import { CloudinaryUploadWidgetInfo } from "next-cloudinary";
@@ -11,7 +10,6 @@ import AutoForm, { AutoFormSubmit } from "@/components/ui/auto-form";
 import { insertUserSchema } from "@/db/schema";
 
 export default function ProfileForm({ user }: { user: any }) {
-  const { update } = useSession();
   const [imageUrl, setImageUrl] = useState(user.image);
 
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -23,13 +21,15 @@ export default function ProfileForm({ user }: { user: any }) {
   return (
     <div>
       <div className="mb-5 flex flex-col gap-4">
-        <Image
-          src={imageUrl}
-          alt={user.username}
-          width={80}
-          height={80}
-          className="rounded-full w-24 h-24"
-        />
+        <div className="relative size-24">
+          <Image
+            src={imageUrl}
+            alt={user.username}
+            fill
+            className="rounded-full size-full object-cover"
+          />
+        </div>
+
         <div className="w-max">
           <UploadWidget
             label="Change Photo"
@@ -64,7 +64,7 @@ export default function ProfileForm({ user }: { user: any }) {
 
             if (response.ok) {
               toast.success("Profile updated!");
-              update({ user: { ...user, image: imageUrl } });
+              window.location.reload();
             } else {
               toast.error("Failed to update profile data");
             }
