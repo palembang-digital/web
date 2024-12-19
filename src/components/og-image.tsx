@@ -53,7 +53,7 @@ export const OpenGraphImage = ({
           flexDirection: "column",
           gap: "0.5rem",
           position: "absolute",
-          bottom: 100,
+          bottom: 60,
           left: 60,
           width: "80%",
         }}
@@ -62,7 +62,7 @@ export const OpenGraphImage = ({
           {icon}
           <span
             style={{
-              fontSize: "4.75rem",
+              fontSize: "4.25rem",
               lineHeight: 1,
               fontWeight: 600,
             }}
@@ -74,8 +74,8 @@ export const OpenGraphImage = ({
         {description && (
           <span
             style={{
-              fontSize: "2.5rem",
-              lineHeight: "3rem",
+              fontSize: "2rem",
+              lineHeight: "2rem",
               marginTop: "1rem",
             }}
           >

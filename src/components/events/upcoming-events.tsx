@@ -25,7 +25,7 @@ export default function UpcomingEvents({ events }: { events: any[] }) {
               <li className="flex flex-col sm:flex-row gap-4 mt-6 ps-6 hover:bg-neutral-800 hover:rounded-e-lg">
                 <div className="absolute w-3 h-3 bg-slate-400 rounded-full -start-[0.4rem] border border-slate-400"></div>
 
-                <div className="flex-1 my-auto">
+                <div className="flex-1 my-auto pt-3 pb-4">
                   <div className="flex gap-2 items-center">
                     <TypographyH4 className=" text-neutral-50">
                       {localeDate(new Date(event.scheduledStart))}
@@ -49,7 +49,7 @@ export default function UpcomingEvents({ events }: { events: any[] }) {
 
                   <EventLocationType type={event.locationType} />
                 </div>
-                <div className="my-auto ">
+                <div className="my-auto">
                   <Image
                     className="object-cover rounded-lg border-2 border-white aspect-square m-5"
                     src={event.imageUrl}

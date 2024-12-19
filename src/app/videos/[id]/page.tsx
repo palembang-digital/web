@@ -1,4 +1,5 @@
 import { auth } from "@/auth";
+import EventDescription from "@/components/events/event-description";
 import { FloatingHeader } from "@/components/floating-header";
 import { ScrollArea } from "@/components/scroll-area";
 import { TypographyH4 } from "@/components/ui/typography";
@@ -56,10 +57,14 @@ export default async function Page({ params }: { params: { id: number } }) {
                 {video.eventsVideos.map(({ event }) => (
                   <div key={event.id} className="flex flex-col gap-2">
                     <TypographyH4>
-                      Tentang kegiatan:{" "}
-                      <Link href={`/events/${event.id}`}>{event.name}</Link>
+                      Tentang kegiatan{" "}
+                      <Link href={`/events/${event.id}`} className="underline">
+                        {event.name}
+                      </Link>
                     </TypographyH4>
-                    <p className="text-sm">{event.description}</p>
+                    {event.description && (
+                      <EventDescription description={event.description} />
+                    )}
                   </div>
                 ))}
               </div>

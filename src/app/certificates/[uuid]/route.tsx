@@ -1,8 +1,13 @@
+import DefaultCertificate from "@/components/certificates/default-certificate";
 import SDC2024 from "@/components/certificates/sdc-2024";
 import { db } from "@/db";
 import { ImageResponse } from "next/og";
+import { NextRequest } from "next/server";
 
-export async function GET(_: any, { params }: { params: { uuid: string } }) {
+export async function GET(
+  request: NextRequest,
+  { params }: { params: { uuid: string } }
+) {
   const cert = await db.query.certificates.findFirst({
     where: (certificates, { eq }) => eq(certificates.id, params.uuid),
     with: {
@@ -22,7 +27,18 @@ export async function GET(_: any, { params }: { params: { uuid: string } }) {
     });
   }
 
-  let template = null;
+  let template = (
+    <DefaultCertificate
+      recipient={cert.user.name || cert.user.username}
+      role={cert.role}
+      event={cert.event.name}
+      startDate={cert.event.scheduledStart}
+      endDate={cert.event.scheduledEnd}
+      signatures={[
+        { name: "Arief Rahmansyah", position: "Ketua Palembang Digital" },
+      ]}
+    />
+  );
   if (cert.template === "sdc-2024") {
     template = (
       <SDC2024

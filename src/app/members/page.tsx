@@ -19,7 +19,7 @@ export default async function Page() {
       <FloatingHeader session={session} scrollTitle="Anggota" />
       <div className="content-wrapper">
         <div className="content">
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-x-8 gap-y-3 justify-items-center">
             {users.map((user) => {
               const events = mergeUserEvents(user).map((event: any) => ({
                 id: event.id,

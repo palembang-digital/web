@@ -7,25 +7,22 @@ export default function LandingAboutUs() {
       <TypographyH2 className="text-neutral-800">Tentang kami</TypographyH2>
 
       <p className="text-sm mt-3">
-        Palembang Digital (Patal) adalah platform komunitas digital dari dan
-        untuk masyarakat Sumatera Selatan 🇮🇩.
+        Palembang Digital (Patal) adalah platform komunitas digital yang
+        terbentuk untuk menjawab pertanyaan{" "}
+        <span className="bg-gradient-to-r from-gray-200 to-gray-50 bg-[length:100%_3px] bg-left-bottom bg-no-repeat">
+          &quot;dimana saja pelaku digital di Sumatera Selatan?&quot;
+        </span>
       </p>
 
       <p className="text-sm mt-3">
-        Terbentuk untuk menjawab pertanyaan &quot;dimana saja pelaku digital di
-        Sumatera Selatan?&quot;
+        Palembang Digital adalah tempat bagi siapapun yang ingin mengenal,
+        belajar, dan berinteraksi dengan ekosistem digital Sumatera Selatan.
       </p>
 
       <p className="text-sm mt-3">
-        Palembang Digital berusaha menjadi tempat bagi siapapun yang ingin
-        mengenal, belajar, dan berinteraksi dengan ekosistem digital Sumatera
-        Selatan.
-      </p>
-
-      <p className="text-sm mt-3">
-        Bersama Palembang Digital, kamu bisa belajar dan berbagi ilmu di bidang
-        pemrograman, product development, internet marketing, content creation,
-        startup, AI dan sebagainya.
+        Bersama Palembang Digital, kamu bisa belajar dan bertumbuh bersama di
+        bidang pemrograman, product development, internet marketing, content
+        creation, startup, AI dan sebagainya.
       </p>
 
       <p className="text-sm mt-3">🇮🇩👨‍💻👩‍💻📱🎮🎥🦄🤖</p>
