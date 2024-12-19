@@ -6,7 +6,6 @@ import LandingAboutUs from "@/components/landing/landing-about-us";
 import LandingContactUs from "@/components/landing/landing-contact-us";
 import LandingFAQ from "@/components/landing/landing-faq";
 import LandingFooter from "@/components/landing/landing-footer";
-import LandingMembers from "@/components/landing/landing-members";
 import { ScrollArea } from "@/components/scroll-area";
 import Videos from "@/components/videos/videos";
 import { getSession } from "@/services/auth";
@@ -33,10 +32,6 @@ export default async function Page() {
 
           <div className="mt-16">
             <Videos limit={6} />
-          </div>
-
-          <div className="mt-16">
-            <LandingMembers />
           </div>
 
           <LandingAboutUs />

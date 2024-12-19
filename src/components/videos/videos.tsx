@@ -28,7 +28,7 @@ export default function Videos({
       <p className="italic text-neutral-400">Videos</p>
       <TypographyH2 className="text-neutral-800 mb-2">Galeri</TypographyH2>
 
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-x-4 gap-y-6">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         {data &&
           data.map((video: any, index: number) => (
             <>
