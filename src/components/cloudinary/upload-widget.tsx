@@ -1,7 +1,11 @@
 import { Button } from "@/components/ui/button";
 import { CldUploadWidget, CldUploadWidgetProps } from "next-cloudinary";
 
-export function UploadWidget(props: CldUploadWidgetProps) {
+type UploadWidgetProps = CldUploadWidgetProps & {
+  label?: string;
+};
+
+export function UploadWidget({ label, ...props }: UploadWidgetProps) {
   return (
     <CldUploadWidget
       options={{
@@ -14,7 +18,7 @@ export function UploadWidget(props: CldUploadWidgetProps) {
       {({ open }) => {
         return (
           <Button variant="outline" onClick={() => open()}>
-            Upload Image
+            {label || "Upload Image"}
           </Button>
         );
       }}

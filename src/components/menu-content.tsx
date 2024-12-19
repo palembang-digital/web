@@ -1,11 +1,16 @@
-import { NavigationLink } from "@/components/navigation-link";
-import { SignIn } from "@/components/sign-in";
-import { MENU_LINKS } from "@/lib/constants";
-import { Session } from "next-auth";
 import Image from "next/image";
 import Link from "next/link";
+import { Session } from "next-auth";
 
-export function MenuContent({ session }: { session: Session | null }) {
+import { NavigationLink } from "@/components/navigation-link";
+import { MENU_LINKS } from "@/lib/constants";
+import { SignIn } from "@/components/sign-in";
+
+interface MenuContentProps {
+  session: Session | null;
+}
+
+export function MenuContent({ session }: MenuContentProps) {
   return (
     <div className="flex w-full flex-col text-sm">
       <div className="flex flex-col gap-4">
@@ -39,13 +44,14 @@ export function MenuContent({ session }: { session: Session | null }) {
               href={`/${session.user?.username}`}
               label={session.user?.name || "Profil"}
               icon={
-                <Image
-                  src={session.user?.image || ""}
-                  width={18}
-                  height={18}
-                  alt={session.user?.name || "Profile Picture"}
-                  className="rounded-full"
-                />
+                <div className="relative size-6">
+                  <Image
+                    src={session.user?.image || ""}
+                    fill
+                    alt={session.user?.name || "Profile Picture"}
+                    className="rounded-full size-full object-cover"
+                  />
+                </div>
               }
             />
           ) : (
@@ -53,21 +59,6 @@ export function MenuContent({ session }: { session: Session | null }) {
           )}
         </div>
       </div>
-
-      {/* <hr />
-
-      <div className="flex flex-col gap-2 text-sm">
-        <div className="flex flex-col gap-1">
-          {Object.values(SOCIAL_LINKS).map((social) => (
-            <NavigationLink
-              key={social.url}
-              href={social.url}
-              label={social.title}
-              icon={social.icon}
-            />
-          ))}
-        </div>
-      </div> */}
     </div>
   );
 }
