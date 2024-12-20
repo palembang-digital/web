@@ -68,7 +68,7 @@ export default function ProfileTabs({
               .map((certificate) => (
                 <div key={certificate.id} className="bg-background">
                   <div className="bg-accent rounded-t-lg border border-accent">
-                    <div className="flex p-4 items-center justify-between">
+                    <div className="flex p-4 items-center justify-between border-b border-b-white">
                       <Link
                         href={`/events/${certificate.event.id}`}
                         className="text-xs hover:underline text-gray-600 hover:text-gray-900"
@@ -81,13 +81,13 @@ export default function ProfileTabs({
                       />
                     </div>
                     <Image
-                      src={`/certificates/${certificate.id}`}
+                      src={`/certificates/${certificate.id}?minimal=true`}
                       width={561}
                       height={397}
                       alt={certificate.event.name}
                       quality={25}
-                      priority={false}
-                      loading="lazy"
+                      priority={true}
+                      loading="eager"
                     />
                   </div>
                 </div>

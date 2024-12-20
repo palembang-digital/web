@@ -18,6 +18,9 @@ export async function GET(
   request: NextRequest,
   { params }: { params: { uuid: string } }
 ) {
+  const searchParams = request.nextUrl.searchParams;
+  const minimal = searchParams.get("minimal") === "true";
+
   const cert = await db.query.certificates.findFirst({
     where: (certificates, { eq }) => eq(certificates.id, params.uuid),
     with: {
@@ -68,6 +71,7 @@ export async function GET(
       <SDC2024
         recipient={cert.user.name || cert.user.username}
         role={cert.role}
+        minimal={minimal}
       />
     );
   }

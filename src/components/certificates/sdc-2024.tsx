@@ -1,9 +1,11 @@
 export default function SDC2024({
   recipient,
   role,
+  minimal,
 }: {
   recipient: string;
   role: string;
+  minimal: boolean;
 }) {
   return (
     <div
@@ -15,28 +17,34 @@ export default function SDC2024({
         position: "relative",
       }}
     >
-      <img
-        width="1123"
-        src="https://www.palembangdigital.org/images/certificates/sdc-2024/songket-pattern.png"
-        style={{
-          position: "absolute",
-        }}
-      />
-      <img
-        width="1123"
-        src="https://www.palembangdigital.org/images/certificates/sdc-2024/radial.png"
-        style={{
-          position: "absolute",
-        }}
-      />
-      <img
-        width="1123"
-        src="https://www.palembangdigital.org/images/certificates/sdc-2024/circuit-pattern.png"
-        style={{
-          position: "absolute",
-          bottom: 0,
-        }}
-      />
+      {!minimal && (
+        <img
+          width="1123"
+          src="https://www.palembangdigital.org/images/certificates/sdc-2024/songket-pattern.png"
+          style={{
+            position: "absolute",
+          }}
+        />
+      )}
+      {!minimal && (
+        <img
+          width="1123"
+          src="https://www.palembangdigital.org/images/certificates/sdc-2024/radial.png"
+          style={{
+            position: "absolute",
+          }}
+        />
+      )}
+      {!minimal && (
+        <img
+          width="1123"
+          src="https://www.palembangdigital.org/images/certificates/sdc-2024/circuit-pattern.png"
+          style={{
+            position: "absolute",
+            bottom: 0,
+          }}
+        />
+      )}
       <img
         width="240"
         src="https://www.palembangdigital.org/images/certificates/sdc-2024/organizers-logo.png"
