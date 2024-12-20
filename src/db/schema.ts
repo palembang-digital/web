@@ -3,6 +3,7 @@ import {
   boolean,
   integer,
   json,
+  jsonb,
   pgEnum,
   pgTable,
   primaryKey,
@@ -459,6 +460,7 @@ export const certificates = pgTable(
     role: text("role").notNull().default("Peserta"),
     template: text("template"),
     status: certificateStatusEnum("status").notNull().default("pending"),
+    signatures: jsonb("signatures").$type<any[]>(),
     createdAt: timestamp("created_at").notNull().defaultNow(),
   },
   (t) => ({

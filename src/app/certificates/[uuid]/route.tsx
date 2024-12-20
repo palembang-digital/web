@@ -3,6 +3,16 @@ import SDC2024 from "@/components/certificates/sdc-2024";
 import { db } from "@/db";
 import { ImageResponse } from "next/og";
 import { NextRequest } from "next/server";
+import QRCode from "qrcode";
+
+export const size = {
+  width: 1123,
+  height: 794,
+};
+
+const defaultSignatures = [
+  { name: "Arief Rahmansyah", position: "Ketua Palembang Digital" },
+];
 
 export async function GET(
   request: NextRequest,
@@ -15,28 +25,42 @@ export async function GET(
         columns: { name: true, username: true },
       },
       event: {
-        columns: { name: true, scheduledStart: true, scheduledEnd: true },
+        columns: {
+          name: true,
+          scheduledStart: true,
+          scheduledEnd: true,
+          locationType: true,
+          locationName: true,
+        },
       },
     },
   });
 
   if (!cert) {
     return new ImageResponse(<p>Certificate not found</p>, {
-      width: 1123,
-      height: 794,
+      ...size,
     });
   }
 
+  const qrCodeDataURL = await QRCode.toDataURL(
+    "https://www.palembangdigital.org/certificates/" + cert.id
+  );
+
   let template = (
     <DefaultCertificate
+      certificateUUID={cert.id}
       recipient={cert.user.name || cert.user.username}
       role={cert.role}
       event={cert.event.name}
       startDate={cert.event.scheduledStart}
       endDate={cert.event.scheduledEnd}
-      signatures={[
-        { name: "Arief Rahmansyah", position: "Ketua Palembang Digital" },
-      ]}
+      locationName={
+        cert.event.locationType === "offline" && cert.event.locationName
+          ? cert.event.locationName
+          : ""
+      }
+      signatures={cert.signatures ? cert.signatures : defaultSignatures}
+      qrCodeDataURL={qrCodeDataURL}
     />
   );
   if (cert.template === "sdc-2024") {
@@ -50,13 +74,11 @@ export async function GET(
 
   if (!template) {
     return new ImageResponse(<p>Certificate template not found</p>, {
-      width: 1123,
-      height: 794,
+      ...size,
     });
   }
 
   return new ImageResponse(template, {
-    width: 1123,
-    height: 794,
+    ...size,
   });
 }
