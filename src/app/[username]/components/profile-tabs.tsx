@@ -1,10 +1,8 @@
 "use client";
 
-import CerticateDownload from "@/components/certificates/download";
 import EventCard from "@/components/events/event-card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import YouTubeVideoCard from "@/components/youtube-video-card";
-import { localeDate } from "@/lib/utils";
 import { DownloadIcon } from "@radix-ui/react-icons";
 import { saveAs } from "file-saver";
 import Image from "next/image";
@@ -69,46 +67,29 @@ export default function ProfileTabs({
               )
               .map((certificate) => (
                 <div key={certificate.id} className="bg-background">
-                  {certificate.template === "sdc-2024" ? (
-                    <div className="bg-accent rounded-t-lg border border-accent">
-                      <div className="flex p-4 items-center justify-between">
-                        <Link
-                          href={`/events/${certificate.event.id}`}
-                          className="text-xs hover:underline text-gray-600 hover:text-gray-900"
-                        >
-                          {certificate.event.name}
-                        </Link>
-                        <DownloadIcon
-                          className="w-4 h-4 hover:cursor-pointer text-gray-600 hover:text-gray-900"
-                          onClick={() => downloadCertificate(certificate)}
-                        />
-                      </div>
-                      <Image
-                        src={`/certificates/${certificate.id}`}
-                        width={561}
-                        height={397}
-                        alt={certificate.event.name}
-                        quality={50}
-                        priority={true}
-                        loading="eager"
+                  <div className="bg-accent rounded-t-lg border border-accent">
+                    <div className="flex p-4 items-center justify-between">
+                      <Link
+                        href={`/events/${certificate.event.id}`}
+                        className="text-xs hover:underline text-gray-600 hover:text-gray-900"
+                      >
+                        {certificate.event.name}
+                      </Link>
+                      <DownloadIcon
+                        className="w-4 h-4 hover:cursor-pointer text-gray-600 hover:text-gray-900"
+                        onClick={() => downloadCertificate(certificate)}
                       />
                     </div>
-                  ) : (
-                    <CerticateDownload
-                      eventName={certificate.event.name}
-                      recipientName={name || ""}
-                      role={certificate.role || "Peserta"}
-                      startDate={certificate.event.scheduledStart}
-                      endDate={
-                        localeDate(certificate.event.scheduledStart) !==
-                        localeDate(certificate.event.scheduledEnd)
-                          ? certificate.event.scheduledEnd
-                          : undefined
-                      }
-                      certificateCode={certificate.id}
-                      certificateTitle="Sertifikat Apresiasi"
+                    <Image
+                      src={`/certificates/${certificate.id}`}
+                      width={561}
+                      height={397}
+                      alt={certificate.event.name}
+                      quality={25}
+                      priority={false}
+                      loading="lazy"
                     />
-                  )}
+                  </div>
                 </div>
               ))}
           </div>

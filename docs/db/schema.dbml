@@ -127,6 +127,7 @@ table certificates {
   role text [not null, default: 'Peserta']
   template text
   status certificate_status [not null, default: 'pending']
+  signatures jsonb
   created_at timestamp [not null, default: `now()`]
 
   indexes {
