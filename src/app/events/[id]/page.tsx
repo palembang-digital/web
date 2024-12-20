@@ -13,7 +13,13 @@ import {
   TypographyH4,
 } from "@/components/ui/typography";
 import YouTubeVideoCard from "@/components/youtube-video-card";
-import { getDate, getMonthYear, localeDate, localeTime } from "@/lib/utils";
+import {
+  getDate,
+  getDay,
+  getMonthYear,
+  localeDate,
+  localeTime,
+} from "@/lib/utils";
 import { getEvent } from "@/services";
 import { MapPinIcon, UsersIcon, VideoIcon } from "lucide-react";
 import type { Metadata } from "next";
@@ -46,8 +52,11 @@ export async function generateMetadata({
 }
 
 function EventSchedule({ event }: { event: any }) {
+  const isSameDay =
+    localeDate(event.scheduledStart) === localeDate(event.scheduledEnd);
+
   return (
-    <div className="flex flex-row gap-3 items-center">
+    <div className="flex flex-row gap-3 items-center mt-2">
       <div>
         <p className="font-semibold text-xs text-white bg-black rounded-t-md p-2">
           {getMonthYear(event.scheduledStart)}
@@ -56,47 +65,36 @@ function EventSchedule({ event }: { event: any }) {
           {getDate(event.scheduledStart)}
         </TypographyH2>
       </div>
-
-      <div>
-        {localeDate(event.scheduledStart) !== localeDate(event.scheduledEnd) ? (
-          <>
+      {isSameDay ? (
+        <div className="flex flex-col">
+          <TypographyH2 className="text-md pb-0">
+            {getDay(event.scheduledStart)}, {localeDate(event.scheduledStart)}
+          </TypographyH2>
+          <p className="text-sm text-neutral-500">
+            {localeTime(event.scheduledStart)}
+            {event.scheduledEnd && ` - ${localeTime(event.scheduledEnd)}`}
+          </p>
+        </div>
+      ) : (
+        <div className="flex flex-col">
+          <div className="flex flex-col sm:flex-row sm:items-center gap-0 sm:gap-2">
             <TypographyH2 className="text-md pb-0">
-              {localeDate(event.scheduledStart)}
+              {getDay(event.scheduledStart)}, {localeDate(event.scheduledStart)}
             </TypographyH2>
-            <p className="text-xs text-neutral-500">
+            <p className="text-sm text-neutral-500">
               {localeTime(event.scheduledStart)}
             </p>
-          </>
-        ) : (
-          <TypographyH2 className="text-md pb-0">
-            {localeTime(event.scheduledStart)}
-          </TypographyH2>
-        )}
-      </div>
-
-      {event.scheduledEnd && (
-        <>
-          <div>
-            <p className="text-xs text-neutral-500">s/d</p>
           </div>
-          <div>
-            {localeDate(event.scheduledStart) !==
-            localeDate(event.scheduledEnd) ? (
-              <>
-                <TypographyH2 className="text-md pb-0">
-                  {localeDate(event.scheduledEnd)}
-                </TypographyH2>
-                <p className="text-xs text-neutral-500">
-                  {localeTime(event.scheduledEnd)}
-                </p>
-              </>
-            ) : (
-              <TypographyH2 className="text-md pb-0">
-                {localeTime(event.scheduledEnd)}
-              </TypographyH2>
-            )}
+          <p className="text-xs text-neutral-500">s/d</p>
+          <div className="flex flex-col sm:flex-row sm:items-center gap-0 sm:gap-2">
+            <TypographyH2 className="text-md pb-0">
+              {getDay(event.scheduledEnd)}, {localeDate(event.scheduledEnd)}
+            </TypographyH2>
+            <p className="text-sm text-neutral-500">
+              {localeTime(event.scheduledEnd)}
+            </p>
           </div>
-        </>
+        </div>
       )}
     </div>
   );
