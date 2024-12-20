@@ -5,7 +5,7 @@ import { ImageResponse } from "next/og";
 import { NextRequest } from "next/server";
 import QRCode from "qrcode";
 
-export const size = {
+const size = {
   width: 1123,
   height: 794,
 };
