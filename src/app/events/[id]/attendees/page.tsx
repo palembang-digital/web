@@ -74,7 +74,9 @@ export default async function Page({ params }: { params: { id: number } }) {
           <div className="flex flex-col gap-4">
             <TypographyH4>
               Peserta kegiatan{" "}
-              <Link href={`/events/${event.id}`}>{event.name}</Link>
+              <Link href={`/events/${event.id}`} className="hover:underline">
+                {event.name}
+              </Link>
             </TypographyH4>
             <div className="flex flex-col gap-2 text-xs">
               <p>

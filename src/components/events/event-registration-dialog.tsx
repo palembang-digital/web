@@ -3,6 +3,7 @@
 import ShimmerButton from "@/components/magicui/shimmer-button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
 import {
   Dialog,
   DialogContent,
@@ -12,15 +13,27 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Separator } from "@/components/ui/separator";
+import { localeDate, localeTime } from "@/lib/utils";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { LogInIcon, TicketIcon } from "lucide-react";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { useSWRConfig } from "swr";
+import { z } from "zod";
 
 export default function EventRegistrationDialog({
   event,
@@ -35,6 +48,19 @@ export default function EventRegistrationDialog({
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [rsvp, setRSVP] = useState("yes");
+
+  const FormSchema = z.object({
+    acceptTerms: z.boolean().refine((value) => value === true, {
+      message: "",
+    }),
+  });
+
+  const form = useForm<z.infer<typeof FormSchema>>({
+    resolver: zodResolver(FormSchema),
+    defaultValues: {
+      acceptTerms: false,
+    },
+  });
 
   const register = async () => {
     setLoading(true);
@@ -146,9 +172,48 @@ export default function EventRegistrationDialog({
         )}
 
         <DialogFooter>
-          <Button className="w-full" onClick={register} disabled={loading}>
-            Kirim
-          </Button>
+          <Form {...form}>
+            <form onSubmit={form.handleSubmit(register)} className="space-y-4">
+              <FormField
+                control={form.control}
+                name="acceptTerms"
+                render={() => (
+                  <FormItem>
+                    <FormField
+                      control={form.control}
+                      name="acceptTerms"
+                      render={({ field }) => (
+                        <FormItem className="flex flex-row items-center space-x-2">
+                          <FormControl>
+                            <Checkbox
+                              checked={field.value}
+                              onCheckedChange={(checked) =>
+                                field.onChange(checked)
+                              }
+                            />
+                          </FormControl>
+                          <FormLabel className="text-xs font-normal">
+                            Dengan ini saya menyatakan bahwa{" "}
+                            {rsvp === "yes"
+                              ? "saya akan hadir"
+                              : "saya tidak bisa hadir"}{" "}
+                            pada kegiatan {event.name} pada tanggal{" "}
+                            {localeDate(event.scheduledStart)} pukul{" "}
+                            {localeTime(event.scheduledStart)}.
+                          </FormLabel>
+                        </FormItem>
+                      )}
+                    />
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <Button className="w-full" type="submit" disabled={loading}>
+                Kirim
+              </Button>
+            </form>
+          </Form>
         </DialogFooter>
       </DialogContent>
     </Dialog>
