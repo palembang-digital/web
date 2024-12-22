@@ -19,7 +19,7 @@ export default function YouTubeVideoCard({
     : [];
 
   return (
-    <div className="">
+    <div>
       <Link href={`/videos/${video.id}`}>
         <Image
           className="rounded-t-lg"

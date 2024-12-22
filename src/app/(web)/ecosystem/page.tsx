@@ -1,5 +1,5 @@
-import { columns } from "@/app/ecosystem/columns";
-import { DataTable } from "@/app/ecosystem/data-table";
+import { columns } from "@/app/(web)/ecosystem/columns";
+import { DataTable } from "@/app/(web)/ecosystem/data-table";
 import { auth } from "@/auth";
 import { FloatingHeader } from "@/components/floating-header";
 import { ScrollArea } from "@/components/scroll-area";

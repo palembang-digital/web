@@ -66,7 +66,7 @@ export default function PostCard({
       id: user.id,
       label: user.name,
       image: user.image,
-      imageClassName: "h-5 w-5",
+      imageClassName: "h-4 w-4",
       href: `/${user.username}`,
     }));
 
@@ -112,7 +112,7 @@ export default function PostCard({
         {isUserLiked ? (
           <>
             <HeartIcon
-              className="mr-1 h-5 w-5 hover:cursor-pointer hover:animate-pulse"
+              className="mr-1 h-4 w-4 hover:cursor-pointer hover:animate-pulse"
               color="#fb7185"
               fill="#fb7185"
               onClick={unlikePost(feed.id)}
@@ -120,7 +120,7 @@ export default function PostCard({
           </>
         ) : (
           <HeartIcon
-            className="mr-1 h-5 w-5 hover:cursor-pointer hover:animate-pulse"
+            className="mr-1 h-4 w-4 hover:cursor-pointer hover:animate-pulse"
             strokeWidth={1.5}
             onClick={likePost(feed.id)}
           />
@@ -131,7 +131,7 @@ export default function PostCard({
 
         <Link href={`/${feed.user.username}/posts/${feed.id}`}>
           <MessageCircleIcon
-            className="ml-4 h-5 w-5 hover:cursor-pointer hover:animate-pulse"
+            className="ml-4 h-4 w-4 hover:cursor-pointer hover:animate-pulse"
             strokeWidth={1.5}
           />
         </Link>

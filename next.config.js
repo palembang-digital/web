@@ -7,6 +7,10 @@ module.exports = {
       },
     ],
   },
+  experimental: {
+    instrumentationHook: process.env.NODE_ENV === "production",
+    optimizePackageImports: ["icon-library"],
+  },
 };
 
 // Injected content via Sentry wizard below

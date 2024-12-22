@@ -1,4 +1,4 @@
-import ProfileForm from "@/app/settings/profile/profile-form";
+import ProfileForm from "@/app/(web)/settings/profile/profile-form";
 import { auth } from "@/auth";
 import NotAuthenticated from "@/components/not-authenticated";
 import { Separator } from "@/components/ui/separator";

@@ -1,6 +1,6 @@
 "use client";
 
-import { DataTableToolbar } from "@/app/ecosystem/data-table-toolbar";
+import { DataTableToolbar } from "@/app/(web)/ecosystem/data-table-toolbar";
 import {
   Table,
   TableBody,

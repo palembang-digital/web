@@ -1,4 +1,4 @@
-import { SidebarNav } from "@/app/settings/components/sidebar-nav";
+import { SidebarNav } from "@/app/(web)/settings/components/sidebar-nav";
 import { auth } from "@/auth";
 import { FloatingHeader } from "@/components/floating-header";
 import NotAuthenticated from "@/components/not-authenticated";

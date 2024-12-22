@@ -3,7 +3,7 @@ import NewPostForm from "@/components/feeds/new-post-form";
 import { FloatingHeader } from "@/components/floating-header";
 import { ScrollArea } from "@/components/scroll-area";
 import { TypographyH2 } from "@/components/ui/typography";
-import FeedList from "../../components/feeds/feed-list";
+import FeedList from "../../../components/feeds/feed-list";
 
 export default async function Page() {
   const session = await auth();

@@ -7,6 +7,7 @@ import EventSidebarInfo from "@/components/events/event-sidebar-info";
 import { FloatingHeader } from "@/components/floating-header";
 import { ScrollArea } from "@/components/scroll-area";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Button } from "@/components/ui/button";
 import {
   TypographyH2,
   TypographyH3,
@@ -332,13 +333,14 @@ export default async function Page({ params }: { params: { id: number } }) {
                   <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
                     {event.eventsPhotos.length > 0 &&
                       event.eventsPhotos
+                        .slice(0, 4)
                         .sort((a, b) =>
                           a.photo.createdAt > b.photo.createdAt ? 1 : -1
                         )
                         .map(({ photo }) => (
                           <div
                             key={photo.id}
-                            className="bg-background flex h-full rounded-lg"
+                            className="border bg-background flex h-full rounded-lg"
                           >
                             <Image
                               className="rounded-lg"
@@ -351,13 +353,14 @@ export default async function Page({ params }: { params: { id: number } }) {
                         ))}
                     {event.eventsVideos.length > 0 &&
                       event.eventsVideos
+                        .slice(0, 4)
                         .sort((a, b) =>
                           a.video.publishedAt > b.video.publishedAt ? 1 : -1
                         )
                         .map(({ video }) => (
                           <div
                             key={video.id}
-                            className="border bg-background hover:bg-accent hover:cursor-pointer flex h-full rounded-lg"
+                            className="border bg-background hover:bg-accent hover:cursor-pointer flex h-full rounded-lg group"
                           >
                             {video.videoType === "youtube" ? (
                               <YouTubeVideoCard video={video} />
@@ -367,6 +370,14 @@ export default async function Page({ params }: { params: { id: number } }) {
                           </div>
                         ))}
                   </div>
+                  {event.eventsPhotos.length + event.eventsVideos.length >
+                    0 && (
+                    <Link href={`/events/${event.id}/gallery`}>
+                      <Button variant="outline" className="text-xs">
+                        Lihat semua dokumentasi
+                      </Button>
+                    </Link>
+                  )}
                 </div>
               </div>
             )}

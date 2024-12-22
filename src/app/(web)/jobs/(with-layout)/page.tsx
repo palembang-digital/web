@@ -1,4 +1,4 @@
-import JobListLayout from "@/app/jobs/job-list-layout";
+import JobListLayout from "@/app/(web)/jobs/job-list-layout";
 import Loading from "@/app/loading";
 import { FloatingHeader } from "@/components/floating-header";
 import ShimmerButton from "@/components/magicui/shimmer-button";
