@@ -12,7 +12,7 @@ export default function MemberCard({
   eventShownLimit: number;
 }) {
   return (
-    <div className="border rounded-lg p-4 flex flex-col h-full bg-background hover:bg-accent shadow-sm w-64">
+    <div className="border rounded-lg p-4 flex flex-col h-full bg-background hover:bg-accent shadow-sm w-full">
       <Link href={`/${user.username}`}>
         <Image
           src={user.image || ""}

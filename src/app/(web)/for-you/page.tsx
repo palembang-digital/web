@@ -1,4 +1,5 @@
 import { auth } from "@/auth";
+import AdUnit from "@/components/ad-unit";
 import NewPostForm from "@/components/feeds/new-post-form";
 import { FloatingHeader } from "@/components/floating-header";
 import { ScrollArea } from "@/components/scroll-area";
@@ -18,6 +19,10 @@ export default async function Page() {
           {session && <NewPostForm />}
 
           <FeedList session={session} />
+
+          <div className="mt-6">
+            <AdUnit />
+          </div>
         </div>
       </div>
     </ScrollArea>

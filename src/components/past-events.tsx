@@ -20,7 +20,7 @@ export default function PastEvents({
         Kegiatan sebelumnya
       </TypographyH2>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-2">
         {events.map((event, index) => (
           <>
             <EventCard key={event.id} event={event} />

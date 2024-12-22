@@ -144,5 +144,5 @@ export const mergeUserEvents = (user: any) => {
       index === self.findIndex((t) => t.id === event.id)
   );
 
-  return events;
+  return events.sort((a, b) => (a.scheduledStart < b.scheduledStart ? 1 : -1));
 };

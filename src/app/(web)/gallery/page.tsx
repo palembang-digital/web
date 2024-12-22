@@ -1,4 +1,5 @@
 import { auth } from "@/auth";
+import AdUnit from "@/components/ad-unit";
 import { FloatingHeader } from "@/components/floating-header";
 import { ScrollArea } from "@/components/scroll-area";
 import Videos from "@/components/videos/videos";
@@ -17,6 +18,10 @@ export default async function Page() {
       <div className="content-wrapper">
         <div className="content">
           <Videos hideSeeMoreButton showAds />
+
+          <div className="p-2 sm:p-6">
+            <AdUnit />
+          </div>
         </div>
       </div>
     </ScrollArea>

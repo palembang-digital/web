@@ -1,7 +1,9 @@
 import { auth } from "@/auth";
+import AdUnit from "@/components/ad-unit";
 import { FloatingHeader } from "@/components/floating-header";
 import MemberCard from "@/components/members/member-card";
 import { ScrollArea } from "@/components/scroll-area";
+import { TypographyH2 } from "@/components/ui/typography";
 import { getUsers, mergeUserEvents } from "@/services";
 import type { Metadata } from "next";
 
@@ -19,7 +21,10 @@ export default async function Page() {
       <FloatingHeader session={session} scrollTitle="Anggota" />
       <div className="content-wrapper">
         <div className="content">
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-x-8 gap-y-3 justify-items-center">
+          <p className="italic text-neutral-400">Members</p>
+          <TypographyH2 className="text-neutral-800 mb-2">Anggota</TypographyH2>
+
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 justify-items-center">
             {users.map((user) => {
               const events = mergeUserEvents(user).map((event: any) => ({
                 id: event.id,
@@ -38,6 +43,10 @@ export default async function Page() {
                 />
               );
             })}
+          </div>
+
+          <div className="mt-8">
+            <AdUnit />
           </div>
         </div>
       </div>
