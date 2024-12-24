@@ -113,6 +113,12 @@ export default async function Page({ params }: { params: { id: number } }) {
     (a) => a.rsvp === "yes"
   ).length;
 
+  // @ts-ignore
+  const isAdmin = session?.user?.role === "administrator";
+  // @ts-ignore
+  const isOwner = session?.user?.id === event.createdBy;
+  const canEdit = isAdmin || isOwner;
+
   return (
     <ScrollArea useScrollAreaId>
       <FloatingHeader session={session} scrollTitle={event.name} />
@@ -120,8 +126,10 @@ export default async function Page({ params }: { params: { id: number } }) {
         <div className="content">
           {
             // @ts-ignore
-            session?.user?.role === "administrator" && (
-              <Link href={`/events/${params.id}/edit`}>Edit</Link>
+            canEdit && (
+              <Button variant="outline" size="sm" className="mb-4">
+                <Link href={`/events/${params.id}/edit`}>Edit</Link>
+              </Button>
             )
           }
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
