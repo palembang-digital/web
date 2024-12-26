@@ -4,8 +4,15 @@ import { FloatingHeader } from "@/components/floating-header";
 import ShimmerButton from "@/components/magicui/shimmer-button";
 import { ScrollArea } from "@/components/scroll-area";
 import { getSession } from "@/services/auth";
+import { Metadata } from "next";
 import Link from "next/link";
 import { Suspense } from "react";
+
+export const metadata: Metadata = {
+  title: "Pekerjaan",
+  description: "Daftar pekerjaan yang tersedia di Palembang Digital",
+  keywords: "Pekerjaan,Lowongan,Kerja,Palembang,Palembang Digital",
+};
 
 export default async function Page() {
   const session = await getSession();

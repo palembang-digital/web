@@ -7,7 +7,40 @@ import { TypographyH2, TypographyH3 } from "@/components/ui/typography";
 import { getJob } from "@/services";
 import { getSession } from "@/services/auth";
 import { DollarSignIcon, SquareArrowOutUpRightIcon } from "lucide-react";
+import { Metadata } from "next";
 import Link from "next/link";
+
+export async function generateMetadata({
+  params,
+}: {
+  params: { id: number };
+}): Promise<Metadata> {
+  const job = await getJob(params.id);
+  if (!job) {
+    return {
+      title: "Job not found",
+    };
+  }
+
+  const desc = `Lowongan pekerjaan ${job.title} di Palembang Digital`;
+
+  return {
+    title: job.title,
+    description: desc,
+    keywords: [
+      "kegiatan",
+      "digital",
+      "event",
+      "palembang",
+      "palembang digital",
+    ],
+    openGraph: {
+      title: `${job.title} · Palembang Digital`,
+      description: desc,
+      type: "article",
+    },
+  };
+}
 
 export default async function Page({ params }: { params: { id: number } }) {
   const session = await getSession();

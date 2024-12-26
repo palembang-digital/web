@@ -7,6 +7,10 @@ import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Artikel",
+  description:
+    "Tulisan-tulisan informatif dan bermanfaat dari komuntias Palembang Digital",
+  keywords:
+    "Artikel,Informasi,Blog,Programming,Design,UI/UX,AI,Startup,Palembang,Palembang Digital",
 };
 
 export const revalidate = 3600; // revalidate the data at most every hour

@@ -585,6 +585,7 @@ export const articles = pgTable("articles", {
   category: text("category"),
   content: text("content").notNull(),
   status: articleStatusEnum("status").notNull().default("draft"),
+  keywords: text("keywords"),
   createdAt: timestamp("created_at").notNull().defaultNow(),
   updatedAt: timestamp("updated_at").notNull().defaultNow(),
   createdBy: text("created_by").notNull(),

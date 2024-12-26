@@ -39,13 +39,23 @@ export async function generateMetadata({
     };
   }
 
+  const desc = `Segera daftarkan diri kamu di kegiatan ${
+    event.name
+  } yang akan diselenggarakan pada ${localeDate(event.scheduledStart)}`;
+
   return {
     title: event.name,
+    description: desc,
+    keywords: [
+      "kegiatan",
+      "digital",
+      "event",
+      "palembang",
+      "palembang digital",
+    ],
     openGraph: {
       title: `${event.name} · Palembang Digital`,
-      description: `Segera daftarkan diri kamu di kegiatan ${
-        event.name
-      } yang akan diselenggarakan pada ${localeDate(event.scheduledStart)}`,
+      description: desc,
       images: `/events/${params.id}/og.png`,
       type: "article",
     },

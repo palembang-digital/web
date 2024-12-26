@@ -90,6 +90,7 @@ table articles {
   category text
   content text [not null]
   status article_status [not null, default: 'draft']
+  keywords text
   created_at timestamp [not null, default: `now()`]
   updated_at timestamp [not null, default: `now()`]
   created_by text [not null]

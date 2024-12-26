@@ -21,6 +21,11 @@ export async function generateMetadata({
 
   return {
     title: article.title,
+    description: `Baca artikel ${article.title} yang ditulis oleh ${authors} di Palembang Digital`,
+    keywords: article.keywords
+      ? article.keywords + ","
+      : "" +
+        "Artikel,Informasi,Blog,Palembang,Programming,Design,UI/UX,AI,Startup",
     openGraph: {
       title: `${article.title} · Palembang Digital`,
       description: `Ditulis oleh ${authors}`,

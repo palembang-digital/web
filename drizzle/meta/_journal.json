@@ -281,6 +281,13 @@
       "when": 1734715437435,
       "tag": "0039_hesitant_wildside",
       "breakpoints": true
+    },
+    {
+      "idx": 40,
+      "version": "7",
+      "when": 1735202232708,
+      "tag": "0040_common_lucky_pierre",
+      "breakpoints": true
     }
   ]
 }
