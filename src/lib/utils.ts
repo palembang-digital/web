@@ -99,9 +99,15 @@ export function timeAgo(
 
 export function formatContent(content: string) {
   let output = content.replaceAll("\n", "<br/>");
+
+  // replace mentions
   output = output.replaceAll(
     /@([a-zA-Z0-9_-]+)/g,
     '<a class="font-medium hover:underline" href="/$1">@$1</a>'
   );
+
+  // replace markdown bold
+  output = output.replaceAll(/\*\*(.*?)\*\*/g, "<strong>$1</strong>");
+
   return output;
 }

@@ -5,7 +5,7 @@ import NewCommentForm from "@/components/feeds/new-comment-form";
 import "@/components/minimal-tiptap/styles/index.css";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { fetcher } from "@/lib/fetcher";
-import { timeAgo } from "@/lib/utils";
+import { formatContent, timeAgo } from "@/lib/utils";
 import Link from "next/link";
 import useSWR from "swr";
 
@@ -18,15 +18,6 @@ export default function PostComments({ feed }: Readonly<{ feed: any }>) {
   if (isLoading) {
     return <Loading />;
   }
-
-  const formatContent = (content: string) => {
-    let output = content.replaceAll("\n", "<br/>");
-    output = output.replaceAll(
-      /@([a-zA-Z0-9_-]+)/g,
-      '<a class="font-medium hover:underline" href="/$1">@$1</a>'
-    );
-    return output;
-  };
 
   return (
     <>
