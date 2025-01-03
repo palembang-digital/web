@@ -131,7 +131,11 @@ export default async function Page({ params }: { params: { id: number } }) {
 
   return (
     <ScrollArea useScrollAreaId>
-      <FloatingHeader session={session} scrollTitle={event.name} />
+      <FloatingHeader
+        session={session}
+        scrollTitle={event.name}
+        goBackLink="/events"
+      />
       <div className="content-wrapper">
         <div className="content">
           {

@@ -36,12 +36,11 @@ export default async function Page() {
 
           <LandingAboutUs />
           <LandingFAQ />
+          <LandingContactUs />
 
           <div className="mt-16 p-2 sm:p-6">
             <AdUnit />
           </div>
-
-          <LandingContactUs />
         </div>
       </div>
 

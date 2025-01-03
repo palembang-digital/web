@@ -31,7 +31,11 @@ export default function EventList({
     );
   const pastEvents =
     data &&
-    data.filter((event: any) => new Date(event.scheduledEnd) < new Date());
+    data.filter(
+      (event: any) =>
+        new Date(event.scheduledEnd) < new Date() &&
+        (event.status === "published" || event.status === "completed")
+    );
 
   return (
     <div>

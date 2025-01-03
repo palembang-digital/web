@@ -69,9 +69,14 @@ function Cmp({
         <div className="flex w-full items-center justify-between gap-2">
           <div className="flex flex-1 items-center gap-1">
             {goBackLink ? (
-              <Button variant="ghost" size="icon" className="shrink-0" asChild>
+              <Button
+                variant="ghost"
+                size="icon"
+                className="ml-2 shrink-0"
+                asChild
+              >
                 <Link href={goBackLink} title="Go back">
-                  <ArrowLeftIcon size={16} />
+                  <ArrowLeftIcon size={18} />
                 </Link>
               </Button>
             ) : (

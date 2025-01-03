@@ -14,7 +14,11 @@ export default async function Page() {
 
   return (
     <ScrollArea useScrollAreaId>
-      <FloatingHeader session={session} scrollTitle="Palembang Digital" />
+      <FloatingHeader
+        session={session}
+        scrollTitle="Artikel Baru"
+        goBackLink="/articles"
+      />
 
       <div className="content-wrapper">
         <div className="content">

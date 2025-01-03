@@ -41,7 +41,11 @@ export default async function Page({ params }: { params: { id: number } }) {
 
   return (
     <ScrollArea useScrollAreaId>
-      <FloatingHeader session={session} scrollTitle="Galeri" />
+      <FloatingHeader
+        session={session}
+        scrollTitle={video.title}
+        goBackLink="/gallery"
+      />
       <div className="content-wrapper">
         <div className="content">
           <div className="flex flex-col gap-4">

@@ -1,9 +1,10 @@
 "use client";
 
+import AdUnit from "@/components/ad-unit";
+import ArticleCard from "@/components/articles/article-card";
 import { TypographyH2 } from "@/components/ui/typography";
 import { fetcher } from "@/lib/fetcher";
 import useSWR from "swr";
-import ArticleCard from "./article-card";
 
 export default function ArticleList({ limit = 10 }) {
   const { data, isLoading } = useSWR(
@@ -24,6 +25,9 @@ export default function ArticleList({ limit = 10 }) {
           data.map((article: any) => (
             <ArticleCard key={article.id} article={article} />
           ))}
+      </div>
+      <div className="my-6">
+        <AdUnit />
       </div>
     </div>
   );

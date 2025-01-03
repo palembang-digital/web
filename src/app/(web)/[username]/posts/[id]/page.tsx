@@ -50,6 +50,7 @@ export default async function Page({ params }: { params: { id: number } }) {
       <FloatingHeader
         session={session}
         scrollTitle={post.user.name || post.user.username}
+        goBackLink="/for-you"
       />
       <div className="content-wrapper">
         <div className="content">
