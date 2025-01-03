@@ -19,7 +19,7 @@ export default function ArticleList({ limit = 10 }) {
     <div>
       <p className="italic text-neutral-400">Our writings</p>
       <TypographyH2>Artikel</TypographyH2>
-      <div className="grid gap-6 md:grid-cols-2 mt-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 mt-6 gap-6">
         {data &&
           data.map((article: any) => (
             <ArticleCard key={article.id} article={article} />

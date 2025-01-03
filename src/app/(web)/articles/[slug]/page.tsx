@@ -45,7 +45,7 @@ export default async function Page({ params }: { params: { slug: string } }) {
 
   return (
     <ScrollArea useScrollAreaId>
-      <FloatingHeader session={session} scrollTitle="Artikel" />
+      <FloatingHeader session={session} scrollTitle={article.title} />
       <div className="content-wrapper">
         <div className="content">
           <ArticlePage article={article} />

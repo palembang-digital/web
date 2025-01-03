@@ -29,7 +29,7 @@ export default function ArticlePage({ article }: { article: any }) {
 
       <div className="flex gap-2 items-center justify-center w-full text-gray-600">
         <Link href={`/${author.user.username}`} className="text-sm">
-          <div className="flex gap-2">
+          <div className="flex gap-2 items-center justify-center">
             <Image
               src={author.user.image || ""}
               alt={author.user.name || ""}

@@ -17,7 +17,12 @@ export default async function Page({ params }: { params: { id: number } }) {
     return <p>Job not found</p>;
   }
 
-  if (session?.user?.id !== job.createdBy) {
+  // @ts-ignore
+  const isAdmin = session?.user?.role === "administrator";
+  // @ts-ignore
+  const isOwner = session?.user?.id === job.createdBy;
+  const canEdit = isAdmin || isOwner;
+  if (!canEdit) {
     return <p>Not authorized</p>;
   }
 

@@ -18,7 +18,12 @@ export async function PUT(
     return Response.json({ message: "Job not found" }, { status: 404 });
   }
 
-  if (session?.user?.id !== currentJob.createdBy) {
+  // @ts-ignore
+  const isAdmin = session?.user?.role === "administrator";
+  // @ts-ignore
+  const isOwner = session?.user?.id === currentJob.createdBy;
+  const canEdit = isAdmin || isOwner;
+  if (!canEdit) {
     return Response.json({ message: "Not authorized" }, { status: 403 });
   }
 
